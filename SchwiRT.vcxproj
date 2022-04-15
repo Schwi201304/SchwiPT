@@ -149,7 +149,6 @@
     <ClInclude Include="include\stb_image\stb_image.h" />
     <ClInclude Include="include\stb_image\stb_image_resize.h" />
     <ClInclude Include="include\stb_image\stb_image_write.h" />
-
     <ClInclude Include="src\core\schwi.h" />
     <ClInclude Include="src\image\image.h" />
     <ClInclude Include="src\math\bound.h" />
@@ -167,6 +166,8 @@
     <ClCompile Include="src\image\image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

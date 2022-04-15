@@ -8,15 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stb_image.h" />
-    <ClInclude Include="image\image.h" />
     <ClInclude Include="include\stb_image\stb_image.h" />
-    <ClInclude Include="math\point3.h" />
-    <ClInclude Include="math\vec.h" />
-    <ClInclude Include="math\vector2.h" />
-    <ClInclude Include="math\vector3.h" />
-    <ClInclude Include="math\normal3.h" />
-    <ClInclude Include="math\point2.h" />
-    <ClInclude Include="math\RNG.h" />
     <ClInclude Include="include\stb_image\stb_image_resize.h" />
     <ClInclude Include="include\stb_image\stb_image_write.h" />
     <ClInclude Include="src\image\image.h" />
@@ -32,11 +24,12 @@
     <ClInclude Include="src\core\schwi.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="image\image.cpp" />
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\image\image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>
