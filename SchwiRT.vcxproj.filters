@@ -17,8 +17,26 @@
     <ClInclude Include="math\normal3.h" />
     <ClInclude Include="math\point2.h" />
     <ClInclude Include="math\RNG.h" />
+    <ClInclude Include="include\stb_image\stb_image_resize.h" />
+    <ClInclude Include="include\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\image\image.h" />
+    <ClInclude Include="src\math\normal3.h" />
+    <ClInclude Include="src\math\point2.h" />
+    <ClInclude Include="src\math\point3.h" />
+    <ClInclude Include="src\math\RNG.h" />
+    <ClInclude Include="src\math\vec.h" />
+    <ClInclude Include="src\math\vector2.h" />
+    <ClInclude Include="src\math\vector3.h" />
+    <ClInclude Include="src\math\bound.h" />
+    <ClInclude Include="src\math\matrix.h" />
+    <ClInclude Include="src\core\schwi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="image\image.cpp" />
+    <ClCompile Include="src\core\main.cpp" />
+    <ClCompile Include="src\image\image.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
 </Project>
