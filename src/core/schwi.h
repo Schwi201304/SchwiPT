@@ -12,6 +12,7 @@
 #include<initializer_list>
 #include<typeinfo>
 
+
 namespace schwi {
 	//Global Constants
 	constexpr double Pi = 3.14159265358979323846;
@@ -47,6 +48,9 @@ namespace schwi {
 	class Material;
 	class AreaLight;
 	class Surface;
+	class Intersection;
+	class Shape;
+	class Frame;
 
 	// Using
 	using Degree = double;
@@ -75,6 +79,9 @@ namespace schwi {
 
 	using BsdfUPtr = std::unique_ptr<BSDF>;
 
+	using ShapeSPtr = std::shared_ptr<Shape>;
+	using ShapeList = std::vector<Shape>;
+
 
 	// Global Function
 	inline Radian ToRadians(Degree deg) {
@@ -87,5 +94,19 @@ namespace schwi {
 
 	inline double Lerp(double t, double a, double b) {
 		return (1 - t) * a + t * b;
+	}
+
+	inline double Clamp(double v, double l, double h) {
+		return v > h ? h
+			: v < l ? l
+			: v;
+	}
+
+	inline double Clamp01(double v) {
+		return Clamp(v, 0, 1);
+	}
+
+	inline int GammaEncoding(double x) {
+		return pow(Clamp01(x), 1 / 2.2) * 255 + .5;
 	}
 }

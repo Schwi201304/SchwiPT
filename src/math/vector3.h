@@ -64,7 +64,7 @@ namespace schwi {
 			return *this;
 		}
 
-		Vector3<T> Normalize() {
+		Vector3<T> Normalize()const {
 			return (*this) / Length();
 		}
 	};
@@ -154,5 +154,33 @@ namespace schwi {
 	template<typename T>
 	inline Vector3<T> Abs(const Vector3<T>& v) {
 		return Vector3<T>(std::abs(v.x), std::abs(v.y), std::abs(v.z));
+	}
+
+	inline Radian spherical_theta(const Vector3d& v)
+	{
+		return std::acos(Clamp(v.z, -1., 1.));
+	}
+
+	inline Radian spherical_phi(const Vector3d& v)
+	{
+		double phi = std::atan2(v.y, v.x);
+		return (phi < 0) ? (phi + 2 * Pi) : phi;
+	}
+
+	inline Vector3d spherical_to_direction(double sin_theta, double cos_theta, double phi)
+	{
+		return Vector3d(
+			sin_theta * std::cos(phi),
+			sin_theta * std::sin(phi),
+			cos_theta);
+	}
+	inline Vector3d spherical_to_direction(
+		double sin_theta, double cos_theta, double phi,
+		const Vector3d& x, const Vector3d& y, const Vector3d& z)
+	{
+		return
+			sin_theta * std::cos(phi) * x +
+			sin_theta * std::sin(phi) * y +
+			cos_theta * z;
 	}
 }
