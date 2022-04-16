@@ -55,19 +55,11 @@ namespace schwi {
 		return Point2<T>(u.x + v.x, u.y + v.y);
 	}
 
-	template<typename T1, typename T2>
-	inline Point2<T1> operator*(T2 t, const Point2<T1>& v) {
-		return Point2<T1>(t * v.x, t * v.y);
-	}
-
-	template<typename T1, typename T2>
-	inline Point2<T1> operator*(const Point2<T1>& v, T2 t) {
-		return t * v;
-	}
-
 	template <typename T>
 	Point2<T> Lerp(double t, const Point2<T>& p0, const Point2<T>& p1) {
-		return (1 - t) * p0 + t * p1;
+		return Point2<T>(
+			(1 - t) * p0.x + t * p1.x,
+			(1 - t) * p0.y + t * p1.y);
 	}
 
 	template <typename T>

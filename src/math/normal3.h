@@ -14,7 +14,7 @@ namespace schwi {
 
 
 	template <typename T>
-	inline double dot(const Normal3<T>& n, const Vector3<T>& v) {
+	inline double Dot(const Normal3<T>& n, const Vector3<T>& v) {
 		return n.x * v.x + n.y * v.y + n.z * v.z;
 	}
 

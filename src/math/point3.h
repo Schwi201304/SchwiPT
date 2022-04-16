@@ -7,13 +7,13 @@ namespace schwi {
 	public:
 		Point3() :vec3<T>() {}
 		Point3(T _x, T _y, T _z) :vec3<T>(_x, _y, _z) {}
-		explicit Point3(const vec3<T>& v):vec3<T>(v){}
+		explicit Point3(const vec3<T>& v) :vec3<T>(v) {}
 
 		template<typename U>
 		explicit Point3(const Point3<U>& p) :vec2((T)p.x, (T)p.y, (T)p.z) {}
 
 		template<typename U>
-		explicit operator Vector3<U>() const{
+		explicit operator Vector3<U>() const {
 			return Vector3<U>(this->x, this->y, this->z);
 		}
 
@@ -55,19 +55,13 @@ namespace schwi {
 		return Point3<T>(u.x + v.x, u.y + v.y, u.z + v.z);
 	}
 
-	template<typename T1, typename T2>
-	inline Point3<T1> operator*(T2 t, const Point3<T1>& v) {
-		return Point3<T1>(t * v.x, t * v.y, t * v.z);
-	}
-
-	template<typename T1, typename T2>
-	inline Point3<T1> operator*(const Point3<T1>& v, T2 t) {
-		return t * v;
-	}
-
 	template <typename T>
 	Point3<T> Lerp(double t, const Point3<T>& p0, const Point3<T>& p1) {
-		return (1 - t) * p0 + t * p1;
+		return Point3<T>(
+			(1 - t) * p0.x + t * p1.x,
+			(1 - t) * p0.y + t * p1.y,
+			(1 - t) * p0.z + t * p1.z
+			);
 	}
 
 	template <typename T>

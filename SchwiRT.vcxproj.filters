@@ -22,10 +22,13 @@
     <ClInclude Include="src\math\bound.h" />
     <ClInclude Include="src\math\matrix.h" />
     <ClInclude Include="src\core\schwi.h" />
+    <ClInclude Include="src\cameras\camera.h" />
+    <ClInclude Include="src\core\ray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\image\image.cpp" />
+    <ClCompile Include="src\cameras\camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

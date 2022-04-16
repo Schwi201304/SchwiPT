@@ -45,8 +45,11 @@ namespace schwi {
 			return (fabs(this->x) < s) && (fabs(this->y) < s);
 		}
 
-		Vector2<T> normalized() {
-			return (*this) / Length();
+		Vector2<T> Normalized() {
+			double invL = 1 / Length();
+			x *= invL;
+			y *= invL;
+			return *this;
 		}
 	};
 
@@ -82,13 +85,13 @@ namespace schwi {
 	}
 
 	template<typename T>
-	inline double dot(const Vector2<T>& u, const Vector2<T>& v) {
+	inline double Dot(const Vector2<T>& u, const Vector2<T>& v) {
 		return u.x * v.x
 			+ u.y * v.y;
 	}
 
 	template<typename T>
-	inline Vector2<double> normalize(Vector2<T> v) {
+	inline Vector2<double> Normalize(Vector2<T> v) {
 		return v / v.Length();
 	}
 

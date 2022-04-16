@@ -4,10 +4,12 @@
 
 namespace schwi {
 	template<typename T>
-	class Bounds2 {};
+	class Bounds2 {
+	public:
+		Point2<T> pMin, pMax;
+	
+	};
 
-
-	using Bounds3d = Bounds3<double>;
 	template<typename T>
 	class Bounds3 {
 	public:
@@ -21,36 +23,16 @@ namespace schwi {
 		}
 		Bounds3(const Point3<T>& p) : pMin(p), pMax(p) { }
 		Bounds3(const Point3<T>& p1, const Point3<T>& p2)
-			: pMin(std::min(p1.x, p2.x), std::min(p1.y, p2.y),
-				std::min(p1.z, p2.z)),
-			pMax(std::max(p1.x, p2.x), std::max(p1.y, p2.y),
-				std::max(p1.z, p2.z)) {	}
+			: pMin(Min(p1,p2),pMax(Max(p1,p2) {	}
 
 		const Point3<T>& operator[](int i) const {
-			switch (i) {
-			case 0:return Point3<T>(pMin.x, pMin.y, pMin.z);
-			case 1:return Point3<T>(pMin.x, pMin.y, pMax.z);
-			case 2:return Point3<T>(pMax.x, pMin.y, pMax.z);
-			case 3:return Point3<T>(pMax.x, pMin.y, pMin.z);
-			case 5:return Point3<T>(pMin.x, pMax.y, pMin.z);
-			case 4:return Point3<T>(pMin.x, pMax.y, pMax.z);
-			case 6:return Point3<T>(pMax.x, pMax.y, pMax.z);
-			case 7:return Point3<T>(pMax.x, pMax.y, pMin.z);
-			default:std::cerr << "Error(Bounds::[]:i<0||i>=8)" << std::endl;
-			}
+			assert(i == 0 || i == 1);
+			return i ? pMax : pMin;
 		}
+
 		Point3<T>& operator[](int i) {
-			switch (i) {
-			case 0:return Point3<T>(pMin.x, pMin.y, pMin.z);
-			case 1:return Point3<T>(pMin.x, pMin.y, pMax.z);
-			case 2:return Point3<T>(pMax.x, pMin.y, pMax.z);
-			case 3:return Point3<T>(pMax.x, pMin.y, pMin.z);
-			case 5:return Point3<T>(pMin.x, pMax.y, pMin.z);
-			case 4:return Point3<T>(pMin.x, pMax.y, pMax.z);
-			case 6:return Point3<T>(pMax.x, pMax.y, pMax.z);
-			case 7:return Point3<T>(pMax.x, pMax.y, pMin.z);
-			default:std::cerr << "Error(Bounds::[]:i<0||i>=8)" << std::endl;
-			}
+			assert(i == 0 || i == 1);
+			return i ? pMax : pMin;
 		}
 
 		Point3<T> Corner(int corner) const {
@@ -99,7 +81,7 @@ namespace schwi {
 			*center = (pMin + pMax) / 2;
 			*radius = Inside(*center, *this) ? Distance(*center, pMax) : 0;
 		}
-
+		/*
 		template <typename T>
 		inline bool IntersectP(const Ray& ray, double* hitt0, double* hitt1) const {
 			double t0 = 0, t1 = ray.tMax;
@@ -145,37 +127,22 @@ namespace schwi {
 				tMax = tzMax;
 
 			return (tMin < ray.tMax) && (tMax > 0);
-		}
+		}*/
 	};
 
 	template <typename T>
 	Bounds3<T>	Union(const Bounds3<T>& b, const Point3<T>& p) {
-		return Bounds3<T>(Point3<T>(std::min(b.pMin.x, p.x),
-			std::min(b.pMin.y, p.y),
-			std::min(b.pMin.z, p.z)),
-			Point3<T>(std::max(b.pMax.x, p.x),
-				std::max(b.pMax.y, p.y),
-				std::max(b.pMax.z, p.z)));
+		return Bounds3<T>(Min(b.pMin,p),Max(b.pMax,p));
 	}
 
 	template <typename T>
 	Bounds3<T> Union(const Bounds3<T>& b1, const Bounds3<T>& b2) {
-		return Bounds3<T>(Point3<T>(std::min(b1.pMin.x, b2.pMin.x),
-			std::min(b1.pMin.y, b2.pMin.y),
-			std::min(b1.pMin.z, b2.pMin.z)),
-			Point3<T>(std::max(b1.pMax.x, b2.pMax.x),
-				std::max(b1.pMax.y, b2.pMax.y),
-				std::max(b1.pMax.z, b2.pMax.z)));
+		return Bounds3<T>(Min(b1.pMin,b2.pMin),Max(b1.pMax,b2.pMax));
 	}
 
 	template <typename T>
 	Bounds3<T> Intersect(const Bounds3<T>& b1, const Bounds3<T>& b2) {
-		return Bounds3<T>(Point3<T>(std::max(b1.pMin.x, b2.pMin.x),
-			std::max(b1.pMin.y, b2.pMin.y),
-			std::max(b1.pMin.z, b2.pMin.z)),
-			Point3<T>(std::min(b1.pMax.x, b2.pMax.x),
-				std::min(b1.pMax.y, b2.pMax.y),
-				std::min(b1.pMax.z, b2.pMax.z)));
+		return Bounds3<T>(Point3<T>(Max(b1.pMin,b2.pMin),Min(b1.pMax,b2.pMax));
 	}
 
 	template <typename T>
@@ -205,4 +172,6 @@ namespace schwi {
 		return Bounds3<T>(b.pMin - Vector3<T>(delta, delta, delta),
 			b.pMax + Vector3<T>(delta, delta, delta));
 	}
+
+	using Bounds3d = Bounds3<double>;
 }

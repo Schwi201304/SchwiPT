@@ -149,6 +149,8 @@
     <ClInclude Include="include\stb_image\stb_image.h" />
     <ClInclude Include="include\stb_image\stb_image_resize.h" />
     <ClInclude Include="include\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\cameras\camera.h" />
+    <ClInclude Include="src\core\ray.h" />
     <ClInclude Include="src\core\schwi.h" />
     <ClInclude Include="src\image\image.h" />
     <ClInclude Include="src\math\bound.h" />
@@ -162,6 +164,7 @@
     <ClInclude Include="src\math\vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\cameras\camera.cpp" />
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\image\image.cpp" />
   </ItemGroup>

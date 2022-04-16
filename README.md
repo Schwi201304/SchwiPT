@@ -1,4 +1,6 @@
-# SchwiRayTracing
+# Schwi Ray Tracing
+
+[toc]
 
 ## Development Plan
 
