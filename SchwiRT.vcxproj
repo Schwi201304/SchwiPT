@@ -151,6 +151,8 @@
     <ClInclude Include="include\stb_image\stb_image_resize.h" />
     <ClInclude Include="include\stb_image\stb_image_write.h" />
     <ClInclude Include="src\cameras\camera.h" />
+    <ClInclude Include="src\cameras\perspective.h" />
+    <ClInclude Include="src\core\bsdf.h" />
     <ClInclude Include="src\core\frame.h" />
     <ClInclude Include="src\core\intersection.h" />
     <ClInclude Include="src\core\ray.h" />

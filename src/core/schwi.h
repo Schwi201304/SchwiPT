@@ -42,7 +42,9 @@ namespace schwi {
 	template <typename T> class Bounds3;
 	template<typename T, int R, int C>class Matrix;
 	class Camera;
+	struct CameraSample;
 	class Shape;
+	class Sphere;
 	class Ray;
 	class BSDF;
 	class Material;

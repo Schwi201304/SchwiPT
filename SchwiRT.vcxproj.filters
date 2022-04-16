@@ -31,6 +31,8 @@
     <ClInclude Include="src\shape\shape.h" />
     <ClInclude Include="src\shape\sphere.h" />
     <ClInclude Include="src\core\frame.h" />
+    <ClInclude Include="src\cameras\perspective.h" />
+    <ClInclude Include="src\core\bsdf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />

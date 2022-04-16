@@ -2,7 +2,7 @@
 
 #include<core/schwi.h>
 #include<math/vector3.h>
-#include<samplers/sampler.h>
+#include<math/point2.h>
 
 namespace schwi {
 	class Camera {
@@ -10,5 +10,10 @@ namespace schwi {
 		Camera(){}
 
 		virtual Ray GenerateRay(const CameraSample& sample)const = 0;
+	};
+
+	struct CameraSample
+	{
+		Point2d SamplePoint;
 	};
 }

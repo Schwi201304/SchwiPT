@@ -6,11 +6,6 @@
 
 namespace schwi {
 
-	struct CameraSample
-	{
-		Point2d SamplePoint;
-	};
-
 	class Sampler {
 	protected:
 		RNG rng;

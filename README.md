@@ -29,9 +29,11 @@
 ### Texture
 
 ### Sampler
-- [ ] Random Sampler
+- [x] Random Sampler
 
 ### Camera
+
+- [x] Perpective Camera
 
 - [ ] Environment Camera
 
@@ -44,7 +46,7 @@
 
 - [x] Vector
 - [x] Matrix
-- [ ] Bound
+- [x] Bound
 - [ ] Quaternions
 - [ ] Transform
 
