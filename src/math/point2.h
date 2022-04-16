@@ -89,7 +89,4 @@ namespace schwi {
 	inline Point2<T> Permute(const Point2<T>& v, int x, int y) {
 		return Point2<T>(v[x], v[y]);
 	}
-
-	using Point2d = Point2<double>;
-	using Point2i = Point2<int>;
 }

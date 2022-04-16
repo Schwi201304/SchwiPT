@@ -24,6 +24,10 @@
     <ClInclude Include="src\core\schwi.h" />
     <ClInclude Include="src\cameras\camera.h" />
     <ClInclude Include="src\core\ray.h" />
+    <ClInclude Include="src\core\intersection.h" />
+    <ClInclude Include="src\image\color.h" />
+    <ClInclude Include="src\samplers\sampler.h" />
+    <ClInclude Include="src\samplers\random.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "point3.h"
-
+//TODO: 考虑将bound移入shape，完善相交函数
 namespace schwi {
 	template<typename T>
 	class Bounds2 {
@@ -172,6 +172,4 @@ namespace schwi {
 		return Bounds3<T>(b.pMin - Vector3<T>(delta, delta, delta),
 			b.pMax + Vector3<T>(delta, delta, delta));
 	}
-
-	using Bounds3d = Bounds3<double>;
 }

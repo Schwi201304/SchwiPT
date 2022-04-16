@@ -6,8 +6,9 @@
 
 #include<core/schwi.h>
 
+//TODO:修复Dynamic问题
+//修复前不应使用Dynamic相关函数
 namespace schwi {
-	constexpr int Dynamic = -1;
 	template<typename T, int R, int C>
 	class Matrix {
 	private:
@@ -303,7 +304,7 @@ namespace schwi {
 		}
 
 		void info() {
-			std::cout <<typeid(T).name()<< R << "*" << C<<std::endl;
+			std::cout <<typeid(T).name()<<" " << R << "*" << C << std::endl;
 		}
 	};
 
@@ -330,9 +331,4 @@ namespace schwi {
 	bool operator!=(const Matrix<T, R, C>& m1, const Matrix<T, R, C>& m2) {
 		return !m1 == m2;
 	}
-
-	using Matrix2d = Matrix<double, 2, 2>;
-	using Matrix3d = Matrix<double, 3, 3>;
-	using Matrix4d = Matrix<double, 4, 4>;
-	using MatrixXd = Matrix<double, Dynamic, Dynamic>;
 }

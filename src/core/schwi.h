@@ -14,21 +14,19 @@
 
 namespace schwi {
 	//Global Constants
-	static constexpr double Pi = 3.14159265358979323846;
-	static constexpr double InvPi = 0.31830988618379067154;
-	static constexpr double Inv2Pi = 0.15915494309189533577;
-	static constexpr double Inv4Pi = 0.07957747154594766788;
-	static constexpr double PiOver2 = 1.57079632679489661923;
-	static constexpr double PiOver4 = 0.78539816339744830961;
-	static constexpr double Sqrt2 = 1.41421356237309504880;
-	static constexpr double Log2 = 1.44269504088896322870;
+	constexpr double Pi = 3.14159265358979323846;
+	constexpr double InvPi = 0.31830988618379067154;
+	constexpr double Inv2Pi = 0.15915494309189533577;
+	constexpr double Inv4Pi = 0.07957747154594766788;
+	constexpr double PiOver2 = 1.57079632679489661923;
+	constexpr double PiOver4 = 0.78539816339744830961;
+	constexpr double Sqrt2 = 1.41421356237309504880;
+	constexpr double Log2 = 1.44269504088896322870;
 
-	static constexpr double Infinity = std::numeric_limits<double>::max();
-	static constexpr double MachineEpsilon = std::numeric_limits<double>::epsilon() * 0.5;
+	constexpr double Infinity = std::numeric_limits<double>::max();
+	constexpr double MachineEpsilon = std::numeric_limits<double>::epsilon() * 0.5;
 
-	// Using
-	using Degree = double;
-	using Radian = double;
+	constexpr int Dynamic = -1;
 
 
 	// Global Forward Declarations
@@ -41,9 +39,42 @@ namespace schwi {
 	template <typename T> class Point3;
 	template <typename T> class Normal3;
 	template <typename T> class Bounds3;
+	template<typename T, int R, int C>class Matrix;
 	class Camera;
 	class Shape;
 	class Ray;
+	class BSDF;
+	class Material;
+	class AreaLight;
+	class Surface;
+
+	// Using
+	using Degree = double;
+	using Radian = double;
+
+	using Bounds3d = Bounds3<double>;
+
+	using Matrix2d = Matrix<double, 2, 2>;
+	using Matrix3d = Matrix<double, 3, 3>;
+	using Matrix4d = Matrix<double, 4, 4>;
+	using MatrixXd = Matrix<double, Dynamic, Dynamic>;
+
+	using Normal3d = Normal3<double>;
+
+	using Point2d = Point2<double>;
+	using Point2i = Point2<int>;
+
+	using Point3d = Point3<double>;
+	using Point3i = Point3<int>;
+
+	using Vector2i = Vector2<int>;
+	using Vector2d = Vector2<double>;
+
+	using Vector3i = Vector3<int>;
+	using Vector3d = Vector3<double>;
+
+	using BsdfUPtr = std::unique_ptr<BSDF>;
+
 
 	// Global Function
 	inline Radian ToRadians(Degree deg) {

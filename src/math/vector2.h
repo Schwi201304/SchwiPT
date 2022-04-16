@@ -51,6 +51,11 @@ namespace schwi {
 			y *= invL;
 			return *this;
 		}
+
+		template<typename T>
+		inline Vector2<double> Normalize() {
+			return (*this)/Length();
+		}
 	};
 
 	template<typename T>
@@ -85,14 +90,8 @@ namespace schwi {
 	}
 
 	template<typename T>
-	inline double Dot(const Vector2<T>& u, const Vector2<T>& v) {
-		return u.x * v.x
-			+ u.y * v.y;
-	}
-
-	template<typename T>
-	inline Vector2<double> Normalize(Vector2<T> v) {
-		return v / v.Length();
+	inline double Dot(const Vector2<T>& u,const Vector2<T>& v) {
+		return u.x * v.x + u.y * v.y;
 	}
 
 	template <typename T>
@@ -129,7 +128,4 @@ namespace schwi {
 	inline Vector2<T> Permute(const Vector2<T>& v, int x, int y) {
 		return Vector2<T>(v[x], v[y]);
 	}
-
-	using Vector2i = Vector2<int>;
-	using Vector2d = Vector2<double>;
 }

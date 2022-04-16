@@ -10,7 +10,9 @@ namespace schwi {
 		Vector3(T _x, T _y, T _z) :vec3<T>( _x, _y, _z ) {}
 		explicit Vector3(const vec3<T>& v):vec3<T>(v){}
 
-		Vector3<T> operator-() const { return Vector3<T>(-this->x, -this->y, -this->z); }
+		Vector3<T> operator-() const { 
+			return Vector3<T>(-this->x, -this->y, -this->z);
+		}
 
 		Vector3<T>& operator+=(const Vector3<T>& v) {
 			this->x += v.x;
@@ -153,8 +155,4 @@ namespace schwi {
 	inline Vector3<T> Abs(const Vector3<T>& v) {
 		return Vector3<T>(std::abs(v.x), std::abs(v.y), std::abs(v.z));
 	}
-
-	using Vector3i = Vector3<int>;
-	using Vector3d = Vector3<double>;
-	using color = Vector3d;
 }

@@ -22,6 +22,4 @@ namespace schwi {
 	inline Normal3<T> Faceforward(const Normal3<T>& n, const Vector3<T>& v) {
 		return (Dot(n, v) < 0.) ? -n : n;
 	}
-
-	using Normal3d = Normal3<double>;
 }

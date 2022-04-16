@@ -13,4 +13,5 @@ int main() {
 	Matrix2d B({ 3,4,8,9 });
 	cout << A .dot( B);
 	Matrix<double,2,3> C({ 1,2,3,4,5,6});
+	C.info();
 }
