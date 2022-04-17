@@ -9,13 +9,13 @@
 namespace schwi {
 	class Intersection {
 	public:
-		Point3d position;
-		Normal3d normal;
-		Vector3d wo;
+		Point3d position{};
+		Normal3d normal{};
+		Vector3d wo{};
 
 	private:
-		Color emission;
-		BsdfUPtr bsdfPtr;
+		Color emission{};
+		BsdfUPtr bsdfPtr{};
 		//Surface* surface;
 
 		//friend Surface;

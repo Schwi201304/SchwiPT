@@ -185,6 +185,7 @@
     <ClInclude Include="src\shape\sphere.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\ky.cpp" />
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\image\image.cpp" />
   </ItemGroup>

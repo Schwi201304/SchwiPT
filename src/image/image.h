@@ -6,7 +6,7 @@
 #include<vector>
 #include<utility>
 
-#pragma warning(disable : 26451)
+#pragma warning(disable : 4244)
 
 namespace schwi {
 	using BYTE = unsigned char;

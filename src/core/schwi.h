@@ -12,6 +12,8 @@
 #include<initializer_list>
 #include<typeinfo>
 
+#pragma warning(disable : 4244)
+#pragma warning(disable : 4996)
 
 namespace schwi {
 	// Global Constants
@@ -56,7 +58,7 @@ namespace schwi {
 	class Sampler;
 	class RandomSampler;
 	class BSDF;
-	class BSDFSample;
+	struct BSDFSample;
 	class Lambertion;
 	class Specular;
 	class Fresnel;
@@ -71,6 +73,7 @@ namespace schwi {
 	class SchwiColor;
 
 	// Using
+	using BYTE = unsigned char;
 	using Degree = double;
 	using Radian = double;
 
@@ -114,7 +117,7 @@ namespace schwi {
 		return (Pi / 180) * deg;
 	}
 
-	inline Degree Degrees(Radian rad) {
+	inline Degree ToDegree(Radian rad) {
 		return (180 * InvPi) * rad;
 	}
 
@@ -132,7 +135,7 @@ namespace schwi {
 		return Clamp(v, 0, 1);
 	}
 
-	inline int GammaEncoding(double x) {
+	inline BYTE GammaEncoding(double x) {
 		return pow(Clamp(x), 1 / 2.2) * 255 + .5;
 	}
 }

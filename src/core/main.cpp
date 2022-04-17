@@ -26,7 +26,7 @@ int main() {
 		Point3d{ 50, 52, -295.6 },
 		Vector3d{ 0, -0.042612, 1 }.Normalize(),
 		Vector3d{ 0, 1, 0 },
-		45, 
+		53, 
 		Vector2i(width,height));
 
 	auto scene = Scene::CreateSmallPTScene();

@@ -8,11 +8,12 @@ namespace schwi {
 
 	class Sampler {
 	protected:
-		RNG rng;
-		int SamplePerPixel;
-		int CurrentSampleIndex;
+		RNG rng{};
+		int SamplePerPixel{};
+		int CurrentSampleIndex{};
 
 	public:
+		virtual ~Sampler(){}
 		Sampler(int spp) :SamplePerPixel(spp) {}
 
 		virtual int GetSPP() {
@@ -66,7 +67,8 @@ namespace schwi {
 	}
 
 	inline Vector3d SampleHemisphereCosine(const Vector2d& random) {
-		Point2d d = SampleDiskConcentric(random);
+		//TODO: Uniform|Concentric
+		Point2d d = SampleDiskUniform(random);
 		double z = std::sqrt(std::max(0., 1 - d.x * d.x - d.y * d.y));
 		return Vector3d(d.x, d.y, z);
 	}

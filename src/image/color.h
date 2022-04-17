@@ -44,7 +44,7 @@ namespace schwi {
 	}
 
 	inline SchwiColor ToByte(Color c) {
-		return SchwiColor(c.r * 256, c.g * 256, c.b * 256);
+		return SchwiColor(GammaEncoding(c.r), GammaEncoding(c.g), GammaEncoding(c.b));
 	}
 
 	inline Vector3d ToV3d(Color c) {

@@ -13,7 +13,7 @@ namespace schwi {
 	public:
 		Fresnel(const Frame& shadingFrame,const Color& R,const Color& T,
 			double etaI,double etaT):
-			BSDF(shadingFrame),R(R),etaI(etaI),etaT(etaT){}
+			BSDF(shadingFrame),R(R),T(T),etaI(etaI),etaT(etaT){}
 
 		Color _f(const Vector3d& wo, const Vector3d& wi)const override {
 			return Color();

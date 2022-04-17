@@ -14,6 +14,6 @@ namespace schwi {
 
 	struct CameraSample
 	{
-		Point2d SamplePoint;
+		Point2d SamplePoint{};
 	};
 }

@@ -12,7 +12,7 @@ namespace schwi {
 	struct BSDFSample {
 		Color f;
 		Vector3d wi;
-		double pdf;
+		double pdf{};
 	};
 
 	class BSDF {

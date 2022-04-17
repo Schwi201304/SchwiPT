@@ -19,7 +19,7 @@ namespace schwi {
 #ifndef _DEBUG
 #pragma omp parallel for schedule(dynamic,1)
 #endif
-			std::cout << "Target:" << height << std::endl;
+			printf("SPP:%d,Resolution:%d*%d\n", originalSampler.GetSPP(), width, height);
 			for (int y = 0; y < height; y++) {
 				std::unique_ptr<Sampler> sampler = originalSampler.Clone();
 				std::cerr << "\rRendered:" << y + 1 << std::flush;
@@ -29,10 +29,10 @@ namespace schwi {
 					do {
 						auto cameraSample = sampler->GetCameraSample(Point2d(x, y));
 						auto ray = camera.GenerateRay(cameraSample);
-						//std::cout <<ToV3d( L);
+						
 						L = L + Li(ray, scene, *sampler) / sampler->GetSPP();
 					} while (sampler->NextSample());
-					img.setColor(x, y, ToByte(Clamp(L)));
+					img.setColor(x, y, ToByte(L));
 				}
 			}
 		}

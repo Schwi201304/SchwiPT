@@ -22,7 +22,8 @@ namespace schwi {
 			up(up),
 			resolution(resolution) {
 			double tan_fov = std::tan(ToRadians(fov) / 2);
-			right = Cross(up, front).Normalize() * tan_fov;
+			right = Cross(up, front).Normalize() * tan_fov*Aspect();
+			this->up = Cross(front, right).Normalize() * tan_fov;
 		}
 
 		virtual Ray GenerateRay(const CameraSample& sample)const override {
@@ -35,7 +36,7 @@ namespace schwi {
 
 	private:
 		double Aspect() {
-			return resolution.x / resolution.y;
+			return (double)resolution.x / resolution.y;
 		}
 	};
 }

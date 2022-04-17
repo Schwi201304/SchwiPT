@@ -25,9 +25,9 @@ namespace schwi {
 			if (discr >= 0) {
 				double sqrt_discr = std::sqrt(discr);
 
-				if (t = neg_b - sqrt_discr, t > epsilon && t < ray.distance())
+				if (t = neg_b - sqrt_discr; t > epsilon && t < ray.distance())
 					hit = true;
-				else if(t = neg_b + sqrt_discr, t > epsilon && t < ray.distance())
+				else if(t = neg_b + sqrt_discr; t > epsilon && t < ray.distance())
 					hit = true;
 			}
 
