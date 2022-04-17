@@ -46,7 +46,6 @@
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\image\image.cpp" />
-    <ClCompile Include="src\core\ky.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
