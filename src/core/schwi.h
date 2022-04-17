@@ -41,14 +41,20 @@ namespace schwi {
 	template <typename T> class Normal3;
 	template <typename T> class Bounds3;
 	template<typename T, int R, int C>class Matrix;
+	class Ray;
+	class Scene;
 	class Intersection;
 	struct Primitive;
 	class Frame;
+	class Integrator;
+	class PathIntegrator;
 	class Camera;
+	class PerspectiveCamera;
 	struct CameraSample;
 	class Shape;
 	class Sphere;
-	class Ray;
+	class Sampler;
+	class RandomSampler;
 	class BSDF;
 	class BSDFSample;
 	class Lambertion;
@@ -60,7 +66,9 @@ namespace schwi {
 	class Glass;
 	class Light;
 	class AreaLight;
-	class Surface;
+	//class Surface;
+	class SchwiImage;
+	class SchwiColor;
 
 	// Using
 	using Degree = double;
@@ -120,11 +128,11 @@ namespace schwi {
 			: v;
 	}
 
-	inline double Clamp01(double v) {
+	inline double Clamp(double v) {
 		return Clamp(v, 0, 1);
 	}
 
 	inline int GammaEncoding(double x) {
-		return pow(Clamp01(x), 1 / 2.2) * 255 + .5;
+		return pow(Clamp(x), 1 / 2.2) * 255 + .5;
 	}
 }

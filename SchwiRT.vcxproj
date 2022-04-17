@@ -166,6 +166,8 @@
     <ClInclude Include="src\core\schwi.h" />
     <ClInclude Include="src\image\color.h" />
     <ClInclude Include="src\image\image.h" />
+    <ClInclude Include="src\integrators\integrator.h" />
+    <ClInclude Include="src\integrators\path.h" />
     <ClInclude Include="src\lights\light.h" />
     <ClInclude Include="src\material\material.h" />
     <ClInclude Include="src\math\bounds.h" />

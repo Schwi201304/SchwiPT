@@ -45,14 +45,6 @@ namespace schwi {
 			return (fabs(this->x) < s) && (fabs(this->y) < s);
 		}
 
-		Vector2<T> Normalized() {
-			double invL = 1 / Length();
-			x *= invL;
-			y *= invL;
-			return *this;
-		}
-
-		template<typename T>
 		inline Vector2<double> Normalize() {
 			return (*this)/Length();
 		}

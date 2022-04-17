@@ -53,7 +53,6 @@ namespace schwi {
 			MaterialSPtr mirror_mat = std::make_shared<Mirror>(Color(1, 1, 1) * 0.999);
 			MaterialSPtr glass_mat = std::make_shared<Glass>(Color(1, 1, 1) * 0.999, Color(1, 1, 1) * 0.999, 1.5);
 			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat };
-			MaterialList materialList{ red, blue, gray, black, mirror_mat };
 
 
 			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(12, 12, 12), light.get());

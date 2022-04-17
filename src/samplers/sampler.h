@@ -23,7 +23,7 @@ namespace schwi {
 			SamplePerPixel = spp;
 		}
 
-		virtual std::unique_ptr<Sampler> clone() = 0;
+		virtual std::unique_ptr<Sampler> Clone() = 0;
 
 		virtual void StartPixel() {
 			CurrentSampleIndex = 0;

@@ -7,7 +7,7 @@ namespace schwi {
 	class Bounds2 {
 	public:
 		Point2<T> pMin, pMax;
-	
+
 	};
 
 	template<typename T>
@@ -22,11 +22,11 @@ namespace schwi {
 			pMax = Point3<T>(minNum, minNum, minNum);
 		}
 		Bounds3(const Point3<T>& p) : pMin(p), pMax(p) { }
-		Bounds3(const Point3<T>& p1, const Point3<T>& p2)
-			: pMin(Min(p1,p2),pMax(Max(p1,p2) {	}
+		Bounds3(const Point3<T>& p1, const Point3<T>& p2) :
+			pMin(Min(p1, p2)), pMax(Max(p1, p2)) {}
 
 		const Point3<T>& operator[](int i) const {
-			assert(i == 0 || i == 1);
+			//assert(i == 0 || i == 1);
 			return i ? pMax : pMin;
 		}
 
@@ -132,17 +132,17 @@ namespace schwi {
 
 	template <typename T>
 	Bounds3<T>	Union(const Bounds3<T>& b, const Point3<T>& p) {
-		return Bounds3<T>(Min(b.pMin,p),Max(b.pMax,p));
+		return Bounds3<T>(Min(b.pMin, p), Max(b.pMax, p));
 	}
 
 	template <typename T>
 	Bounds3<T> Union(const Bounds3<T>& b1, const Bounds3<T>& b2) {
-		return Bounds3<T>(Min(b1.pMin,b2.pMin),Max(b1.pMax,b2.pMax));
+		return Bounds3<T>(Min(b1.pMin, b2.pMin), Max(b1.pMax, b2.pMax));
 	}
 
 	template <typename T>
 	Bounds3<T> Intersect(const Bounds3<T>& b1, const Bounds3<T>& b2) {
-		return Bounds3<T>(Point3<T>(Max(b1.pMin,b2.pMin),Min(b1.pMax,b2.pMax));
+		return Bounds3<T>(Point3<T>(Max(b1.pMin, b2.pMin), Min(b1.pMax, b2.pMax)));
 	}
 
 	template <typename T>

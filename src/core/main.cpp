@@ -1,17 +1,44 @@
 #include<core/schwi.h>
 #include<image/image.h>
 #include<math/matrix.h>
+#include<samplers/sampler.h>
+#include<samplers/random.h>
+#include<cameras/camera.h>
+#include<cameras/perspective.h>
+#include<core/scene.h>
+#include<integrators/integrator.h>
+#include<integrators/path.h>
 
 using namespace schwi;
 using namespace std;
 
+constexpr int width = 500;
+constexpr int height = 300;
+
+constexpr int spp = 64;
+
 int main() {
-	std::cout << "Test" << std::endl;
-	Matrix2d A({1,2,3,4});
-	A.info();
-	cout << A;
-	Matrix2d B({ 3,4,8,9 });
-	cout << A .dot( B);
-	Matrix<double,2,3> C({ 1,2,3,4,5,6});
-	C.info();
+	SchwiImage img(width, height);
+
+	unique_ptr<Sampler> originalSampler = make_unique<RandomSampler>(spp);
+
+	unique_ptr<Camera> camera=make_unique<PerspectiveCamera>(
+		Point3d{ 50, 52, -295.6 },
+		Vector3d{ 0, -0.042612, 1 }.Normalize(),
+		Vector3d{ 0, 1, 0 },
+		45, 
+		Vector2i(width,height));
+
+	auto scene = Scene::CreateSmallPTScene();
+
+	unique_ptr<Integrator> integrator = make_unique<PathIntegrator>(10);
+	integrator->Render(scene, *camera, *originalSampler, img);
+
+	img.write_file("out.png");
+
+#if defined(_WIN32) || defined(_WIN64)
+	system("mspaint out.png");
+#endif
+
+	return 0;
 }

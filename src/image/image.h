@@ -4,11 +4,13 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<utility>
 
 #pragma warning(disable : 26451)
 
 namespace schwi {
 	using BYTE = unsigned char;
+	using Resolution = std::pair<int, int>;
 
 	class SchwiColor {
 	public:
@@ -43,11 +45,14 @@ namespace schwi {
 			pixels = std::vector<BYTE>(w * comp * h);
 		}
 
-		inline const BYTE* data() { return pixels.data(); }
-		inline const int width()const { return w; }
-		inline const int height()const { return h; }
-		inline const int channels() const { return comp; }
-		inline const bool empty()const { return pixels.empty(); }
+		inline BYTE* data() { return pixels.data(); }
+		inline int width()const { return w; }
+		inline int height()const { return h; }
+		inline int channels() const { return comp; }
+		inline bool empty()const { return pixels.empty(); }
+		inline Resolution resolution() {
+			return Resolution{ width(),height() };
+		}
 
 		bool load_file(const std::string& filename, bool flip = false);
 		void write_file(const std::string& filename, bool flip = false)const;

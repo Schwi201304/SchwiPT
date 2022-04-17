@@ -2,13 +2,14 @@
 
 #include<core/schwi.h>
 #include<samplers/sampler.h>
+#include<cameras/camera.h>
 
 namespace schwi {
 	class RandomSampler :public Sampler{
 	public:
 		using Sampler::Sampler;
 
-		std::unique_ptr<Sampler> clone()override {
+		std::unique_ptr<Sampler> Clone()override {
 			return std::make_unique<RandomSampler>(SamplePerPixel);
 		}
 

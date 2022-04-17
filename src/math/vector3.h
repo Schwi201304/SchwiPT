@@ -56,14 +56,6 @@ namespace schwi {
 			return (fabs(this->x) < s) && (fabs(this->y) < s) && (fabs(this->z) < s);
 		}
 
-		Vector3<T> Normalized() {
-			double invLength = 1 / Length();
-			x *= invLength;
-			y *= invLength;
-			z *= invLength;
-			return *this;
-		}
-
 		Vector3<T> Normalize()const {
 			return (*this) / Length();
 		}

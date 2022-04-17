@@ -13,18 +13,16 @@
 
 ### Light
 
-- [ ] Area Light
+- [x] Area Light
 - [ ] Point Light
 - [ ] Direct Light
 
 ### Reflection Models
-- [ ] Lambertion Reflection
-- [ ] Specular Reflection
-- [ ] Fresnel Specular Reflection
+- [x] Lambertion&Specular&Fresnel
 
 ### Materials
 
-- [ ] Matte
+- [x] Matte&Mirror&Glass
 - [ ] Plastic
 - [ ] Mix
 

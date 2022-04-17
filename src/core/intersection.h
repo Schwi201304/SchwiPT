@@ -16,9 +16,9 @@ namespace schwi {
 	private:
 		Color emission;
 		BsdfUPtr bsdfPtr;
-		Surface* surface;
+		//Surface* surface;
 
-		friend Surface;
+		//friend Surface;
 		friend Primitive;
 
 	public:
@@ -26,8 +26,8 @@ namespace schwi {
 		Intersection(Point3d p, Normal3d n, Vector3d wo)
 			:position(p), normal(n), wo(wo) {}
 
-		const Surface* surface()const { return surface; }
-		const BSDF* bsdf() const{ return bsdf.get(); }
+		//const Surface* surface()const { return surface; }
+		const BSDF* bsdf() const{ return bsdfPtr.get(); }
 		Color Le()const { return emission; }
 
 		Ray GenerateRay(const Vector3d& direction)const {

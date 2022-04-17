@@ -15,7 +15,7 @@ namespace schwi {
 
 	public:
 		PerspectiveCamera(
-			const Point3d& position, const Vector3d& direction, const Vector3d& up,
+			const Point3d& position, const Vector3d& front, const Vector3d& up,
 			Degree fov, Vector2i resolution) :
 			position(position),
 			front(front),
@@ -29,7 +29,7 @@ namespace schwi {
 			Vector3d direction = front
 				+ right * (sample.SamplePoint.x / resolution.x - .5)
 				+ up * (.5 - sample.SamplePoint.y / resolution.y);
-
+			
 			return Ray(position + direction * 140, direction.Normalize());
 		}
 

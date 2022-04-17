@@ -110,7 +110,7 @@ namespace schwi {
 			double sin_alpha = std::sqrt(std::max(0., 1 - cos_alpha * cos_alpha));
 			double phi = random[1] * 2 * Pi;
 
-			Vector3d normal = (center - isect.position) * inv_dist;
+			Normal3d normal = Normal3d(center - isect.position) * inv_dist;
 			Frame frame(normal);
 
 			Normal3d world_normal=Normal3d(spherical_to_direction(sin_alpha, cos_alpha, phi, -frame.binormal(), -frame.tangent(), -frame.normal()));

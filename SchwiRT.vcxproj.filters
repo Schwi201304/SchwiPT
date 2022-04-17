@@ -40,6 +40,8 @@
     <ClInclude Include="src\lights\light.h" />
     <ClInclude Include="src\core\primitive.h" />
     <ClInclude Include="src\core\scene.h" />
+    <ClInclude Include="src\integrators\integrator.h" />
+    <ClInclude Include="src\integrators\path.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />
