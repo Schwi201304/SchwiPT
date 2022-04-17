@@ -11,6 +11,7 @@
 #include<vector>
 #include<initializer_list>
 #include<typeinfo>
+#include<omp.h>
 
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4996)
