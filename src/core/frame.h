@@ -13,7 +13,7 @@ namespace schwi {
 		Frame(const Vector3d& s, const Vector3d& t, const Vector3d& n)
 			:s(s.Normalize()), t(t.Normalize()), n(n.Normalize()) {}
 
-		Frame(const Vector3d& n)
+		Frame(const Normal3d& n)
 			:n(n.Normalize()) {
 			set_from_z();
 		}

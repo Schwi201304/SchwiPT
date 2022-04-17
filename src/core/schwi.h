@@ -14,7 +14,7 @@
 
 
 namespace schwi {
-	//Global Constants
+	// Global Constants
 	constexpr double Pi = 3.14159265358979323846;
 	constexpr double InvPi = 0.31830988618379067154;
 	constexpr double Inv2Pi = 0.15915494309189533577;
@@ -41,18 +41,26 @@ namespace schwi {
 	template <typename T> class Normal3;
 	template <typename T> class Bounds3;
 	template<typename T, int R, int C>class Matrix;
+	class Intersection;
+	struct Primitive;
+	class Frame;
 	class Camera;
 	struct CameraSample;
 	class Shape;
 	class Sphere;
 	class Ray;
 	class BSDF;
+	class BSDFSample;
+	class Lambertion;
+	class Specular;
+	class Fresnel;
 	class Material;
+	class Matte;
+	class Mirror;
+	class Glass;
+	class Light;
 	class AreaLight;
 	class Surface;
-	class Intersection;
-	class Shape;
-	class Frame;
 
 	// Using
 	using Degree = double;
@@ -81,8 +89,16 @@ namespace schwi {
 
 	using BsdfUPtr = std::unique_ptr<BSDF>;
 
+	using MaterialSPtr = std::shared_ptr<Material>;
+	using MaterialList = std::vector<MaterialSPtr>;
+
+	using LightSPtr = std::shared_ptr<Light>;
+	using LightList = std::vector<LightSPtr>;
+
 	using ShapeSPtr = std::shared_ptr<Shape>;
-	using ShapeList = std::vector<Shape>;
+	using ShapeList = std::vector<ShapeSPtr>;
+
+	using PrimitiveList = std::vector<Primitive>;
 
 
 	// Global Function

@@ -18,7 +18,9 @@
 - [ ] Direct Light
 
 ### Reflection Models
-- [ ] 
+- [ ] Lambertion Reflection
+- [ ] Specular Reflection
+- [ ] Fresnel Specular Reflection
 
 ### Materials
 

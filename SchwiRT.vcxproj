@@ -136,6 +136,8 @@
       <ConformanceMode>true</ConformanceMode>
       <CompileAsWinRT>false</CompileAsWinRT>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,15 +152,22 @@
     <ClInclude Include="include\stb_image\stb_image.h" />
     <ClInclude Include="include\stb_image\stb_image_resize.h" />
     <ClInclude Include="include\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\bxdf\fresnel.h" />
+    <ClInclude Include="src\bxdf\lambertion.h" />
+    <ClInclude Include="src\bxdf\specular.h" />
     <ClInclude Include="src\cameras\camera.h" />
     <ClInclude Include="src\cameras\perspective.h" />
-    <ClInclude Include="src\core\bsdf.h" />
+    <ClInclude Include="src\bxdf\bsdf.h" />
     <ClInclude Include="src\core\frame.h" />
     <ClInclude Include="src\core\intersection.h" />
+    <ClInclude Include="src\core\primitive.h" />
     <ClInclude Include="src\core\ray.h" />
+    <ClInclude Include="src\core\scene.h" />
     <ClInclude Include="src\core\schwi.h" />
     <ClInclude Include="src\image\color.h" />
     <ClInclude Include="src\image\image.h" />
+    <ClInclude Include="src\lights\light.h" />
+    <ClInclude Include="src\material\material.h" />
     <ClInclude Include="src\math\bounds.h" />
     <ClInclude Include="src\math\matrix.h" />
     <ClInclude Include="src\math\normal3.h" />

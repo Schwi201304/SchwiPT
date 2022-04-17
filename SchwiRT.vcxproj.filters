@@ -32,7 +32,14 @@
     <ClInclude Include="src\shape\sphere.h" />
     <ClInclude Include="src\core\frame.h" />
     <ClInclude Include="src\cameras\perspective.h" />
-    <ClInclude Include="src\core\bsdf.h" />
+    <ClInclude Include="src\bxdf\bsdf.h" />
+    <ClInclude Include="src\bxdf\lambertion.h" />
+    <ClInclude Include="src\bxdf\specular.h" />
+    <ClInclude Include="src\bxdf\fresnel.h" />
+    <ClInclude Include="src\material\material.h" />
+    <ClInclude Include="src\lights\light.h" />
+    <ClInclude Include="src\core\primitive.h" />
+    <ClInclude Include="src\core\scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />

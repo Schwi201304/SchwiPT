@@ -5,6 +5,7 @@
 #include<math/vector3.h>
 #include<image/color.h>
 #include<core/frame.h>
+#include<samplers/sampler.h>
 
 namespace schwi {
 
@@ -51,4 +52,16 @@ namespace schwi {
 	private:
 		Frame shadingFrame;
 	};
+
+	inline double CosTheta(const Vector3d& w) {
+		return w.z;
+	}
+
+	inline double AbsCosTheta(const Vector3d& w) {
+		return std::abs(w.z);
+	}
+
+	inline bool SameHemisphere(const Vector3d& w, const Vector3d& wp) {
+		return w.z * wp.z > 0;
+	}
 }

@@ -5,23 +5,35 @@
 #include<math/vector3.h>
 
 namespace schwi {
-	class Color{
+	class Color {
 	public:
 		double r, g, b;
 
 	public:
 		Color() = default;
 		Color(double r, double g, double b)
-			:r(r),g(g),b(b){}
+			:r(r), g(g), b(b) {}
 
-		Color operator*(const double d) {
+		Color operator*(double d) const {
 			return Color(r * d, g * d, b * d);
 		}
 
-		Color operator+(const double d) {
+		Color operator+(double d) const {
 			return Color(r + d, g + d, b + d);
 		}
+
+		Color operator+(const Color& c) {
+			return Color(r + c.r, g + c.g, b + c.b);
+		}
 	};
+
+	inline Color operator*(double d, const Color& c) {
+		return c * d;
+	}
+
+	inline Color operator/(const Color& c, double d) {
+		return 1 / d * c;
+	}
 
 	inline SchwiColor ToByte(Color c) {
 		return SchwiColor(c.r * 256, c.g * 256, c.b * 256);
@@ -36,6 +48,6 @@ namespace schwi {
 	}
 
 	inline Color Lerp(double t, Color c1, Color c2) {
-		return Color(Lerp(t, c1.r, c2.r), Lerp(t, c1.g, c2.g), Lerp(t, c1.b, c2.b));
+		return (1 - t) * c1 + t * c2;
 	}
 }

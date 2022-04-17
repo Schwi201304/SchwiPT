@@ -9,9 +9,11 @@ namespace schwi {
 		Normal3(T _x, T _y, T _z) :vec3<T>(_x, _y, _z) {}
 		explicit Normal3(const Vector3<T>& v) :vec3<T>(v.x, v.y, v.z) {}
 
-		Normal3<T> operator-() const { return Normal3<T>(-this->x, -this->y, -this->z); }
+		Normal3<T> operator-() const {
+			return Normal3<T>(-this->x, -this->y, -this->z);
+		}
 
-		double LengthSquared()const{
+		double LengthSquared()const {
 			return x * x + y * y + z * z;
 		}
 
@@ -27,6 +29,11 @@ namespace schwi {
 
 	template <typename T>
 	inline double Dot(const Normal3<T>& n, const Vector3<T>& v) {
+		return n.x * v.x + n.y * v.y + n.z * v.z;
+	}
+
+	template <typename T>
+	inline double Dot(const Vector3<T>& n, const Normal3<T>& v) {
 		return n.x * v.x + n.y * v.y + n.z * v.z;
 	}
 
@@ -56,5 +63,15 @@ namespace schwi {
 	inline Normal3<T1> operator/(const Normal3<T1>& v, T2 t) {
 		assert(t != 0);
 		return (1 / t) * v;
+	}
+
+	template<typename T>
+	inline Vector3<T> operator+(const Normal3<T>& u, const Vector3<T>& v) {
+		return Vector3<T>(u.x + v.x, u.y + v.y, u.z + v.z);
+	}
+
+	template<typename T>
+	inline Vector3<T> operator+(const Vector3<T>& u, const Normal3<T>& v) {
+		return Vector3<T>(u.x + v.x, u.y + v.y, u.z + v.z);
 	}
 }

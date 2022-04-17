@@ -15,10 +15,11 @@ namespace schwi {
 
 	private:
 		Color emission;
-		BsdfUPtr bsdf;
+		BsdfUPtr bsdfPtr;
 		Surface* surface;
 
 		friend Surface;
+		friend Primitive;
 
 	public:
 		Intersection() = default;
@@ -40,5 +41,6 @@ namespace schwi {
 		Ray GenerateRay(const Intersection& isect)const{
 			return Ray(position, (isect.position - position).Normalize());
 		}
+
 	};
 }
