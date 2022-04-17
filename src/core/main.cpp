@@ -12,10 +12,11 @@
 using namespace schwi;
 using namespace std;
 
-constexpr int width = 500;
-constexpr int height = 300;
+constexpr int width = 600;
+constexpr int height = 600;
 
-constexpr int spp = 64;
+constexpr int spp = 128;
+constexpr int maxDepth = 10;
 
 int main() {
 	SchwiImage img(width, height);
