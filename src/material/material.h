@@ -41,14 +41,14 @@ namespace schwi {
 		}
 	};
 
-	class Glass :public Material {
+	class Dielectric :public Material {
 	private:
 		Color Kr;
 		Color Kt;
 		double eta;
 
 	public:
-		Glass(const Color& Kr, const Color& Kt, double eta) :
+		Dielectric(const Color& Kr, const Color& Kt, double eta) :
 			Kr(Kr), Kt(Kt), eta(eta) {}
 
 		BsdfUPtr Scattering(const Intersection& isect)const override {

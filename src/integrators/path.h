@@ -24,6 +24,7 @@ namespace schwi {
 			if (bs.f.IsBlack() || bs.pdf == 0.) {
 				return isect.Le();
 			}
+			//Russian Roulette
 			if (++depth > 5) {
 				auto maxComponent = MaxComponent(ToV3d(bs.f));
 				if (sampler.GetDouble() < maxComponent) {

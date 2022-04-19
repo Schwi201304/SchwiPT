@@ -66,7 +66,7 @@ namespace schwi {
 	class Material;
 	class Matte;
 	class Mirror;
-	class Glass;
+	class Dielectric;
 	class Light;
 	class AreaLight;
 	//class Surface;

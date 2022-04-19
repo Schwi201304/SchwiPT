@@ -64,5 +64,12 @@ namespace schwi {
 			return sample;
 		}
 
+	public:
+		static constexpr double Vacuum = 1.0;
+		static constexpr double Air = 1.00029;//At sea level
+		static constexpr double Ice = 1.31;
+		static constexpr double Water = 1.333;//20¡æ
+		static constexpr double Glass = 1.5;
+		static constexpr double Diamond = 2.42;
 	};
 }

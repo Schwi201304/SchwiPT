@@ -38,7 +38,7 @@ namespace schwi {
 				}
 				finished++;
 			}
-			fprintf(stderr, "\rRendering 100%%");
+			fprintf(stderr, "\rRendering 100.00%%");
 		}
 
 		virtual Color Li(Ray ray, Scene& scene, Sampler& sampler) = 0;

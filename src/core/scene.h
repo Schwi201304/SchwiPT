@@ -51,7 +51,8 @@ namespace schwi {
 			MaterialSPtr black = std::make_shared<Matte>(Color());
 
 			MaterialSPtr mirror_mat = std::make_shared<Mirror>(Color(1, 1, 1) * 0.999);
-			MaterialSPtr glass_mat = std::make_shared<Glass>(Color(1, 1, 1) * 0.999, Color(1, 1, 1) * 0.999, 1.5);
+			MaterialSPtr glass_mat = std::make_shared<Dielectric>(
+				Color(1, 1, 1) * 0.999, Color(1, 1, 1) * 0.999, Fresnel::Glass);
 			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat };
 
 

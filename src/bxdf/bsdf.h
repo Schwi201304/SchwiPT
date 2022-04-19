@@ -57,8 +57,46 @@ namespace schwi {
 		return w.z;
 	}
 
+	inline double Cos2Theta(const Vector3d& w) {
+		return w.z * w.z;
+	}
+
 	inline double AbsCosTheta(const Vector3d& w) {
 		return std::abs(w.z);
+	}
+
+	inline double Sin2Theta(const Vector3d& w) {
+		return std::max(0., 1. - Cos2Theta(w));
+	}
+
+	inline double SinTheta(const Vector3d& w) {
+		return std::sqrt(Sin2Theta(w));
+	}
+
+	inline double TanTheta(const Vector3d& w) {
+		return SinTheta(w) / CosTheta(w);
+	}
+
+	inline double Tan2Theta(const Vector3d& w) {
+		return Sin2Theta(w) / Cos2Theta(w);
+	}
+
+	inline double CosPhi(const Vector3d& w) {
+		double sinTheta = SinTheta(w);
+		return (sinTheta == 0) ? 1 : Clamp(w.x / sinTheta, -1, 1);
+	}
+
+	inline double SinPhi(const Vector3d& w) {
+		double sinTheta = SinTheta(w);
+		return (sinTheta == 0) ? 0 : Clamp(w.y / sinTheta, -1, 1);
+	}
+
+	inline double Cos2Phi(const Vector3d& w) {
+		return CosPhi(w) * CosPhi(w);
+	}
+
+	inline double Sin2Phi(const Vector3d& w) {
+		return SinPhi(w) * SinPhi(w);
 	}
 
 	inline bool SameHemisphere(const Vector3d& w, const Vector3d& wp) {

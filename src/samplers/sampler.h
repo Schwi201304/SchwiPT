@@ -48,7 +48,7 @@ namespace schwi {
 	}
 
 	inline Point2d SampleDiskConcentric(const Vector2d& random) {
-		Vector2d uOffset = Vector2d(2. * random - Vector2d(1, 1));
+		Vector2d uOffset = 2. * random - Vector2d(1, 1);
 
 		if (uOffset.x == 0 && uOffset.y == 0)
 			return Point2d(0, 0);
