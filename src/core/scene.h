@@ -50,13 +50,14 @@ namespace schwi {
 			MaterialSPtr gray = std::make_shared<Matte>(Color(.75, .75, .75));
 			MaterialSPtr black = std::make_shared<Matte>(Color());
 
-			MaterialSPtr mirror_mat = std::make_shared<Mirror>(Color(1, 1, 1) * 0.999);
+			MaterialSPtr mirror_mat = std::make_shared<Mirror>(Color(.75, .25, .25));
+			MaterialSPtr plastic_mat = std::make_shared<Plastic>(Color(.25, .25, .75), Color(.75, .25, .25), 100);
 			MaterialSPtr glass_mat = std::make_shared<Dielectric>(
-				Color(1, 1, 1) * 0.999, Color(1, 1, 1) * 0.999, Fresnel::Glass);
-			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat };
+				Color(1, 1, 1) , Color(1, 1, 1), Fresnel::Glass);
+			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat,plastic_mat };
 
 
-			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(12, 12, 12), light.get());
+			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
 			LightList lightList{ area_light };
 
 
@@ -69,8 +70,8 @@ namespace schwi {
 				{ bottom.get(),  gray.get(), nullptr },
 				{    top.get(),  gray.get(), nullptr },
 
-				{ mirror.get(), mirror_mat.get(), nullptr },
-				{glass.get(),  glass_mat.get(), nullptr},
+				{ mirror.get(), glass_mat.get(), nullptr },
+				{glass.get(),  plastic_mat.get(), nullptr},
 
 				{  light.get(), black.get(), area_light.get() },
 			};

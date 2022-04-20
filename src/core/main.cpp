@@ -15,7 +15,7 @@ using namespace std;
 constexpr int width = 400;
 constexpr int height = 400;
 
-constexpr int spp = 100;
+constexpr int spp = 64;
 constexpr int maxDepth = 10;
 
 int main() {

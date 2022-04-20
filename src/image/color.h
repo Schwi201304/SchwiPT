@@ -33,6 +33,10 @@ namespace schwi {
 		bool IsBlack() const {
 			return r <= 0 && g <= 0 && b <= 0;
 		}
+
+		double Luminance() const{
+			return 0.212671 * r + 0.715160 * g + 0.072169 * b;
+		}
 	};
 
 	inline Color operator*(double d, const Color& c) {

@@ -42,6 +42,7 @@
     <ClInclude Include="src\core\scene.h" />
     <ClInclude Include="src\integrators\integrator.h" />
     <ClInclude Include="src\integrators\path.h" />
+    <ClInclude Include="src\bxdf\phong.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />

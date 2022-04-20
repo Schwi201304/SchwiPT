@@ -155,6 +155,7 @@
     <ClInclude Include="include\stb_image\stb_image_write.h" />
     <ClInclude Include="src\bxdf\fresnel.h" />
     <ClInclude Include="src\bxdf\lambertion.h" />
+    <ClInclude Include="src\bxdf\phong.h" />
     <ClInclude Include="src\bxdf\specular.h" />
     <ClInclude Include="src\cameras\camera.h" />
     <ClInclude Include="src\cameras\perspective.h" />

@@ -102,4 +102,8 @@ namespace schwi {
 	inline bool SameHemisphere(const Vector3d& w, const Vector3d& wp) {
 		return w.z * wp.z > 0;
 	}
+
+	inline Vector3d reflect(const Vector3d& wo, const Normal3d& normal) {
+		return -wo + 2 * Dot(wo, normal) * normal;
+	}
 }
