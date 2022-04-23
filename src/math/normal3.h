@@ -7,7 +7,8 @@ namespace schwi {
 	public:
 		Normal3() :vec3<T>() {}
 		Normal3(T _x, T _y, T _z) :vec3<T>(_x, _y, _z) {}
-		explicit Normal3(const Vector3<T>& v) :vec3<T>(v.x, v.y, v.z) {}
+		template <typename U>
+		explicit Normal3(const vec3<U>& v) :vec3<T>(v) {}
 
 		Normal3<T> operator-() const {
 			return Normal3<T>(-this->x, -this->y, -this->z);

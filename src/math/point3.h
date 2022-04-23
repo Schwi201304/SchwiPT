@@ -7,10 +7,8 @@ namespace schwi {
 	public:
 		Point3() :vec3<T>() {}
 		Point3(T _x, T _y, T _z) :vec3<T>(_x, _y, _z) {}
-		explicit Point3(const vec3<T>& v) :vec3<T>(v) {}
-
-		template<typename U>
-		explicit Point3(const Point3<U>& p) :vec2((T)p.x, (T)p.y, (T)p.z) {}
+		template <typename U>
+		explicit Point3(const vec3<U>& v) :vec3<T>(v) {}
 
 		template<typename U>
 		explicit operator Vector3<U>() const {

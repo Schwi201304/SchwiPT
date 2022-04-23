@@ -8,7 +8,8 @@ namespace schwi {
 	public:	
 		Vector3() :vec3<T>() {};
 		Vector3(T _x, T _y, T _z) :vec3<T>( _x, _y, _z ) {}
-		explicit Vector3(const vec3<T>& v):vec3<T>(v){}
+		template <typename U>
+		explicit Vector3(const vec3<U>& v):vec3<T>(v){}
 
 		Vector3<T> operator-() const { 
 			return Vector3<T>(-this->x, -this->y, -this->z);

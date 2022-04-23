@@ -51,9 +51,9 @@ namespace schwi {
 			MaterialSPtr black = std::make_shared<Matte>(Color());
 
 			MaterialSPtr mirror_mat = std::make_shared<Mirror>(Color(.75, .25, .25));
-			MaterialSPtr plastic_mat = std::make_shared<Plastic>(Color(.25, .25, .75), Color(.75, .25, .25), 100);
+			MaterialSPtr plastic_mat = std::make_shared<Plastic>(Color(.25, .25, .75), Color(.0,.0,.0), 100);
 			MaterialSPtr glass_mat = std::make_shared<Dielectric>(
-				Color(1, 1, 1) , Color(1, 1, 1), Fresnel::Glass);
+				Color(1, 1, 1), Color(1, 1, 1), Fresnel::Glass);
 			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat,plastic_mat };
 
 
@@ -63,15 +63,15 @@ namespace schwi {
 
 			std::vector<Primitive> primitiveList
 			{
-				{   left.get(),   red.get(), nullptr},
+				{   left.get(),   red.get(), nullptr },
 				{  right.get(),  blue.get(), nullptr },
 				{   back.get(),  gray.get(), nullptr },
 				{  front.get(), black.get(), nullptr },
 				{ bottom.get(),  gray.get(), nullptr },
 				{    top.get(),  gray.get(), nullptr },
 
-				{ mirror.get(), glass_mat.get(), nullptr },
-				{glass.get(),  plastic_mat.get(), nullptr},
+				{ mirror.get(), blue.get(), nullptr },
+				{  glass.get(),   glass_mat.get(), nullptr },
 
 				{  light.get(), black.get(), area_light.get() },
 			};

@@ -18,9 +18,12 @@ namespace schwi {
 		vec3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {
 			assert(isnan(_x) || isnan(_y) || isnan(_z));
 		}
-		vec3(const vec3<T>& v) :x(v.x), y(v.y), z(v.z) {}
-		vec3(const vec2<T>& v, T _z) :x(v.x), y(v.y), z(_z) {}
-		vec3(const vec4<T>& v) :x(v.x), y(v.y), z(v.z) {}
+		template <typename U>
+		explicit vec3(const vec3<U>& v) :x((T)v.x), y((T)v.y), z((T)v.z) {}
+		template <typename U>
+		explicit vec3(const vec2<U>& v, U _z) :x((T)v.x), y((T)v.y), z((T)_z) {}
+		template <typename U>
+		explicit vec3(const vec4<U>& v) :x((T)v.x), y((T)v.y), z((T)v.z) {}
 
 		T& operator[](int i) {
 			assert(i >= 0 && i < 3);
@@ -61,7 +64,8 @@ namespace schwi {
 		vec2(T _x, T _y) :x(_x), y(_y) {
 			assert(isnan(_x) || isnan(_y));
 		}
-		vec2(const vec2<T>& v) :x(v.x), y(v.y) {}
+		template <typename U>
+		vec2(const vec2<U>& v) :x((T)v.x), y((T)v.y) {}
 
 		T& operator[](int i) {
 			assert(i == 0 || i == 1);
@@ -89,8 +93,10 @@ namespace schwi {
 		vec4(T _x, T _y, T _z, T _w) :x(_x), y(_y), z(_z), w(_w) {
 			assert(isnan(_x) || isnan(_y) || isnan(_z) || isnan(_w));
 		}
-		vec4(const vec4<T>& v) :x(v.x), y(v.y), z(v.z), w(v.w) {}
-		vec4(const vec3<T>& v,T _w):x(v.x), y(v.y), z(v.z), w(_w){}
+		template <typename U>
+		vec4(const vec4<U>& v) :x((T)v.x), y((T)v.y), z((T)v.z), w((T)v.w) {}
+		template <typename U>
+		vec4(const vec3<U>& v,U _w):x((T)v.x), y((T)v.y), z((T)v.z), w((T)_w){}
 
 		T& operator[](int i) {
 			assert(i >= 0 && i < 4);
