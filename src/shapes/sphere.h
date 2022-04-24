@@ -1,7 +1,6 @@
 #pragma once
 
-#include<core/schwi.h>
-#include<shape/shape.h>
+#include<shapes/shape.h>
 
 namespace schwi {
 	class Sphere :public Shape{

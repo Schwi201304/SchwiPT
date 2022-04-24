@@ -11,7 +11,6 @@
     <ClInclude Include="include\stb_image\stb_image.h" />
     <ClInclude Include="include\stb_image\stb_image_resize.h" />
     <ClInclude Include="include\stb_image\stb_image_write.h" />
-    <ClInclude Include="src\image\image.h" />
     <ClInclude Include="src\math\normal3.h" />
     <ClInclude Include="src\math\point2.h" />
     <ClInclude Include="src\math\point3.h" />
@@ -25,11 +24,10 @@
     <ClInclude Include="src\cameras\camera.h" />
     <ClInclude Include="src\core\ray.h" />
     <ClInclude Include="src\core\intersection.h" />
-    <ClInclude Include="src\image\color.h" />
     <ClInclude Include="src\samplers\sampler.h" />
     <ClInclude Include="src\samplers\random.h" />
-    <ClInclude Include="src\shape\shape.h" />
-    <ClInclude Include="src\shape\sphere.h" />
+    <ClInclude Include="src\shapes\shape.h" />
+    <ClInclude Include="src\shapes\sphere.h" />
     <ClInclude Include="src\core\frame.h" />
     <ClInclude Include="src\cameras\perspective.h" />
     <ClInclude Include="src\bxdf\bsdf.h" />
@@ -43,10 +41,14 @@
     <ClInclude Include="src\integrators\integrator.h" />
     <ClInclude Include="src\integrators\path.h" />
     <ClInclude Include="src\bxdf\phong.h" />
+    <ClInclude Include="src\shapes\triangle.h" />
+    <ClInclude Include="src\textures\texture.h" />
+    <ClInclude Include="src\textures\imagemap.h" />
+    <ClInclude Include="src\textures\mipmap.h" />
+    <ClInclude Include="src\core\color.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />
-    <ClCompile Include="src\image\image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

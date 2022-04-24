@@ -2,7 +2,7 @@
 
 #include<core/schwi.h>
 #include<core/intersection.h>
-#include<image/color.h>
+#include<core/color.h>
 
 namespace schwi{
 	class Light{};

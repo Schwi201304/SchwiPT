@@ -3,8 +3,9 @@
 #include<core/schwi.h>
 #include<material/material.h>
 #include<core/primitive.h>
-#include<shape/shape.h>
-#include<shape/sphere.h>
+#include<shapes/shape.h>
+#include<shapes/sphere.h>
+#include<textures/imagemap.h>
 
 namespace schwi {
 	class Scene {
@@ -51,11 +52,19 @@ namespace schwi {
 			MaterialSPtr black = std::make_shared<Matte>(Color());
 
 			MaterialSPtr mirror_mat = std::make_shared<Mirror>(Color(.75, .25, .25));
-			MaterialSPtr plastic_mat = std::make_shared<Plastic>(Color(.25, .25, .75), Color(.0,.0,.0), 100);
+			MaterialSPtr plastic_mat = std::make_shared<Plastic>(Color(.25, .25, .75), Color(.0, .0, .0), 100);
 			MaterialSPtr glass_mat = std::make_shared<Dielectric>(
 				Color(1, 1, 1), Color(1, 1, 1), Fresnel::Glass);
 			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat,plastic_mat };
 
+			int index=imageManager.Add("earthmap.png");
+			std::shared_ptr<TextureFilter> bilinear= std::make_shared<BilinearFilter>();
+
+			std::shared_ptr<Texture<Color>> texture =
+				std::make_shared<ImageTexture<Color, Color>>(
+					std::make_unique<UVMapping2D>(),
+					bilinear, imageManager.GetImage(index)
+					);
 
 			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
 			LightList lightList{ area_light };
@@ -63,17 +72,17 @@ namespace schwi {
 
 			std::vector<Primitive> primitiveList
 			{
-				{   left.get(),   red.get(), nullptr },
-				{  right.get(),  blue.get(), nullptr },
-				{   back.get(),  gray.get(), nullptr },
-				{  front.get(), black.get(), nullptr },
-				{ bottom.get(),  gray.get(), nullptr },
-				{    top.get(),  gray.get(), nullptr },
+				{   left.get(),   red.get(), nullptr,nullptr },
+				{  right.get(),  blue.get(), nullptr,nullptr },
+				{   back.get(),  gray.get(), nullptr,nullptr },
+				{  front.get(), black.get(), nullptr,nullptr },
+				{ bottom.get(),  gray.get(), nullptr,nullptr },
+				{    top.get(),  gray.get(), nullptr,nullptr },
 
-				{ mirror.get(), blue.get(), nullptr },
-				{  glass.get(),   glass_mat.get(), nullptr },
+				{ mirror.get(), blue.get(),nullptr, nullptr },
+				{  glass.get(),   glass_mat.get(),nullptr, nullptr },
 
-				{  light.get(), black.get(), area_light.get() },
+				{  light.get(), black.get(),nullptr, area_light.get() },
 			};
 
 			return Scene{ shapeList, materialList, lightList, primitiveList };

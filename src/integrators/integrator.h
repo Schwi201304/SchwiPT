@@ -3,7 +3,7 @@
 #include<core/schwi.h>
 #include<core/ray.h>
 #include<math/vector2.h>
-#include<image/color.h>
+#include<core/color.h>
 #include<samplers/sampler.h>
 #include<cameras/camera.h>
 

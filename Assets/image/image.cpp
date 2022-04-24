@@ -1,4 +1,4 @@
-#include <image/image.h>
+#include "image.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image/stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -58,8 +58,24 @@ namespace schwi {
 	}
 
 	SchwiColor SchwiImage::getColor(const double u, const double v) const{
-		int x = u * ((double)w - 1);
-		int y = v * ((double)h - 1);
+		int x = u * (w - 1.);
+		int y = v * (h - 1.);
 		return getColor(x, y);
+	}
+
+	void SchwiImage::resize(const int width, const int height) {
+		BYTE* data=new BYTE[width * height]();
+
+		stbir_resize(pixels.data(), w, h, 0, 
+			data, width, height, 0, 
+			STBIR_TYPE_UINT8,comp , STBIR_ALPHA_CHANNEL_NONE, 0,
+			STBIR_EDGE_CLAMP, STBIR_EDGE_CLAMP,
+			STBIR_FILTER_BOX, STBIR_FILTER_BOX,
+			STBIR_COLORSPACE_SRGB, nullptr
+		);
+
+		pixels.clear();
+		std::vector<BYTE>().swap(pixels);
+		pixels = std::vector<BYTE>(data, data + width * comp * height);
 	}
 }

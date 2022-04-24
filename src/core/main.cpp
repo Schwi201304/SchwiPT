@@ -8,6 +8,7 @@
 #include<core/scene.h>
 #include<integrators/integrator.h>
 #include<integrators/path.h>
+#include<ImageManager.h>
 
 using namespace schwi;
 using namespace std;
@@ -19,6 +20,8 @@ constexpr int spp = 100;
 constexpr int maxDepth = 10;
 
 int main() {
+
+
 	SchwiImage img(width, height);
 
 	unique_ptr<Sampler> originalSampler = make_unique<RandomSampler>(spp);

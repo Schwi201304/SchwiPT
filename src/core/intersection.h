@@ -1,7 +1,7 @@
 #pragma once
 
 #include<core/schwi.h>
-#include<image/color.h>
+#include<core/color.h>
 #include<math/point3.h>
 #include<math/normal3.h>
 #include<core/ray.h>
@@ -12,6 +12,7 @@ namespace schwi {
 		Point3d position{};
 		Normal3d normal{};
 		Vector3d wo{};
+		Point2d uv{};
 
 	private:
 		Color emission{};
@@ -27,7 +28,7 @@ namespace schwi {
 			:position(p), normal(n), wo(wo) {}
 
 		//const Surface* surface()const { return surface; }
-		const BSDF* bsdf() const{ return bsdfPtr.get(); }
+		const BSDF* bsdf() const { return bsdfPtr.get(); }
 		Color Le()const { return emission; }
 
 		Ray GenerateRay(const Vector3d& direction)const {
@@ -38,7 +39,7 @@ namespace schwi {
 			return Ray(position, (target - position).Normalize());
 		}
 
-		Ray GenerateRay(const Intersection& isect)const{
+		Ray GenerateRay(const Intersection& isect)const {
 			return Ray(position, (isect.position - position).Normalize());
 		}
 

@@ -3,7 +3,7 @@
 #include<core/schwi.h>
 #include<math/vector2.h>
 #include<math/vector3.h>
-#include<image/color.h>
+#include<core/color.h>
 #include<core/frame.h>
 #include<samplers/sampler.h>
 

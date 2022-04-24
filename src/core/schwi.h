@@ -13,6 +13,8 @@
 #include<typeinfo>
 #include<omp.h>
 
+#include<ImageManager.h>
+
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4996)
 
@@ -32,6 +34,8 @@ namespace schwi {
 
 	constexpr int Dynamic = -1;
 
+	// Global Manager
+	static ImageManager imageManager;
 
 	// Global Forward Declarations
 	template <typename T> class vec2;
@@ -69,9 +73,9 @@ namespace schwi {
 	class Dielectric;
 	class Light;
 	class AreaLight;
-	//class Surface;
 	class SchwiImage;
 	class SchwiColor;
+	template <typename T> class Texture;
 
 	// Using
 	using BYTE = unsigned char;

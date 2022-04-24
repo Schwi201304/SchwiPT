@@ -3,6 +3,7 @@
 #include<core/schwi.h>
 #include<math/vector3.h>
 #include<math/point2.h>
+#include<core/ray.h>
 
 namespace schwi {
 	class Camera {

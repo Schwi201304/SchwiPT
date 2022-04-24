@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SchwiRT", "SchwiRT.vcxproj", "{E7F6434C-3DF2-46C2-9052-4FDAE270D165}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Assets", "Assets\Assets.vcxproj", "{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{E7F6434C-3DF2-46C2-9052-4FDAE270D165}.Release|x64.Build.0 = Release|x64
 		{E7F6434C-3DF2-46C2-9052-4FDAE270D165}.Release|x86.ActiveCfg = Release|Win32
 		{E7F6434C-3DF2-46C2-9052-4FDAE270D165}.Release|x86.Build.0 = Release|Win32
+		{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}.Debug|x64.ActiveCfg = Debug|x64
+		{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}.Debug|x64.Build.0 = Debug|x64
+		{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}.Debug|x86.ActiveCfg = Debug|Win32
+		{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}.Debug|x86.Build.0 = Debug|Win32
+		{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}.Release|x64.ActiveCfg = Release|x64
+		{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}.Release|x64.Build.0 = Release|x64
+		{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}.Release|x86.ActiveCfg = Release|Win32
+		{B02F8A53-A59F-4E74-BABA-8B27E0BABEA6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

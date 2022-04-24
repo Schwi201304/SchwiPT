@@ -7,6 +7,7 @@
 #include<utility>
 
 #pragma warning(disable : 4244)
+#pragma warning(disable : 26451)
 
 namespace schwi {
 	using BYTE = unsigned char;
@@ -59,5 +60,6 @@ namespace schwi {
 		void setColor(const int x, const int y, const SchwiColor& color);
 		SchwiColor getColor(const int x, const int y) const;
 		SchwiColor getColor(const double u, const double v)const;
+		void resize(const int width, const int height);
 	};
 }

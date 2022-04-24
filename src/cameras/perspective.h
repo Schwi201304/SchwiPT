@@ -1,8 +1,6 @@
 #pragma once
 
-#include<core/schwi.h>
 #include<cameras/camera.h>
-#include<core/ray.h>
 
 namespace schwi {
 	class PerspectiveCamera :public Camera {

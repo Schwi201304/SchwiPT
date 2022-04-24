@@ -1,6 +1,5 @@
 #pragma once
 
-#include<core/schwi.h>
 #include<bxdf/bsdf.h>
 
 namespace schwi {

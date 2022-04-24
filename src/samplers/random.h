@@ -1,6 +1,5 @@
 #pragma once
 
-#include<core/schwi.h>
 #include<samplers/sampler.h>
 #include<cameras/camera.h>
 
