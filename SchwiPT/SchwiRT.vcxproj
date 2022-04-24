@@ -72,18 +72,30 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <ExternalIncludePath>$(ProjectDir);$(SolutionDir)Assets;$(SolutionDir)SchwiLib;$(ExternalIncludePath)</ExternalIncludePath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)include;$(ProjectDir)src</IncludePath>
+    <ExternalIncludePath>$(ProjectDir);$(SolutionDir)Assets;$(SolutionDir)SchwiLib;$(ExternalIncludePath)</ExternalIncludePath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(ProjectDir);$(SolutionDir)Assets;$(SolutionDir)SchwiLib;$(ExternalIncludePath)</ExternalIncludePath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(ProjectDir)</IncludePath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <ExternalIncludePath>$(ProjectDir);$(SolutionDir)Assets;$(SolutionDir)SchwiLib;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -91,10 +103,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,12 +120,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,10 +138,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,64 +160,63 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <OpenMPSupport>true</OpenMPSupport>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Assets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\stb_image.h" />
-    <ClInclude Include="include\stb_image\stb_image.h" />
-    <ClInclude Include="include\stb_image\stb_image_resize.h" />
-    <ClInclude Include="include\stb_image\stb_image_write.h" />
-    <ClInclude Include="src\bxdf\fresnel.h" />
-    <ClInclude Include="src\bxdf\lambertion.h" />
-    <ClInclude Include="src\bxdf\phong.h" />
-    <ClInclude Include="src\bxdf\specular.h" />
-    <ClInclude Include="src\cameras\camera.h" />
-    <ClInclude Include="src\cameras\perspective.h" />
-    <ClInclude Include="src\bxdf\bsdf.h" />
-    <ClInclude Include="src\core\color.h" />
-    <ClInclude Include="src\core\frame.h" />
-    <ClInclude Include="src\core\intersection.h" />
-    <ClInclude Include="src\core\primitive.h" />
-    <ClInclude Include="src\core\ray.h" />
-    <ClInclude Include="src\core\scene.h" />
-    <ClInclude Include="src\core\schwi.h" />
-    <ClInclude Include="src\integrators\integrator.h" />
-    <ClInclude Include="src\integrators\path.h" />
-    <ClInclude Include="src\lights\light.h" />
-    <ClInclude Include="src\material\material.h" />
-    <ClInclude Include="src\math\bounds.h" />
-    <ClInclude Include="src\math\matrix.h" />
-    <ClInclude Include="src\math\normal3.h" />
-    <ClInclude Include="src\math\point2.h" />
-    <ClInclude Include="src\math\point3.h" />
-    <ClInclude Include="src\math\RNG.h" />
-    <ClInclude Include="src\math\vec.h" />
-    <ClInclude Include="src\math\vector2.h" />
-    <ClInclude Include="src\math\vector3.h" />
-    <ClInclude Include="src\samplers\random.h" />
-    <ClInclude Include="src\samplers\sampler.h" />
-    <ClInclude Include="src\shapes\shape.h" />
-    <ClInclude Include="src\shapes\sphere.h" />
-    <ClInclude Include="src\shapes\triangle.h" />
-    <ClInclude Include="src\textures\imagemap.h" />
-    <ClInclude Include="src\textures\mipmap.h" />
-    <ClInclude Include="src\textures\texture.h" />
+    <ClInclude Include="SchwiLib\image\image.h" />
+    <ClInclude Include="bxdf\fresnel.h" />
+    <ClInclude Include="bxdf\lambertion.h" />
+    <ClInclude Include="bxdf\phong.h" />
+    <ClInclude Include="bxdf\specular.h" />
+    <ClInclude Include="cameras\camera.h" />
+    <ClInclude Include="cameras\perspective.h" />
+    <ClInclude Include="bxdf\bsdf.h" />
+    <ClInclude Include="core\color.h" />
+    <ClInclude Include="core\frame.h" />
+    <ClInclude Include="core\intersection.h" />
+    <ClInclude Include="core\primitive.h" />
+    <ClInclude Include="core\ray.h" />
+    <ClInclude Include="core\scene.h" />
+    <ClInclude Include="core\schwi.h" />
+    <ClInclude Include="integrators\integrator.h" />
+    <ClInclude Include="integrators\path.h" />
+    <ClInclude Include="lights\light.h" />
+    <ClInclude Include="material\material.h" />
+    <ClInclude Include="math\bounds.h" />
+    <ClInclude Include="math\matrix.h" />
+    <ClInclude Include="math\normal3.h" />
+    <ClInclude Include="math\point2.h" />
+    <ClInclude Include="math\point3.h" />
+    <ClInclude Include="math\RNG.h" />
+    <ClInclude Include="math\vec.h" />
+    <ClInclude Include="math\vector2.h" />
+    <ClInclude Include="math\vector3.h" />
+    <ClInclude Include="samplers\random.h" />
+    <ClInclude Include="samplers\sampler.h" />
+    <ClInclude Include="shapes\shape.h" />
+    <ClInclude Include="shapes\sphere.h" />
+    <ClInclude Include="shapes\triangle.h" />
+    <ClInclude Include="textures\imagemap.h" />
+    <ClInclude Include="textures\mipmap.h" />
+    <ClInclude Include="textures\texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\main.cpp" />
+    <ClCompile Include="core\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitattributes" />
-    <None Include=".gitignore" />
-    <None Include="README.md" />
+    <ProjectReference Include="..\SchwiLib\SchwiLib.vcxproj">
+      <Project>{ede03941-76cb-4eb2-a0dc-5ee4b4ca284e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

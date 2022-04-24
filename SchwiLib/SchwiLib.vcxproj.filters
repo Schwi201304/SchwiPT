@@ -15,21 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AssetManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="img\earthmap.png">
-      <Filter>资源文件</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="image\image.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="image\image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\stb_image\stb_image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\stb_image\stb_image_resize.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\stb_image\stb_image_write.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

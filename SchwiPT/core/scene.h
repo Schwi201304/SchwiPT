@@ -57,14 +57,14 @@ namespace schwi {
 				Color(1, 1, 1), Color(1, 1, 1), Fresnel::Glass);
 			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat,plastic_mat };
 
-			int index=imageManager.Add("earthmap.png");
-			std::shared_ptr<TextureFilter> bilinear= std::make_shared<BilinearFilter>();
-
-			std::shared_ptr<Texture<Color>> texture =
-				std::make_shared<ImageTexture<Color, Color>>(
-					std::make_unique<UVMapping2D>(),
-					bilinear, imageManager.GetImage(index)
-					);
+			//int index=imageManager.Add("earthmap.png");
+			//std::shared_ptr<TextureFilter> bilinear= std::make_shared<BilinearFilter>();
+			//
+			//std::shared_ptr<Texture<Color>> texture =
+			//	std::make_shared<ImageTexture<Color, Color>>(
+			//		std::make_unique<UVMapping2D>(),
+			//		bilinear, imageManager.GetImage(index)
+			//		);
 
 			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
 			LightList lightList{ area_light };

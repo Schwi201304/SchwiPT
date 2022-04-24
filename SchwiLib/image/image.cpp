@@ -1,10 +1,10 @@
 #include "image.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image/stb_image.h>
+#include <3rdparty/stb_image/stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb_image/stb_image_write.h>
+#include <3rdparty/stb_image/stb_image_write.h>
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
-#include <stb_image/stb_image_resize.h>
+#include <3rdparty/stb_image/stb_image_resize.h>
 
 namespace schwi {
 

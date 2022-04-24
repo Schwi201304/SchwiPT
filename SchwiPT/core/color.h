@@ -1,7 +1,6 @@
 #pragma once
 
 #include<core/schwi.h>
-#include<image/image.h>
 #include<math/vector3.h>
 
 namespace schwi {

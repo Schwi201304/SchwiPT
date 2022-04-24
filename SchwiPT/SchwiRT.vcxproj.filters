@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bxdf\fresnel.h" />
+    <ClInclude Include="bxdf\lambertion.h" />
+    <ClInclude Include="bxdf\phong.h" />
+    <ClInclude Include="bxdf\specular.h" />
+    <ClInclude Include="cameras\camera.h" />
+    <ClInclude Include="cameras\perspective.h" />
+    <ClInclude Include="bxdf\bsdf.h" />
+    <ClInclude Include="core\color.h" />
+    <ClInclude Include="core\frame.h" />
+    <ClInclude Include="core\intersection.h" />
+    <ClInclude Include="core\primitive.h" />
+    <ClInclude Include="core\ray.h" />
+    <ClInclude Include="core\scene.h" />
+    <ClInclude Include="core\schwi.h" />
+    <ClInclude Include="integrators\integrator.h" />
+    <ClInclude Include="integrators\path.h" />
+    <ClInclude Include="lights\light.h" />
+    <ClInclude Include="material\material.h" />
+    <ClInclude Include="math\bounds.h" />
+    <ClInclude Include="math\matrix.h" />
+    <ClInclude Include="math\normal3.h" />
+    <ClInclude Include="math\point2.h" />
+    <ClInclude Include="math\point3.h" />
+    <ClInclude Include="math\RNG.h" />
+    <ClInclude Include="math\vec.h" />
+    <ClInclude Include="math\vector2.h" />
+    <ClInclude Include="math\vector3.h" />
+    <ClInclude Include="samplers\random.h" />
+    <ClInclude Include="samplers\sampler.h" />
+    <ClInclude Include="shapes\shape.h" />
+    <ClInclude Include="shapes\sphere.h" />
+    <ClInclude Include="shapes\triangle.h" />
+    <ClInclude Include="textures\imagemap.h" />
+    <ClInclude Include="textures\mipmap.h" />
+    <ClInclude Include="textures\texture.h" />
+    <ClInclude Include="SchwiLib\image\image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="core\main.cpp" />
+  </ItemGroup>
+</Project>

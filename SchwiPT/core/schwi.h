@@ -13,7 +13,8 @@
 #include<typeinfo>
 #include<omp.h>
 
-#include<ImageManager.h>
+#include<image/image.h>
+//#include<ImageManager.h>
 
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4996)
@@ -35,7 +36,7 @@ namespace schwi {
 	constexpr int Dynamic = -1;
 
 	// Global Manager
-	static ImageManager imageManager;
+	//static ImageManager imageManager;
 
 	// Global Forward Declarations
 	template <typename T> class vec2;

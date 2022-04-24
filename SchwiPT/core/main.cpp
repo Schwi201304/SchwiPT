@@ -1,5 +1,4 @@
 #include<core/schwi.h>
-#include<image/image.h>
 #include<math/matrix.h>
 #include<samplers/sampler.h>
 #include<samplers/random.h>
