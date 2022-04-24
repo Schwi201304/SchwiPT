@@ -20,7 +20,7 @@ namespace schwi {
 			if (depth > maxDepth) {
 				return isect.Le();
 			}
-			return isect.Le();
+			//return isect.Le();
 			auto bs = isect.bsdf()->Sample_f(isect.wo, sampler.GetVector2d());
 			if (bs.f.IsBlack() || bs.pdf == 0.) {
 				return isect.Le();

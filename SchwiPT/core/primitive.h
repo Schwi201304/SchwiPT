@@ -10,7 +10,6 @@ namespace schwi {
 	struct Primitive {
 		const Shape* shape;
 		const Material* material;
-		const Texture<Color>* texture;
 		const AreaLight* areaLight;
 
 		bool Intersect(Ray& ray, Intersection* isect)const {
@@ -19,8 +18,6 @@ namespace schwi {
 				isect->bsdfPtr = material->Scattering(*isect);
 				isect->emission = areaLight ?
 					areaLight->Le(*isect, isect->wo) :
-					texture ?
-					texture->Evaluate(*isect) :
 					Color();
 			}
 

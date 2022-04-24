@@ -18,7 +18,7 @@ namespace schwi {
 			filter(filter),
 			img(img) {}
 
-		Treturn Evaluate(const Intersection& isect) const {
+		virtual Treturn Evaluate(const Intersection& isect) const override {
 			Point2d point=mapping->Map(isect);
 			Color color= filter->Filter(img, point);
 			return color;

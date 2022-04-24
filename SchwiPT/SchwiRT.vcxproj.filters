@@ -43,6 +43,7 @@
     <ClInclude Include="textures\mipmap.h" />
     <ClInclude Include="textures\texture.h" />
     <ClInclude Include="SchwiLib\image\image.h" />
+    <ClInclude Include="textures\constant.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp" />

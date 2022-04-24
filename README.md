@@ -23,10 +23,15 @@
 ### Materials
 
 - [x] Matte&Mirror&Glass
-- [ ] Plastic
+- [x] Plastic
 - [ ] Mix
 
 ### Texture
+
+- [ ] Constant
+
+- [x] Imagemap
+- [ ] Mipmap
 
 ### Sampler
 - [x] Random Sampler

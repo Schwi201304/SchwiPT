@@ -6,6 +6,7 @@
 #include<shapes/shape.h>
 #include<shapes/sphere.h>
 #include<textures/imagemap.h>
+#include<textures/constant.h>
 
 namespace schwi {
 	class Scene {
@@ -18,7 +19,7 @@ namespace schwi {
 			materialList(materialList),
 			lightList(lightList),
 			primitiveList(primitiveList),
-			textureList(textureList){}
+			textureList(textureList) {}
 
 	public:
 		bool Intersect(Ray& ray, Intersection* isect)const {
@@ -47,26 +48,33 @@ namespace schwi {
 			ShapeSPtr light = std::make_shared<Sphere>(Point3d(50, 681.6 - .27, -81.6), 600);
 			ShapeList shapeList{ left, right, back, front, bottom, top, mirror, glass, light };
 
-
-			MaterialSPtr red = std::make_shared<Matte>(Color(.75, .25, .25));
-			MaterialSPtr blue = std::make_shared<Matte>(Color(.25, .25, .75));
-			MaterialSPtr gray = std::make_shared<Matte>(Color(.75, .75, .75));
-			MaterialSPtr black = std::make_shared<Matte>(Color());
-
-			MaterialSPtr mirror_mat = std::make_shared<Mirror>(Color(.75, .25, .25));
-			MaterialSPtr plastic_mat = std::make_shared<Plastic>(Color(.25, .25, .75), Color(.0, .0, .0), 100);
-			MaterialSPtr glass_mat = std::make_shared<Dielectric>(
-				Color(1, 1, 1), Color(1, 1, 1), Fresnel::Glass);
-			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat,plastic_mat };
-
 			ImageSPtr imgPtr = imageManager.Add("earthmap.png");
 			std::shared_ptr<TextureFilter> bilinear = std::make_shared<BilinearFilter>();
-
 			TextureSPtr texture =
 				std::make_shared<ImageTexture<Color, Color>>(
 					std::make_unique<UVMapping2D>(),
 					bilinear, imgPtr);
-			std::vector<TextureSPtr> textureList{ texture };
+
+			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .25, .25));
+			TextureSPtr blueConst = std::make_shared<ConstantTexture<Color>>(Color(.25, .25, .75));
+			TextureSPtr grayConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .75, .75));
+			TextureSPtr blackConst = std::make_shared<ConstantTexture<Color>>(Color(.0, .0, .0));
+			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
+			std::vector<TextureSPtr> textureList{ texture ,redConst,blueConst,grayConst,blackConst ,whiteConst };
+
+			MaterialSPtr red = std::make_shared<Matte>(redConst);
+			MaterialSPtr blue = std::make_shared<Matte>(blueConst);
+			MaterialSPtr gray = std::make_shared<Matte>(grayConst);
+			MaterialSPtr black = std::make_shared<Matte>(blackConst);
+			MaterialSPtr earth = std::make_shared<Matte>(texture);
+
+			MaterialSPtr mirror_mat = std::make_shared<Mirror>(redConst);
+			MaterialSPtr plastic_mat = std::make_shared<Plastic>(blueConst, blackConst, 10);
+			MaterialSPtr glass_mat = std::make_shared<Dielectric>(
+				whiteConst, whiteConst, Fresnel::Glass);
+			MaterialList materialList{ red, blue, gray, black,earth, mirror_mat, glass_mat, plastic_mat };
+
+
 
 			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
 			LightList lightList{ area_light };
@@ -74,17 +82,17 @@ namespace schwi {
 
 			std::vector<Primitive> primitiveList
 			{
-				{   left.get(),   red.get(), nullptr,nullptr },
-				{  right.get(),  blue.get(), nullptr,nullptr },
-				{   back.get(),  gray.get(), nullptr,nullptr },
-				{  front.get(), black.get(), nullptr,nullptr },
-				{ bottom.get(),  gray.get(), nullptr,nullptr },
-				{    top.get(),  gray.get(), nullptr,nullptr },
+				{   left.get(),   red.get(),nullptr },
+				{  right.get(),  blue.get(),nullptr },
+				{   back.get(),  gray.get(),nullptr },
+				{  front.get(), black.get(),nullptr },
+				{ bottom.get(),  gray.get(),nullptr },
+				{    top.get(),  gray.get(),nullptr },
 
-				{ mirror.get(), red.get(),texture.get(), nullptr },
-				{  glass.get(),   glass_mat.get(),nullptr, nullptr },
+				{ mirror.get(), earth.get(), nullptr },
+				{  glass.get(),   glass_mat.get(), nullptr },
 
-				{  light.get(), black.get(),nullptr, area_light.get() },
+				{  light.get(), black.get(),area_light.get() },
 			};
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
