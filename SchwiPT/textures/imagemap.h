@@ -20,7 +20,8 @@ namespace schwi {
 
 		Treturn Evaluate(const Intersection& isect) const {
 			Point2d point=mapping->Map(isect);
-			return filter->Filter(img, point);
+			Color color= filter->Filter(img, point);
+			return color;
 		}
 	};
 }

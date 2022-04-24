@@ -12,11 +12,13 @@ namespace schwi {
 	public:
 		Scene() = default;
 		Scene(ShapeList shapeList, MaterialList materialList,
-			LightList lightList, PrimitiveList primitiveList) :
+			LightList lightList, PrimitiveList primitiveList,
+			TextureList textureList) :
 			shapeList(shapeList),
 			materialList(materialList),
 			lightList(lightList),
-			primitiveList(primitiveList) {}
+			primitiveList(primitiveList),
+			textureList(textureList){}
 
 	public:
 		bool Intersect(Ray& ray, Intersection* isect)const {
@@ -57,14 +59,14 @@ namespace schwi {
 				Color(1, 1, 1), Color(1, 1, 1), Fresnel::Glass);
 			MaterialList materialList{ red, blue, gray, black, mirror_mat, glass_mat,plastic_mat };
 
-			//int index=imageManager.Add("earthmap.png");
-			//std::shared_ptr<TextureFilter> bilinear= std::make_shared<BilinearFilter>();
-			//
-			//std::shared_ptr<Texture<Color>> texture =
-			//	std::make_shared<ImageTexture<Color, Color>>(
-			//		std::make_unique<UVMapping2D>(),
-			//		bilinear, imageManager.GetImage(index)
-			//		);
+			ImageSPtr imgPtr = imageManager.Add("earthmap.png");
+			std::shared_ptr<TextureFilter> bilinear = std::make_shared<BilinearFilter>();
+
+			TextureSPtr texture =
+				std::make_shared<ImageTexture<Color, Color>>(
+					std::make_unique<UVMapping2D>(),
+					bilinear, imgPtr);
+			std::vector<TextureSPtr> textureList{ texture };
 
 			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
 			LightList lightList{ area_light };
@@ -79,13 +81,13 @@ namespace schwi {
 				{ bottom.get(),  gray.get(), nullptr,nullptr },
 				{    top.get(),  gray.get(), nullptr,nullptr },
 
-				{ mirror.get(), blue.get(),nullptr, nullptr },
+				{ mirror.get(), red.get(),texture.get(), nullptr },
 				{  glass.get(),   glass_mat.get(),nullptr, nullptr },
 
 				{  light.get(), black.get(),nullptr, area_light.get() },
 			};
 
-			return Scene{ shapeList, materialList, lightList, primitiveList };
+			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
 		}
 
 	private:
@@ -93,5 +95,6 @@ namespace schwi {
 		MaterialList materialList;
 		LightList lightList;
 		PrimitiveList primitiveList;
+		TextureList textureList;
 	};
 }

@@ -38,6 +38,11 @@ namespace schwi {
 		}
 	};
 
+	inline std::ostream& operator<<(std::ostream& os,  const Color& c) {
+		os << '[' << c.r << ',' << c.g << ',' << c.b << ']';
+		return os;
+	}
+
 	inline Color operator*(double d, const Color& c) {
 		return c * d;
 	}
@@ -55,7 +60,7 @@ namespace schwi {
 	}
 
 	inline Color ToColor(SchwiColor sc) {
-		return Color(sc[0] / 256, sc[1] / 256, sc[2] / 256);
+		return Color(sc[0] / 255., sc[1] / 255., sc[2] / 255.);
 	}
 
 	inline Color Lerp(double t, Color c1, Color c2) {

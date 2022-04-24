@@ -24,8 +24,8 @@ namespace schwi {
 
 	public:
 		Intersection() = default;
-		Intersection(Point3d p, Normal3d n, Vector3d wo)
-			:position(p), normal(n), wo(wo) {}
+		Intersection(Point3d p, Normal3d n, Vector3d wo, Point2d uv = Point2d{ 0,0 })
+			:position(p), normal(n), wo(wo),uv(uv) {}
 
 		//const Surface* surface()const { return surface; }
 		const BSDF* bsdf() const { return bsdfPtr.get(); }

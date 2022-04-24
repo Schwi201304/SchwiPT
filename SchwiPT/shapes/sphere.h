@@ -33,10 +33,14 @@ namespace schwi {
 			if (hit) {
 				ray.set_distance(t);
 				Point3d hit_point = ray(t);
+				Normal3d normal = Normal3d((hit_point - center).Normalize());
+				double u = (std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
+				double v = acos(normal.z) * InvPi;
 				*out_isect = Intersection(
 					hit_point, 
-					Normal3d((hit_point - center).Normalize()),
-					-ray.direction());
+					normal,
+					-ray.direction(),
+					Point2d(u,v));
 			}
 
 			return hit;

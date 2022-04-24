@@ -12,9 +12,11 @@
 #include<initializer_list>
 #include<typeinfo>
 #include<omp.h>
+#include<format>
+#include <functional>
 
 #include<image/image.h>
-//#include<ImageManager.h>
+#include<ImageManager.h>
 
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4996)
@@ -36,7 +38,7 @@ namespace schwi {
 	constexpr int Dynamic = -1;
 
 	// Global Manager
-	//static ImageManager imageManager;
+	static ImageManager imageManager;
 
 	// Global Forward Declarations
 	template <typename T> class vec2;
@@ -49,6 +51,7 @@ namespace schwi {
 	template <typename T> class Normal3;
 	template <typename T> class Bounds3;
 	template<typename T, int R, int C>class Matrix;
+	class Color;
 	class Ray;
 	class Scene;
 	class Intersection;
@@ -116,6 +119,9 @@ namespace schwi {
 	using ShapeList = std::vector<ShapeSPtr>;
 
 	using PrimitiveList = std::vector<Primitive>;
+
+	using TextureSPtr = std::shared_ptr<Texture<Color>>;
+	using TextureList = std::vector<TextureSPtr>;
 
 
 	// Global Function
