@@ -1,11 +1,11 @@
 #include<iostream>
-#include<ImageManager.h>
+#include<AssetManager.h>
 
 using namespace schwi;
 using namespace std;
 
 int main() {
-	ImageManager imgManager;
+	AssetManager<SchwiImage> imgManager;
 	string filename = "earthmap.png";
 	imgManager.Add(filename);
 }

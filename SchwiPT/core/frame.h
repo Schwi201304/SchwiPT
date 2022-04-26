@@ -37,7 +37,7 @@ namespace schwi {
 			return Point3d(s * local.x + t * local.y + n * local.z) + Vector3d(origin);
 		}
 
-		//TODO:法线，切线待定
+		//TODO: 法线，切线待定
 		Normal3d ToLocal(const Normal3d& world)const {
 			return Normal3d(Dot(s, world), Dot(t, world), Dot(n, world));
 		}

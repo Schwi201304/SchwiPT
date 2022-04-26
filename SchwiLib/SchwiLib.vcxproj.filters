@@ -32,5 +32,8 @@
     <ClInclude Include="3rdparty\stb_image\stb_image_write.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="model\objloader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -38,6 +38,16 @@ namespace schwi {
 		}
 	};
 
+	template<typename T>
+	inline Point2<T> operator*(const Point2<T>& p, T d) {
+		return Point2<T>(p.x * d, p.y * d);
+	}
+
+	template<typename T>
+	inline Point2<T> operator*(double d, const Point2<T>& p) {
+		return p * d;
+	}
+
 	template <typename T>
 	inline double Distance(const Point2<T>& p1, const Point2<T>& p2) {
 		return (p1 - p2).Length();
@@ -55,9 +65,7 @@ namespace schwi {
 
 	template <typename T>
 	Point2<T> Lerp(double t, const Point2<T>& p0, const Point2<T>& p1) {
-		return Point2<T>(
-			(1 - t) * p0.x + t * p1.x,
-			(1 - t) * p0.y + t * p1.y);
+		return (1 - t) * p0 + t * p0;
 	}
 
 	template <typename T>

@@ -7,7 +7,6 @@
 #include<core/scene.h>
 #include<integrators/integrator.h>
 #include<integrators/path.h>
-#include<ImageManager.h>
 
 using namespace schwi;
 using namespace std;
@@ -15,7 +14,7 @@ using namespace std;
 constexpr int width = 400;
 constexpr int height = 400;
 
-constexpr int spp = 10000;
+constexpr int spp = 100;
 constexpr int maxDepth = 10;
 
 int main() {

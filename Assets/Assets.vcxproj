@@ -164,19 +164,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
-    <ClInclude Include="ImageManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\earthmap.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImageManager.cpp" />
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SchwiLib\SchwiLib.vcxproj">
       <Project>{ede03941-76cb-4eb2-a0dc-5ee4b4ca284e}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

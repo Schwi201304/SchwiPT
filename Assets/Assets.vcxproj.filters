@@ -18,9 +18,6 @@
     <ClInclude Include="AssetManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ImageManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\earthmap.png">
@@ -29,9 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

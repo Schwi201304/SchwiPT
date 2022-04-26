@@ -16,7 +16,7 @@
 #include <functional>
 
 #include<image/image.h>
-#include<ImageManager.h>
+#include<AssetManager.h>
 
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4996)
@@ -38,7 +38,7 @@ namespace schwi {
 	constexpr int Dynamic = -1;
 
 	// Global Manager
-	static ImageManager imageManager;
+	static AssetManager<SchwiImage> imageManager;
 
 	// Global Forward Declarations
 	template <typename T> class vec2;

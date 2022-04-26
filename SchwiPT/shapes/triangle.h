@@ -51,6 +51,68 @@ namespace schwi {
 
 	public:
 		Triangle(const Frame* frame,const std::shared_ptr<TriangleMesh>&mesh,int triNum):
-			Shape(){}
+			Shape(frame),mesh(mesh){
+			v = &mesh->vertexIndices[3 * triNum];
+			faceIndex = mesh->faceIndices.size() ? mesh->faceIndices[triNum] : 0;
+		}
+
+		bool Intersect(const Ray& r, Intersection* out_isect)const {
+			Ray ray = frame->ToLocal(ray);
+
+			const Point3d& A = mesh->p[v[0]];
+			const Point3d& B = mesh->p[v[1]];
+			const Point3d& C = mesh->p[v[2]];
+
+			Vector3d E1 = B - A;
+			Vector3d E2 = C - A;
+			Vector3d P = Cross(ray.direction(), E2);
+			double det = Dot(E1, P);
+
+			//back facing
+			//if(det<0)
+			if (det < epsilon)return false;
+			if (std::abs(det) < epsilon)return false;
+
+			double invDet = 1 / det;
+			Vector3d T = ray.origin() - A;
+			double beta = Dot(T, P) * invDet;
+			if (beta < 0 || beta>1)return false;
+
+			Vector3d Q = Cross(T, E1);
+			double gamma = Dot(ray.direction(), Q) * invDet;
+			if (gamma < 0 || gamma>1)return false;
+
+			double t = Dot(E2, Q) * invDet;
+			r.set_distance(t);
+			Point3d hit_point = ray(t);
+			Normal3d normal = Normal3d(Cross(E1, E2));
+
+			double alpha = 1 - beta - gamma;
+			Point2d uv= mesh->uv[v[0]] * alpha + mesh->uv[v[1]] * beta + mesh->uv[v[2]] * gamma;
+			*out_isect = Intersection(
+				frame->ToWorld(hit_point),
+				frame->ToWorld(normal),
+				-r.direction(),
+				uv);
+			return true;
+		}
+
+	private:
+		void GetUVs(Point2d uv[3])const {
+			if (mesh->uv) {
+				uv[0] = mesh->uv[v[0]];
+				uv[1] = mesh->uv[v[1]];
+				uv[2] = mesh->uv[v[2]];
+			}
+			else {
+				uv[0] = Point2d(0, 0);
+				uv[1] = Point2d(1, 0);
+				uv[2] = Point2d(1, 1);
+			}
+		}
+
+		Point2d Barycentric(double alpha,double beta,double gamma) {
+			
+		}
 	};
 }
