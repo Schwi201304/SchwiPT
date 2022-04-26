@@ -12,11 +12,11 @@ namespace schwi {
 		Vector3d t{ 0,1,0 };
 		Vector3d n{ 0,0,1 };
 	public:
-		Frame(const Vector3d& s, const Vector3d& t, const Vector3d& n)
-			:s(s.Normalize()), t(t.Normalize()), n(n.Normalize()) {}
+		Frame(const Vector3d& s, const Vector3d& t, const Vector3d& n, const Point3d& origin = Point3d(0, 0, 0))
+			:s(s.Normalize()), t(t.Normalize()), n(n.Normalize()), origin(origin) {}
 
-		Frame(const Normal3d& n)
-			:n(n.Normalize()) {
+		Frame(const Normal3d& n, const Point3d& origin = Point3d(0, 0, 0))
+			:n(n.Normalize()), origin(origin) {
 			set_from_z();
 		}
 
@@ -30,12 +30,11 @@ namespace schwi {
 		}
 
 		Point3d ToLocal(const Point3d& world)const {
-			return origin+Vector3d(Dot(s, world), Dot(t, world), Dot(n, world));
+			return Point3d(Dot(s, world - origin), Dot(t, world - origin), Dot(n, world - origin));
 		}
 
 		Point3d ToWorld(const Point3d& local)const {
-			Vector3d l = local - origin;
-			return Point3d(s * l.x + t * l.y + n * l.z);
+			return Point3d(s * local.x + t * local.y + n * local.z) + Vector3d(origin);
 		}
 
 		//TODO:法线，切线待定

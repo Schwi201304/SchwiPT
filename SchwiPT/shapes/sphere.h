@@ -9,8 +9,8 @@ namespace schwi {
 		double radius, radius_sq;
 
 	public:
-		Sphere(Point3d c, double r)
-			:center(c), radius(r), radius_sq(r* r) {}
+		Sphere(Point3d c, double r,const Frame* frame=nullptr)
+			:center(c), radius(r), radius_sq(r* r),Shape(frame) {}
 
 		bool Intersect(
 			const Ray& r, Intersection* out_isect
@@ -34,14 +34,16 @@ namespace schwi {
 
 			if (hit) {
 				r.set_distance(t);
-				Point3d hit_point = r(t);
+				Point3d hit_point = ray(t);
 				Normal3d normal = Normal3d((hit_point - center).Normalize());
-				double u = (std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
+
+				double u = (-std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
 				double v = acos(normal.z) * InvPi;
+
 				*out_isect = Intersection(
 					frame->ToWorld(hit_point),
 					frame->ToWorld(normal),
-					frame->ToWorld(-ray.direction()),
+					-r.direction(),
 					Point2d(u, v));
 			}
 

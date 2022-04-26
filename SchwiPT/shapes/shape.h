@@ -12,9 +12,11 @@ namespace schwi {
 		const Frame* frame;
 
 	public:
-		Shape(const Frame* frame) :frame(frame) {}
-		Shape() {
-			frame = new Frame{ {1,0,0},{0,1,0},{0,0,1} };
+		Shape(const Frame* frame) {
+			if (frame == nullptr)
+				this->frame = new Frame{ {1,0,0},{0,1,0},{0,0,1} };
+			else
+				this->frame = frame;
 		}
 
 		virtual bool Intersect(const Ray& ray, Intersection* isect)const = 0;

@@ -42,8 +42,8 @@ namespace schwi {
 			ShapeSPtr front = std::make_shared<Sphere>(Point3d(50, 40.8, 1e5 - 170), 1e5);
 			ShapeSPtr bottom = std::make_shared<Sphere>(Point3d(50, 1e5, -81.6), 1e5);
 			ShapeSPtr top = std::make_shared<Sphere>(Point3d(50, -1e5 + 81.6, -81.6), 1e5);
-
-			ShapeSPtr mirror = std::make_shared<Sphere>(Point3d(27, 16.5, -47), 16.5);
+			//{0,0,1}, {1,0,0 }, { 0,1,0 } {1,0,0}, {0,0,-1}, { 0,1,0 } {-1,0,0}, {0,0,1 }, { 0,1,0 }
+			ShapeSPtr mirror = std::make_shared<Sphere>(Point3d(0, 0, 0), 16.5, new Frame{ {-1,0,0}, {0,0,1 }, { 0,1,0 }, {27, 16.5, -47 } });
 			ShapeSPtr glass = std::make_shared<Sphere>(Point3d(73, 16.5, -78), 16.5);
 			ShapeSPtr light = std::make_shared<Sphere>(Point3d(50, 681.6 - .27, -81.6), 600);
 			ShapeList shapeList{ left, right, back, front, bottom, top, mirror, glass, light };
