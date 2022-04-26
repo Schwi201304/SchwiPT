@@ -4,7 +4,7 @@
 #define NDEBUG
 #endif
 
-#include<core/schwi.h>
+#include"math.h"
 
 //TODO:修复Dynamic问题
 //修复前不应使用Dynamic相关函数

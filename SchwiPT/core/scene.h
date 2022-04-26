@@ -5,6 +5,7 @@
 #include<core/primitive.h>
 #include<shapes/shape.h>
 #include<shapes/sphere.h>
+#include<shapes/triangle.h>
 #include<textures/imagemap.h>
 #include<textures/constant.h>
 
@@ -71,11 +72,8 @@ namespace schwi {
 
 			MaterialSPtr mirror_mat = std::make_shared<Mirror>(redConst);
 			MaterialSPtr plastic_mat = std::make_shared<Plastic>(blueConst, blackConst, 10);
-			MaterialSPtr glass_mat = std::make_shared<Dielectric>(
-				whiteConst, whiteConst, Fresnel::Glass);
+			MaterialSPtr glass_mat = std::make_shared<Dielectric>(whiteConst, whiteConst, Fresnel::Glass);
 			MaterialList materialList{ red, blue, gray, black,earth, mirror_mat, glass_mat, plastic_mat };
-
-
 
 			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
 			LightList lightList{ area_light };
@@ -95,6 +93,40 @@ namespace schwi {
 
 				{  light.get(), black.get(),area_light.get() },
 			};
+
+			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
+		}
+
+		static Scene CreatHeadScene() {
+			ImageSPtr texImg = imageManager.Add("diffuse.png");
+			ModelSPtr head = modelManager.Add("head.obj");
+
+			auto shapeList = CreateTriangleMaeh(head, Frame({ 1,0,0 } , { 0,1,0} ,{ 0,0,1 }));
+
+			ShapeSPtr light = std::make_shared<Sphere>(Point3d(50, 681.6 - .27, -81.6), 600);
+			shapeList.push_back(light);
+
+			TextureSPtr blackConst = std::make_shared<ConstantTexture<Color>>(Color(.0, .0, .0));
+			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .25, .25));
+			std::shared_ptr<TextureFilter> bilinear = std::make_shared<BilinearFilter>();
+			TextureSPtr textPtr =
+				std::make_shared<ImageTexture<Color, Color>>(
+					std::make_unique<UVMapping2D>(),
+					bilinear, texImg);
+			std::vector<TextureSPtr> textureList{ textPtr,blackConst ,redConst };
+
+			MaterialSPtr headMat = std::make_shared<Matte>(textPtr);
+			MaterialSPtr black = std::make_shared<Matte>(blackConst);
+			MaterialSPtr red = std::make_shared<Matte>(redConst);
+			MaterialList materialList{ headMat ,black,red };
+
+			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
+			LightList lightList{ area_light };
+
+			std::vector<Primitive> primitiveList{ { light.get(),black.get(),area_light.get()} };
+			for (int i = 0; i < head->nfaces(); i++) {
+				primitiveList.push_back({ shapeList[i].get(),red.get(),nullptr });
+			}
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
 		}

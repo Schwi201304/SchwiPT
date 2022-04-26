@@ -37,6 +37,15 @@ namespace schwi {
 			return *this;
 		}
 	};
+	template<typename T>
+	inline Point3<T> operator*(const Point3<T>& p, T d) {
+		return Point3d(p.x * d, p.y * d, p.z * d);
+	}
+
+	template<typename T>
+	inline Point3<T> operator*(T d, const Point3<T>& p) {
+		return p * d;
+	}
 
 	template<typename T>
 	inline Point3<T> operator*(const Point3<T>& p, const Vector3<T>& v) {
@@ -75,11 +84,7 @@ namespace schwi {
 
 	template <typename T>
 	Point3<T> Lerp(double t, const Point3<T>& p0, const Point3<T>& p1) {
-		return Point3<T>(
-			(1 - t) * p0.x + t * p1.x,
-			(1 - t) * p0.y + t * p1.y,
-			(1 - t) * p0.z + t * p1.z
-			);
+		return (1 - t) * p0 + t * p1;
 	}
 
 	template <typename T>

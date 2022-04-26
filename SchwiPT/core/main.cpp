@@ -31,7 +31,7 @@ int main() {
 		53, 
 		Vector2i(width,height));
 
-	auto scene = Scene::CreateSmallPTScene();
+	auto scene = Scene::CreatHeadScene();
 
 	unique_ptr<Integrator> integrator = make_unique<PathIntegrator>(10);
 	integrator->Render(scene, *camera, *originalSampler, img);

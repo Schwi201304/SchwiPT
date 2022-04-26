@@ -166,6 +166,15 @@
     <ClInclude Include="3rdparty\stb_image\stb_image_resize.h" />
     <ClInclude Include="3rdparty\stb_image\stb_image_write.h" />
     <ClInclude Include="image\image.h" />
+    <ClInclude Include="math\math.h" />
+    <ClInclude Include="math\matrix.h" />
+    <ClInclude Include="math\normal3.h" />
+    <ClInclude Include="math\point2.h" />
+    <ClInclude Include="math\point3.h" />
+    <ClInclude Include="math\RNG.h" />
+    <ClInclude Include="math\vec.h" />
+    <ClInclude Include="math\vector2.h" />
+    <ClInclude Include="math\vector3.h" />
     <ClInclude Include="model\objloader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

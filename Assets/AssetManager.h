@@ -2,10 +2,10 @@
 
 #include<utility>
 #include<memory>
-#include<image/image.h>
-#include<model/objloader.h>
 #include<map>
 #include<type_traits>
+#include<image/image.h>
+#include<model/objloader.h>
 
 namespace schwi {
 	using ImageSPtr = std::shared_ptr<SchwiImage>;

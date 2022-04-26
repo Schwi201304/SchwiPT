@@ -2,7 +2,7 @@
 
 #include<core/schwi.h>
 #include<core/intersection.h>
-#include<math/bounds.h>
+#include<core/bounds.h>
 #include<samplers/sampler.h>
 #include<core/frame.h>
 
@@ -20,9 +20,9 @@ namespace schwi {
 		}
 
 		virtual bool Intersect(const Ray& ray, Intersection* isect)const = 0;
-		virtual Bounds3d WorldBound()const = 0;
+/*		virtual Bounds3d WorldBound()const = 0;
 		virtual double Area()const = 0;
-
+		
 	public:
 		virtual Intersection SamplePosition(
 			const Vector2d& random, double* out_pdf_p)const = 0;
@@ -65,7 +65,7 @@ namespace schwi {
 
 			return pdf;
 		}
-
+		*/
 	public:
 		static constexpr double epsilon = 1e-3;
 	};

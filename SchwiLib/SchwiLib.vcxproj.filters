@@ -35,5 +35,32 @@
     <ClInclude Include="model\objloader.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="math\matrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="math\normal3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="math\point2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="math\point3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="math\RNG.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="math\vec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="math\vector2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="math\vector3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="math\math.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

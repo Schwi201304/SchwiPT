@@ -15,7 +15,7 @@ namespace schwi {
 		Color Li(Ray ray, Scene& scene, Sampler& sampler, int depth) {
 			Intersection isect;
 			if (!scene.Intersect(ray, &isect)) {
-				return Color();
+				return Color(.25,.75,.75);//background
 			}
 			if (depth > maxDepth) {
 				return isect.Le();

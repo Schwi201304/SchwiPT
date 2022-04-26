@@ -16,7 +16,7 @@ namespace schwi {
 			// Transform mesh vertices to world space
 			p.reset(new Point3d[nVertices]);
 			for (int i = 0; i < nVertices; ++i)
-				p[i] = frame.ToWorld(P[i]);
+				p[i] = frame.ToWorld(P[i])*30.;
 
 			// Copy _UV_, _N_, and _S_ vertex data, if present
 			if (UV) {
@@ -56,17 +56,18 @@ namespace schwi {
 			faceIndex = mesh->faceIndices.size() ? mesh->faceIndices[triNum] : 0;
 		}
 
-		bool Intersect(const Ray& r, Intersection* out_isect)const {
-			Ray ray = frame->ToLocal(ray);
-
+		virtual bool Intersect(const Ray& r, Intersection* out_isect)const override{
+			Ray ray = frame->ToLocal(r);
+			//TODO: 修改光线求交
 			const Point3d& A = mesh->p[v[0]];
 			const Point3d& B = mesh->p[v[1]];
 			const Point3d& C = mesh->p[v[2]];
+			//std::cout << A<<B<<C << std::endl;
 
 			Vector3d E1 = B - A;
 			Vector3d E2 = C - A;
-			Vector3d P = Cross(ray.direction(), E2);
-			double det = Dot(E1, P);
+			Vector3d S1 = Cross(ray.direction(), E2);
+			double det = Dot(E1, S1);
 
 			//back facing
 			//if(det<0)
@@ -74,17 +75,17 @@ namespace schwi {
 			if (std::abs(det) < epsilon)return false;
 
 			double invDet = 1 / det;
-			Vector3d T = ray.origin() - A;
-			double beta = Dot(T, P) * invDet;
+			Vector3d S = ray.origin() - A;
+			double beta = Dot(S, S1) * invDet;
 			if (beta < 0 || beta>1)return false;
 
-			Vector3d Q = Cross(T, E1);
-			double gamma = Dot(ray.direction(), Q) * invDet;
+			Vector3d S2 = Cross(S, E1);
+			double gamma = Dot(ray.direction(), S2) * invDet;
 			if (gamma < 0 || gamma>1)return false;
 
-			double t = Dot(E2, Q) * invDet;
+			double t = Dot(E2, S2) * invDet;
 			r.set_distance(t);
-			Point3d hit_point = ray(t);
+			Point3d hit_point = r(t);
 			Normal3d normal = Normal3d(Cross(E1, E2));
 
 			double alpha = 1 - beta - gamma;
@@ -94,7 +95,18 @@ namespace schwi {
 				frame->ToWorld(normal),
 				-r.direction(),
 				uv);
+			std::cout << t << std::endl;
 			return true;
+		}
+		/*
+		virtual Bounds3d WorldBound()const override {
+			//TODO
+			Bounds3d bound(mesh->p[v[0]], mesh->p[v[1]]);
+			return bound;
+		}
+
+		virtual double Area()const override {
+			return .1;
 		}
 
 	private:
@@ -113,6 +125,19 @@ namespace schwi {
 
 		Point2d Barycentric(double alpha,double beta,double gamma) {
 			
-		}
+		}*/
 	};
+
+	std::vector<std::shared_ptr<Shape>> CreateTriangleMaeh(const ModelSPtr& model,const Frame& frame) {
+		std::shared_ptr<TriangleMesh> mesh = std::make_shared<TriangleMesh>(frame,
+			model->nfaces(), model->facet_vert.data(), model->nverts(),
+			model->vert.data(), nullptr, model->norm.data(), model->tex.data(), nullptr);
+
+		std::vector<std::shared_ptr<Shape>> tris;
+		int nTriangles = model->nfaces();
+		tris.reserve(nTriangles);
+		for (int i = 0; i < nTriangles; ++i)
+			tris.push_back(std::make_shared<Triangle>(nullptr,mesh, i));
+		return tris;
+	}
 }

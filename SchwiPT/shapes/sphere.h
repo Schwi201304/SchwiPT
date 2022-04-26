@@ -12,7 +12,7 @@ namespace schwi {
 		Sphere(Point3d c, double r,const Frame* frame=nullptr)
 			:center(c), radius(r), radius_sq(r* r),Shape(frame) {}
 
-		bool Intersect(
+		virtual bool Intersect(
 			const Ray& r, Intersection* out_isect
 		)const override {
 			Ray ray = frame->ToLocal(r);
@@ -49,13 +49,13 @@ namespace schwi {
 
 			return hit;
 		}
-
-		Bounds3d WorldBound() const override {
+/*
+		virtual Bounds3d WorldBound() const override {
 			Vector3d half(radius, radius, radius);
 			return Bounds3d(center - half, center + half);
 		}
 
-		double Area()const override {
+		virtual double Area()const override {
 			return 4 * Pi * radius_sq;
 		}
 
@@ -106,7 +106,7 @@ namespace schwi {
 			double cos_theta = (cos_theta_max - 1) * random[0] + 1;
 			double sin_theta_sq = 1 - cos_theta * cos_theta;
 
-			/*sin^2(1.5 deg)=0.00068523)*/
+			//sin^2(1.5 deg)=0.00068523)
 			if (sin_theta_max_sq < 0.00068523) {
 				sin_theta_sq = sin_theta_max_sq * random[0];
 				cos_theta = std::sqrt(1 - sin_theta_sq);
@@ -141,6 +141,6 @@ namespace schwi {
 			double sin_theta_max_sq = radius_sq / DistanceSquared(isect.position, center);
 			double cos_theta_max = std::sqrt(std::max(0., 1 - sin_theta_max_sq));
 			return PdfConeUniform(cos_theta_max);
-		}
+		}*/
 	};
 }

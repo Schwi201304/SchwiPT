@@ -1,7 +1,7 @@
 #pragma once
 
-#include "point3.h"
-//TODO: 考虑将bound移入shape，完善相交函数
+#include <math/vector3.h>
+//TODO: 完善相交函数
 namespace schwi {
 	template<typename T>
 	class Bounds2 {

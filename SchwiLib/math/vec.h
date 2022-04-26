@@ -4,7 +4,7 @@
 #define NDEBUG
 #endif
 
-#include <core/schwi.h>
+#include"math.h"
 using std::isnan;
 using std::sqrt;
 
