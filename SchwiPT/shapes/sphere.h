@@ -3,19 +3,21 @@
 #include<shapes/shape.h>
 
 namespace schwi {
-	class Sphere :public Shape{
+	class Sphere :public Shape {
 	private:
 		Point3d center;
-		double radius,radius_sq;
+		double radius, radius_sq;
 
 	public:
-		Sphere(Point3d c,double r)
-			:center(c),radius(r),radius_sq(r*r){}
+		Sphere(Point3d c, double r)
+			:center(c), radius(r), radius_sq(r* r) {}
 
 		bool Intersect(
-			const Ray& ray, Intersection* out_isect
+			const Ray& r, Intersection* out_isect
 		)const override {
-			Vector3d oc = center-ray.origin();
+			Ray ray = frame->ToLocal(r);
+
+			Vector3d oc = center - ray.origin();
 			double neg_b = Dot(oc, ray.direction());
 			double discr = neg_b * neg_b - Dot(oc, oc) + radius_sq;
 
@@ -26,21 +28,21 @@ namespace schwi {
 
 				if (t = neg_b - sqrt_discr; t > epsilon && t < ray.distance())
 					hit = true;
-				else if(t = neg_b + sqrt_discr; t > epsilon && t < ray.distance())
+				else if (t = neg_b + sqrt_discr; t > epsilon && t < ray.distance())
 					hit = true;
 			}
 
 			if (hit) {
-				ray.set_distance(t);
-				Point3d hit_point = ray(t);
+				r.set_distance(t);
+				Point3d hit_point = r(t);
 				Normal3d normal = Normal3d((hit_point - center).Normalize());
 				double u = (std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
 				double v = acos(normal.z) * InvPi;
 				*out_isect = Intersection(
-					hit_point, 
-					normal,
-					-ray.direction(),
-					Point2d(u,v));
+					frame->ToWorld(hit_point),
+					frame->ToWorld(normal),
+					frame->ToWorld(-ray.direction()),
+					Point2d(u, v));
 			}
 
 			return hit;
@@ -64,7 +66,7 @@ namespace schwi {
 
 			Intersection isect;
 			isect.position = position;
-			isect.normal =Normal3d( direction.Normalize());
+			isect.normal = Normal3d(direction.Normalize());
 
 			*pdf = 1 / Area();
 
@@ -116,7 +118,7 @@ namespace schwi {
 			Normal3d normal = Normal3d(center - isect.position) * inv_dist;
 			Frame frame(normal);
 
-			Normal3d world_normal=Normal3d(spherical_to_direction(sin_alpha, cos_alpha, phi, -frame.binormal(), -frame.tangent(), -frame.normal()));
+			Normal3d world_normal = Normal3d(spherical_to_direction(sin_alpha, cos_alpha, phi, -frame.binormal(), -frame.tangent(), -frame.normal()));
 			Point3d world_position = center + radius * Vector3d(world_normal.x, world_normal.y, world_normal.z);
 
 			Intersection light_isect;

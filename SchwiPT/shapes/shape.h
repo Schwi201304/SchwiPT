@@ -8,8 +8,16 @@
 
 namespace schwi {
 	class Shape {
+	protected:
+		const Frame* frame;
+
 	public:
-		virtual bool Intersect(const Ray& ray, Intersection* isect)const = 0;		
+		Shape(const Frame* frame) :frame(frame) {}
+		Shape() {
+			frame = new Frame{ {1,0,0},{0,1,0},{0,0,1} };
+		}
+
+		virtual bool Intersect(const Ray& ray, Intersection* isect)const = 0;
 		virtual Bounds3d WorldBound()const = 0;
 		virtual double Area()const = 0;
 
@@ -32,14 +40,14 @@ namespace schwi {
 			}
 			else {
 				wi = wi.Normalize();
-				*out_pdf_p *= DistanceSquared(light_isect.position, isect.position)/std::abs(Dot(light_isect.normal,-wi));
+				*out_pdf_p *= DistanceSquared(light_isect.position, isect.position) / std::abs(Dot(light_isect.normal, -wi));
 				if (std::isinf(*out_pdf_p))
 					*out_pdf_p = 0;
 			}
 
 			return std::move(light_isect);
 		}
-		
+
 		virtual double PdfDirection(
 			const Intersection& isect, const Vector3d& world_wi
 		)const {

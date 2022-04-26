@@ -38,6 +38,26 @@ namespace schwi {
 		}
 	};
 
+	template<typename T>
+	inline Point3<T> operator*(const Point3<T>& p, const Vector3<T>& v) {
+		return Point3<T>(p.x * v.x, p.y * v.y, p.z * v.z);
+	}
+
+	template<typename T>
+	inline Point3<T> operator*(const Vector3<T>& v, const Point3<T>& p) {
+		return Point3<T>(p.x * v.x, p.y * v.y, p.z * v.z);
+	}
+
+	template<typename T>
+	inline double Dot(const Point3<T>& p, const Vector3<T>& v) {
+		return p.x * v.x + p.y * v.y + p.z * v.z;
+	}
+
+	template<typename T>
+	inline double Dot(const Vector3<T>& v, const Point3<T>& p) {
+		return p.x * v.x + p.y * v.y + p.z * v.z;
+	}
+
 	template <typename T>
 	inline double Distance(const Point3<T>& p1, const Point3<T>& p2) {
 		return (p1 - p2).Length();

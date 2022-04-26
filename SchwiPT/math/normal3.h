@@ -10,6 +10,11 @@ namespace schwi {
 		template <typename U>
 		explicit Normal3(const vec3<U>& v) :vec3<T>(v) {}
 
+		template<typename U>
+		explicit operator Vector3<U>() const {
+			return Vector3<U>(this->x, this->y, this->z);
+		}
+
 		Normal3<T> operator-() const {
 			return Normal3<T>(-this->x, -this->y, -this->z);
 		}
