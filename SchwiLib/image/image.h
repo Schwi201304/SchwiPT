@@ -54,6 +54,9 @@ namespace schwi {
 		inline Resolution resolution() {
 			return Resolution{ width(),height() };
 		}
+		inline void info(const std::string& filename) {
+			std::cerr << "SchwiImage: [" << filename << "]: # w# " << width() << " h# " << height() << " comp# " << channels() << std::endl;
+		}
 
 		bool load_file(const std::string& filename, bool flip = false);
 		void write_file(const std::string& filename, bool flip = false)const;

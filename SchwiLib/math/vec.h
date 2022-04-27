@@ -19,11 +19,11 @@ namespace schwi {
 			assert(isnan(_x) || isnan(_y) || isnan(_z));
 		}
 		template <typename U>
-		explicit vec3(const vec3<U>& v) :x((T)v.x), y((T)v.y), z((T)v.z) {}
+		vec3(const vec3<U>& v) :x((T)v.x), y((T)v.y), z((T)v.z) {}
 		template <typename U>
-		explicit vec3(const vec2<U>& v, U _z) :x((T)v.x), y((T)v.y), z((T)_z) {}
+		vec3(const vec2<U>& v, U _z) :x((T)v.x), y((T)v.y), z((T)_z) {}
 		template <typename U>
-		explicit vec3(const vec4<U>& v) :x((T)v.x), y((T)v.y), z((T)v.z) {}
+		vec3(const vec4<U>& v) :x((T)v.x), y((T)v.y), z((T)v.z) {}
 
 		T& operator[](int i) {
 			assert(i >= 0 && i < 3);
@@ -42,7 +42,7 @@ namespace schwi {
 
 	template<typename T>
 	inline std::ostream& operator<<(std::ostream& out, const vec3<T>& v) {
-		return out << v.x << ' ' << v.y << ' ' << v.z;
+		return out << "[" << v.x << ',' << v.y << ',' << v.z << "]";
 	}
 
 	template<typename T>
@@ -65,7 +65,7 @@ namespace schwi {
 			assert(isnan(_x) || isnan(_y));
 		}
 		template <typename U>
-		vec2(const vec2<U>& v) :x((T)v.x), y((T)v.y) {}
+		vec2(const vec2<U>& v) : x((T)v.x), y((T)v.y) {}
 
 		T& operator[](int i) {
 			assert(i == 0 || i == 1);
@@ -81,7 +81,7 @@ namespace schwi {
 
 	template<typename T>
 	inline std::ostream& operator<<(std::ostream& out, const vec2<T>& v) {
-		return out << v.x << ' ' << v.y;
+		return out << "[" << v.x << ',' << v.y << "]";
 	}
 
 	template<typename T>
@@ -94,9 +94,9 @@ namespace schwi {
 			assert(isnan(_x) || isnan(_y) || isnan(_z) || isnan(_w));
 		}
 		template <typename U>
-		vec4(const vec4<U>& v) :x((T)v.x), y((T)v.y), z((T)v.z), w((T)v.w) {}
+		vec4(const vec4<U>& v) : x((T)v.x), y((T)v.y), z((T)v.z), w((T)v.w) {}
 		template <typename U>
-		vec4(const vec3<U>& v,U _w):x((T)v.x), y((T)v.y), z((T)v.z), w((T)_w){}
+		vec4(const vec3<U>& v, U _w) : x((T)v.x), y((T)v.y), z((T)v.z), w((T)_w) {}
 
 		T& operator[](int i) {
 			assert(i >= 0 && i < 4);
@@ -117,7 +117,7 @@ namespace schwi {
 
 	template<typename T>
 	inline std::ostream& operator<<(std::ostream& out, const vec4<T>& v) {
-		return out << v.x << ' ' << v.y << ' ' << v.z << ' ' << v.w;
+		return out << "[" << v.x << ',' << v.y << ',' << v.z << ',' << v.w << "]";
 	}
 
 }

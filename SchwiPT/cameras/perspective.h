@@ -10,6 +10,7 @@ namespace schwi {
 		Vector3d right;
 		Vector3d up;
 		Vector2i resolution;
+		double depth=40;
 
 	public:
 		PerspectiveCamera(
@@ -29,7 +30,7 @@ namespace schwi {
 				+ right * (sample.SamplePoint.x / resolution.x - .5)
 				+ up * (.5 - sample.SamplePoint.y / resolution.y);
 			
-			return Ray(position + direction * 140, direction.Normalize());
+			return Ray(position + direction * depth, direction.Normalize());
 		}
 
 	private:

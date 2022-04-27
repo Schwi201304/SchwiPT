@@ -19,7 +19,7 @@ namespace schwi{
 		Color Le(const Intersection& lightIsect, const Vector3d& wo)const {
 			return (Dot(lightIsect.normal, wo) > 0) ?
 				radiance :
-				Color();
+				Color(wo.x,wo.y,wo.z);
 		}
 	};
 }

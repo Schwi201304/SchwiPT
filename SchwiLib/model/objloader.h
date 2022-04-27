@@ -40,6 +40,10 @@ namespace schwi {
             return facet_vert.size() / 3;
         }
 
+        void info(const std::string& filename)const {
+            std::cerr << "ObjLoader: [" << filename << "] # v# " << nverts() << " f# " << nfaces() << " vt# " << tex.size() << " vn# " << norm.size() << std::endl;
+
+        }
 
 	private:
 		void load_model(const std::string& filename) {
@@ -87,7 +91,6 @@ namespace schwi {
                 }
             }
             in.close();
-            std::cerr << "ObjLoader: ["<<filename<<"] # v# " << nverts() << " f# " << nfaces() << " vt# " << tex.size() << " vn# " << norm.size() << std::endl;
-		}
+        }
 	};
 }

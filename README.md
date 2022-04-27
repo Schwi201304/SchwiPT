@@ -2,6 +2,13 @@
 
 [toc]
 
+## TODO
+
+1. 更多的形状，圆柱和网格
+2. 实现Frame的缩放，法线有待实现
+3. 在已有AABB上开发BVH加速
+4. UI界面，考虑自由生成场景而非编码
+
 ## Development Plan
 
 ### Shape
@@ -28,7 +35,7 @@
 
 ### Texture
 
-- [ ] Constant
+- [x] Constant
 
 - [x] Imagemap
 - [ ] Mipmap
@@ -53,7 +60,7 @@
 - [x] Matrix
 - [x] Bound
 - [ ] Quaternions
-- [ ] Transform
+- [ ] Transform(现有Frame，功能不足)
 
 ## References
 

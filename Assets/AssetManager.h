@@ -27,6 +27,7 @@ namespace schwi {
 			std::string prefix = TypeCheck();
 			std::string path = prefix + filename;
 			auto Ptr = std::make_shared<T>(path);
+			Ptr->info(filename);
 			map.emplace(filename, Ptr);
 			return Ptr;
 		}

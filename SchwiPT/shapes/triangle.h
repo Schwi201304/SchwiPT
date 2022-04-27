@@ -58,7 +58,7 @@ namespace schwi {
 
 		virtual bool Intersect(const Ray& r, Intersection* out_isect)const override{
 			Ray ray = frame->ToLocal(r);
-			//TODO: 修改光线求交
+			
 			const Point3d& A = mesh->p[v[0]];
 			const Point3d& B = mesh->p[v[1]];
 			const Point3d& C = mesh->p[v[2]];
@@ -89,13 +89,15 @@ namespace schwi {
 			Normal3d normal = Normal3d(Cross(E1, E2));
 
 			double alpha = 1 - beta - gamma;
+			if (alpha < 0 || alpha>1)return false;
+			//std::cout << alpha << std::endl;
 			Point2d uv= mesh->uv[v[0]] * alpha + mesh->uv[v[1]] * beta + mesh->uv[v[2]] * gamma;
 			*out_isect = Intersection(
 				frame->ToWorld(hit_point),
 				frame->ToWorld(normal),
 				-r.direction(),
 				uv);
-			std::cout << t << std::endl;
+			//std::cout << t << std::endl;
 			return true;
 		}
 		/*

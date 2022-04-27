@@ -101,10 +101,12 @@ namespace schwi {
 			ImageSPtr texImg = imageManager.Add("diffuse.png");
 			ModelSPtr head = modelManager.Add("head.obj");
 
-			auto shapeList = CreateTriangleMaeh(head, Frame({ 1,0,0 } , { 0,1,0} ,{ 0,0,1 }));
+			auto shapeList = CreateTriangleMaeh(head, Frame({ 1,0,0 }, { 0,1,0 }, { 0,0,1 }));
 
-			ShapeSPtr light = std::make_shared<Sphere>(Point3d(50, 681.6 - .27, -81.6), 600);
-			shapeList.push_back(light);
+			ShapeSPtr light = std::make_shared<Sphere>(Point3d(0, 60, 0), 40);
+			ShapeSPtr sp = std::make_shared<Sphere>(Point3d(0, 0, 30), 10);
+			ShapeSPtr earth = std::make_shared<Sphere>(Point3d(0, -1e3 - 60, 0), 1e3);
+			shapeList.insert(shapeList.end(), { light,sp ,earth });
 
 			TextureSPtr blackConst = std::make_shared<ConstantTexture<Color>>(Color(.0, .0, .0));
 			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .25, .25));
@@ -120,12 +122,16 @@ namespace schwi {
 			MaterialSPtr red = std::make_shared<Matte>(redConst);
 			MaterialList materialList{ headMat ,black,red };
 
-			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
+			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(1, 1, 1), light.get());
 			LightList lightList{ area_light };
 
-			std::vector<Primitive> primitiveList{ { light.get(),black.get(),area_light.get()} };
+			std::vector<Primitive> primitiveList{
+				{ light.get(),red.get(),area_light.get()},
+				//{sp.get(),headMat.get(),nullptr},
+				//{earth.get(),red.get(),area_light.get()}
+			};
 			for (int i = 0; i < head->nfaces(); i++) {
-				primitiveList.push_back({ shapeList[i].get(),red.get(),nullptr });
+				primitiveList.push_back({ shapeList[i].get(),headMat.get(),nullptr });
 			}
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
