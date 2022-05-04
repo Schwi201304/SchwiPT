@@ -30,6 +30,9 @@
     <ClInclude Include="textures\texture.h" />
     <ClInclude Include="SchwiLib\image\image.h" />
     <ClInclude Include="textures\constant.h" />
+    <ClInclude Include="integrators\whitted.h" />
+    <ClInclude Include="shapes\disk.h" />
+    <ClInclude Include="shapes\rectangle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp" />

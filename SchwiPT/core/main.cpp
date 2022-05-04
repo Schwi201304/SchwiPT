@@ -7,6 +7,7 @@
 #include<core/scene.h>
 #include<integrators/integrator.h>
 #include<integrators/path.h>
+#include<integrators/whitted.h>
 
 using namespace schwi;
 using namespace std;
@@ -24,19 +25,19 @@ int main() {
 
 	unique_ptr<Sampler> originalSampler = make_unique<RandomSampler>(spp);
 
-	unique_ptr<Camera> camera=make_unique<PerspectiveCamera>(
+	unique_ptr<Camera> camera = make_unique<PerspectiveCamera>(
 		Point3d{ 0, 0, 200 },
 		Vector3d{ 0, 0, -1 }.Normalize(),
 		Vector3d{ 0, 1, 0 },
-		53, 
-		Vector2i(width,height));
+		53,
+		Vector2i(width, height));
 
-	auto scene = Scene::CreatHeadScene();
+	auto scene = Scene::CreatCornellBox();
 
-	unique_ptr<Integrator> integrator = make_unique<PathIntegrator>(10);
+	unique_ptr<Integrator> integrator = make_unique<WhittedIntegrator>(10);
 	integrator->Render(scene, *camera, *originalSampler, img);
 
-	img.write_file("out.png");
+	img.write_file("out.png", false);
 
 #if defined(_WIN32) || defined(_WIN64)
 	system("mspaint out.png");

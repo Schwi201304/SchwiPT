@@ -13,6 +13,7 @@ namespace schwi {
 		Normal3d normal{};
 		Vector3d wo{};
 		Point2d uv{};
+		double depth{};
 
 	private:
 		Color emission{};
@@ -24,8 +25,8 @@ namespace schwi {
 
 	public:
 		Intersection() = default;
-		Intersection(Point3d p, Normal3d n, Vector3d wo, Point2d uv = Point2d{ 0,0 })
-			:position(p), normal(n), wo(wo),uv(uv) {}
+		Intersection(Point3d p, Normal3d n, Vector3d wo, Point2d uv = Point2d{ .5,.5 })
+			:position(p), normal(n), wo(wo), uv(uv) {}
 
 		//const Surface* surface()const { return surface; }
 		const BSDF* bsdf() const { return bsdfPtr.get(); }

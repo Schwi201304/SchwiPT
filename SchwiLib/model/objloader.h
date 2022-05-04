@@ -71,7 +71,7 @@ namespace schwi {
                     iss >> trash >> trash;
                     Point2d uv;
                     for (int i = 0; i < 2; i++) iss >> uv[i];
-                    tex.push_back({ uv.x, 1 - uv.y });
+                    tex.push_back({ uv.x, uv.y });
                 }
                 else if (!line.compare(0, 2, "f ")) {
                     int f, t, n;

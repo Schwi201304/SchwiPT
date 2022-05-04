@@ -12,6 +12,7 @@ namespace schwi {
 		Vector3d t{ 0,1,0 };
 		Vector3d n{ 0,0,1 };
 	public:
+		Frame() = default;
 		Frame(const Vector3d& s, const Vector3d& t, const Vector3d& n, const Point3d& origin = Point3d(0, 0, 0))
 			:s(s.Normalize()), t(t.Normalize()), n(n.Normalize()), origin(origin) {}
 

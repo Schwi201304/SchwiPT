@@ -47,7 +47,7 @@ namespace schwi {
 		}
 
 		inline Vector2<double> Normalize() {
-			return (*this)/Length();
+			return (*this) / Length();
 		}
 	};
 
@@ -83,7 +83,12 @@ namespace schwi {
 	}
 
 	template<typename T>
-	inline double Dot(const Vector2<T>& u,const Vector2<T>& v) {
+	inline bool operator<(const Vector2<T>& u, const Vector2<T>& v) {
+		return u.x < v.x&& u.y < v.y;
+	}
+
+	template<typename T>
+	inline double Dot(const Vector2<T>& u, const Vector2<T>& v) {
 		return u.x * v.x + u.y * v.y;
 	}
 
@@ -120,5 +125,10 @@ namespace schwi {
 	template<typename T>
 	inline Vector2<T> Permute(const Vector2<T>& v, int x, int y) {
 		return Vector2<T>(v[x], v[y]);
+	}
+
+	template<typename T>
+	inline Vector2<T> Abs(const Vector2<T>& v) {
+		return Vector2<T>(std::abs(v.x), std::abs(v.y));
 	}
 }

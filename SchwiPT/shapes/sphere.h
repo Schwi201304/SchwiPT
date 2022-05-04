@@ -9,7 +9,7 @@ namespace schwi {
 		double radius, radius_sq;
 
 	public:
-		Sphere(Point3d c, double r,const Frame* frame=nullptr)
+		Sphere(Point3d c, double r,const Frame* frame=new Frame())
 			:center(c), radius(r), radius_sq(r* r),Shape(frame) {}
 
 		virtual bool Intersect(
@@ -37,7 +37,7 @@ namespace schwi {
 				Point3d hit_point = ray(t);
 				Normal3d normal = Normal3d((hit_point - center).Normalize());
 
-				double u = (-std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
+				double u = (std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
 				double v = acos(normal.z) * InvPi;
 
 				*out_isect = Intersection(

@@ -4,14 +4,14 @@
 
 namespace schwi {
 	template<typename T>
-	class Vector3 :public vec3<T>{
-	public:	
+	class Vector3 :public vec3<T> {
+	public:
 		Vector3() :vec3<T>() {};
-		Vector3(T _x, T _y, T _z) :vec3<T>( _x, _y, _z ) {}
+		Vector3(T _x, T _y, T _z) :vec3<T>(_x, _y, _z) {}
 		template <typename U>
-		explicit Vector3(const vec3<U>& v):vec3<T>(v){}
+		explicit Vector3(const vec3<U>& v) :vec3<T>(v) {}
 
-		Vector3<T> operator-() const { 
+		Vector3<T> operator-() const {
 			return Vector3<T>(-this->x, -this->y, -this->z);
 		}
 
@@ -94,10 +94,20 @@ namespace schwi {
 	}
 
 	template<typename T>
+	inline bool operator<(const Vector3<T>& u, const Vector3<T>& v) {
+		return u.x < v.x&& u.y < v.y&& u.z < v.z;
+	}
+
+	template<typename T>
 	inline double Dot(const Vector3<T>& u, const Vector3<T>& v) {
 		return u.x * v.x
 			+ u.y * v.y
 			+ u.z * v.z;
+	}
+
+	template<typename T>
+	inline double AbsDot(const Vector3<T>& u, const Vector3<T>& v) {
+		return std::abs(Dot(u, v));
 	}
 
 	template<typename T>

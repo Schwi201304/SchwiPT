@@ -15,7 +15,7 @@
 
 - [x] Sphere
 - [ ] Cylinder
-- [ ] Cube
+- [x] Disk&Rectangle&Box
 - [ ] Triangle Mesh
 
 ### Light

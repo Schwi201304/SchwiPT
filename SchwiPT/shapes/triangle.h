@@ -7,16 +7,18 @@ namespace schwi {
 	struct TriangleMesh {
 		TriangleMesh(const Frame& frame, int nTriangles,
 			const int* vertexIndices, int nVertices, const Point3d* P,
-			const Vector3d* S, const Normal3d* N, const Point2d* UV,
+			const Vector3d* S, const Normal3d* N,
+			const int* UVIndices,const Point2d* UV,
 			const std::shared_ptr<Texture<double>>& alphaMask)
 			: nTriangles(nTriangles),
 			nVertices(nVertices),
 			vertexIndices(vertexIndices, vertexIndices + 3 * nTriangles),
+			UVIndices(UVIndices,UVIndices+3*nTriangles),
 			alphaMask(alphaMask) {
 			// Transform mesh vertices to world space
 			p.reset(new Point3d[nVertices]);
 			for (int i = 0; i < nVertices; ++i)
-				p[i] = frame.ToWorld(P[i])*30.;
+				p[i] = frame.ToWorld(P[i])*50.;
 
 			// Copy _UV_, _N_, and _S_ vertex data, if present
 			if (UV) {
@@ -35,6 +37,7 @@ namespace schwi {
 
 		const int nTriangles, nVertices;
 		std::vector<int> vertexIndices;
+		std::vector<int> UVIndices;
 		std::unique_ptr<Point3d[]> p;
 		std::unique_ptr<Normal3d[]> n;
 		std::unique_ptr<Vector3d[]> s;
@@ -47,12 +50,14 @@ namespace schwi {
 	private:
 		std::shared_ptr<TriangleMesh> mesh;
 		const int* v;
+		const int* UV;
 		int faceIndex;
 
 	public:
 		Triangle(const Frame* frame,const std::shared_ptr<TriangleMesh>&mesh,int triNum):
 			Shape(frame),mesh(mesh){
 			v = &mesh->vertexIndices[3 * triNum];
+			UV = &mesh->UVIndices[3 * triNum];
 			faceIndex = mesh->faceIndices.size() ? mesh->faceIndices[triNum] : 0;
 		}
 
@@ -69,8 +74,6 @@ namespace schwi {
 			Vector3d S1 = Cross(ray.direction(), E2);
 			double det = Dot(E1, S1);
 
-			//back facing
-			//if(det<0)
 			if (det < epsilon)return false;
 			if (std::abs(det) < epsilon)return false;
 
@@ -84,6 +87,7 @@ namespace schwi {
 			if (gamma < 0 || gamma>1)return false;
 
 			double t = Dot(E2, S2) * invDet;
+			if (t >= r.distance())return false;
 			r.set_distance(t);
 			Point3d hit_point = r(t);
 			Normal3d normal = Normal3d(Cross(E1, E2));
@@ -91,12 +95,13 @@ namespace schwi {
 			double alpha = 1 - beta - gamma;
 			if (alpha < 0 || alpha>1)return false;
 			//std::cout << alpha << std::endl;
-			Point2d uv= mesh->uv[v[0]] * alpha + mesh->uv[v[1]] * beta + mesh->uv[v[2]] * gamma;
+			Point2d uv= mesh->uv[UV[0]] * alpha + mesh->uv[UV[1]] * beta + mesh->uv[UV[2]] * gamma;
 			*out_isect = Intersection(
 				frame->ToWorld(hit_point),
 				frame->ToWorld(normal),
 				-r.direction(),
 				uv);
+			out_isect->depth = t;
 			//std::cout << t << std::endl;
 			return true;
 		}
@@ -133,7 +138,7 @@ namespace schwi {
 	std::vector<std::shared_ptr<Shape>> CreateTriangleMaeh(const ModelSPtr& model,const Frame& frame) {
 		std::shared_ptr<TriangleMesh> mesh = std::make_shared<TriangleMesh>(frame,
 			model->nfaces(), model->facet_vert.data(), model->nverts(),
-			model->vert.data(), nullptr, model->norm.data(), model->tex.data(), nullptr);
+			model->vert.data(), nullptr, model->norm.data(),model->facet_tex.data(), model->tex.data(), nullptr);
 
 		std::vector<std::shared_ptr<Shape>> tris;
 		int nTriangles = model->nfaces();
