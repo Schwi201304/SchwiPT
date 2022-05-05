@@ -36,6 +36,7 @@ namespace schwi {
 					return true;
 				}
 			}
+			return false;
 		}
 	};
 
@@ -60,14 +61,16 @@ namespace schwi {
 			Ray ray = frame->ToLocal(r);
 
 			bool hit = false;
-			for (auto rect : rectList) {
+			for (const auto& rect : rectList) {
 				bool rect_hit = rect->Intersect(ray, out_isect);
 				hit = hit ? hit : rect_hit;
 			}
-			r.set_distance(ray.distance());
-			out_isect->position = frame->ToWorld(out_isect->position);
-			out_isect->normal = frame->ToWorld(out_isect->normal);
-			out_isect->wo = frame->ToWorld(out_isect->wo);
+			if (hit) {
+				r.set_distance(ray.distance());
+				out_isect->position = frame->ToWorld(out_isect->position);
+				out_isect->normal = frame->ToWorld(out_isect->normal);
+				out_isect->wo = frame->ToWorld(out_isect->wo);
+			}
 			return hit;
 		}
 	};

@@ -7,7 +7,7 @@
 #include<core/scene.h>
 #include<integrators/integrator.h>
 #include<integrators/path.h>
-#include<integrators/whitted.h>
+#include<integrators/debug.h>
 
 using namespace schwi;
 using namespace std;
@@ -15,7 +15,7 @@ using namespace std;
 constexpr int width = 400;
 constexpr int height = 400;
 
-constexpr int spp = 100;
+constexpr int spp = 10000;
 constexpr int maxDepth = 10;
 
 int main() {
@@ -34,7 +34,8 @@ int main() {
 
 	auto scene = Scene::CreatCornellBox();
 
-	unique_ptr<Integrator> integrator = make_unique<WhittedIntegrator>(10);
+	unique_ptr<Integrator> integrator = make_unique<PathIntegrator>(maxDepth);
+	//unique_ptr<Integrator> integrator = make_unique<DebugIntegrator>(2);
 	integrator->Render(scene, *camera, *originalSampler, img);
 
 	img.write_file("out.png", false);

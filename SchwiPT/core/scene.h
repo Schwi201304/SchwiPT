@@ -157,20 +157,20 @@ namespace schwi {
 			double x, y, z;
 			x = y = z = 35;
 
-			ShapeSPtr disk = std::make_shared<Disk>(20, new Frame{ {1,0,0},{0,0,1},{0,-1,0},{0,y - .1,0} });
+			ShapeSPtr disk = std::make_shared<Disk>(15, new Frame{ {1,0,0},{0,0,1},{0,-1,0},{0,y - .1,0} });
 			ShapeSPtr up = std::make_shared<Rectangle>(Vector2d(x, y), new Frame{ {1,0,0},{0,0,1},{0,-1,0},{0,z,0 } });
 			ShapeSPtr down = std::make_shared<Rectangle>(Vector2d(x, y), new Frame{ {1,0,0},{0,0,-1},{0,1,0},{0,-z,0 } });
 			ShapeSPtr left = std::make_shared<Rectangle>(Vector2d(y, z), new Frame{ {0,0,-1},{0,1,0},{1,0,0},{x,0,0} });
 			ShapeSPtr right = std::make_shared<Rectangle>(Vector2d(y, z), new Frame{ {0,0,1},{0,1,0},{-1,0,0},{-x,0,0} });
 			ShapeSPtr back = std::make_shared<Rectangle>(Vector2d(x, z), new Frame{ {1,0,0},{0,1,0},{0,0,1},{0,0,-y} });
-			ShapeSPtr box = std::make_shared<Box>(Vector3d(10, 10, 20), new Frame{ {10,0,-1},{0,1,0},{1,0,10},{x - 20,-y + 20,-z + 30} });
-			ShapeSPtr box2 = std::make_shared<Box>(Vector3d(10, 10, 10), new Frame{ {1,0,0},{0,1,0},{0,0,1},{-x + 10,-y + 10,z - 20} });
+			ShapeSPtr box = std::make_shared<Box>(Vector3d(10, 10, 10), new Frame{ {4,0,1},{0,1,0},{-1,0,4},{-x + 20,-y + 10,z - 20} });
+			ShapeSPtr box2 = std::make_shared<Box>(Vector3d(10, 10, 20), new Frame{ {5,0,-1},{0,1,0},{1,0,5},{x - 25,-y + 20,-z + 30} });
 			ShapeList shapeList{ disk,up,down,left,right,back,box,box2 };
 
 
-			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .75, .75));
-			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .25, .25));
-			TextureSPtr greenConst = std::make_shared<ConstantTexture<Color>>(Color(.25, .75, .25));
+			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
+			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(1., 0., 0.));
+			TextureSPtr greenConst = std::make_shared<ConstantTexture<Color>>(Color(0., 1., 0.));
 			TextureSPtr blackConst = std::make_shared<ConstantTexture<Color>>(Color(.0, .0, .0));
 			TextureList textureList{ whiteConst ,redConst ,greenConst,blackConst };
 
@@ -180,17 +180,17 @@ namespace schwi {
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
 			MaterialList materialList{ white,red,green,black };
 
-			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(Color(10, 10, 10), disk.get());
+			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(Color(5, 5, 5), disk.get());
 			LightList lightList{ disk_light };
 
 			PrimitiveList primitiveList{
-				//{box.get(),white.get(),nullptr},
-				//{box2.get(),white.get(),nullptr},
+				{box.get(),white.get(),nullptr},
+				{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},
 				{down.get(),white.get(),nullptr},
 				{back.get(),white.get(),nullptr},
-				{left.get(),red.get(),nullptr},
-				{right.get(),green.get(),nullptr},
+				{left.get(),green.get(),nullptr},
+				{right.get(),red.get(),nullptr},
 				{disk.get(),white.get(),disk_light.get()}
 			};
 

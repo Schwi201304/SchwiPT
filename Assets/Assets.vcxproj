@@ -166,7 +166,9 @@
     <ClInclude Include="AssetManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="img\diffuse.png" />
     <Image Include="img\earthmap.png" />
+    <Image Include="img\specular.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SchwiLib\SchwiLib.vcxproj">
