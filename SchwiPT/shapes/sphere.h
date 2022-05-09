@@ -9,14 +9,14 @@ namespace schwi {
 		double radius, radius_sq;
 
 	public:
-		Sphere(Point3d c, double r,const Frame* frame=new Frame())
+		Sphere(Point3d c, double r,const Frame* frame)
 			:center(c), radius(r), radius_sq(r* r),Shape(frame) {}
 
 		virtual bool Intersect(
 			const Ray& r, Intersection* out_isect
 		)const override {
 			Ray ray = frame->ToLocal(r);
-
+			
 			Vector3d oc = center - ray.origin();
 			double neg_b = Dot(oc, ray.direction());
 			double discr = neg_b * neg_b - Dot(oc, oc) + radius_sq;

@@ -12,6 +12,9 @@ namespace schwi {
 		const Frame* frame;
 
 	public:
+		~Shape() {
+			delete frame;
+		}
 		Shape(const Frame* frame) :
 			frame(frame) {}
 

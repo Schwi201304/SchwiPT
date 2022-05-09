@@ -15,7 +15,7 @@ using namespace std;
 constexpr int width = 400;
 constexpr int height = 400;
 
-constexpr int spp = 10000;
+constexpr int spp = 100;
 constexpr int maxDepth = 10;
 
 int main() {
@@ -27,7 +27,7 @@ int main() {
 
 	unique_ptr<Camera> camera = make_unique<PerspectiveCamera>(
 		Point3d{ 0, 0, 200 },
-		Vector3d{ 0, 0, -1 }.Normalize(),
+		Vector3d{ 0, 0, -1 },
 		Vector3d{ 0, 1, 0 },
 		53,
 		Vector2i(width, height));
@@ -35,7 +35,7 @@ int main() {
 	auto scene = Scene::CreatCornellBox();
 
 	unique_ptr<Integrator> integrator = make_unique<PathIntegrator>(maxDepth);
-	//unique_ptr<Integrator> integrator = make_unique<DebugIntegrator>(2);
+	//unique_ptr<Integrator> integrator = make_unique<DebugIntegrator>(1);
 	integrator->Render(scene, *camera, *originalSampler, img);
 
 	img.write_file("out.png", false);

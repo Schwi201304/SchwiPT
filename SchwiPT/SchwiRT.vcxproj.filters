@@ -33,6 +33,7 @@
     <ClInclude Include="integrators\debug.h" />
     <ClInclude Include="shapes\disk.h" />
     <ClInclude Include="shapes\rectangle.h" />
+    <ClInclude Include="shapes\cylinder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp" />

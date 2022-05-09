@@ -9,7 +9,7 @@ namespace schwi {
 		int depth;
 
 	public:
-		DebugIntegrator(int maxDepth):depth(depth){
+		DebugIntegrator(int depth):depth(depth){
 			fprintf(stderr, "Debug Integrator #  depth:%d\n", depth);
 		}
 
