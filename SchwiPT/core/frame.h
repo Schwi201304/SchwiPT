@@ -58,6 +58,7 @@ namespace schwi {
 		const Vector3d& binormal()const { return s; }
 		const Vector3d& tangent()const { return t; }
 		const Vector3d& normal()const { return n; }
+		const Point3d& position()const { return origin; }
 
 	private:
 		void set_from_z() {

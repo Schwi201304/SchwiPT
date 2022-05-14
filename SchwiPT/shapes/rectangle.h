@@ -38,14 +38,36 @@ namespace schwi {
 			}
 			return false;
 		}
+
+		virtual Bounds3d WorldBound() const override {
+			Bounds3d b0(frame->ToWorld(Point3d(wh.x, wh.y, 0)), frame->ToWorld(Point3d(wh.x, -wh.y, 0)));
+			Bounds3d b1(frame->ToWorld(Point3d(-wh.x, wh.y, 0)), frame->ToWorld(Point3d(-wh.x, -wh.y, 0)));
+			return Union(b0,b1);
+		}
+
+		virtual double Area()const override {
+			return 4 * wh.x * wh.y;
+		}
+
+		virtual Intersection SamplePosition(
+			const Vector2d& random, double* pdf
+		)const override {
+			Intersection isect;
+			isect.position = frame->ToWorld(Point3d(wh.x - 2 * wh.x * random[1], wh.y - 2 * wh.y * random[0],0));
+			isect.normal = Normal3d(frame->normal());
+
+			*pdf = 1 / Area();
+			return std::move(isect);
+		}
 	};
 
 	class Box :public Shape {
 	private:
 		ShapeList rectList;
+		Vector3d p;
 
 	public:
-		Box(const Vector3d& p, const Frame* frame) :Shape(frame) {
+		Box(const Vector3d& p, const Frame* frame) :p(p), Shape(frame) {
 			ShapeSPtr up = std::make_shared<Rectangle>(Vector2d(p.x, p.y), new Frame{ {1,0,0},{0,0,1},{0,-1,0},{0,p.z,0 } });
 			ShapeSPtr down = std::make_shared<Rectangle>(Vector2d(p.x, p.y), new Frame{ {1,0,0},{0,0,-1},{0,1,0},{0,-p.z,0 } });
 			ShapeSPtr left = std::make_shared<Rectangle>(Vector2d(p.y, p.z), new Frame{ {0,0,-1},{0,1,0},{1,0,0},{-p.x,0,0} });
@@ -72,6 +94,23 @@ namespace schwi {
 				out_isect->wo = frame->ToWorld(out_isect->wo);
 			}
 			return hit;
+		}
+
+		virtual Bounds3d WorldBound() const override {
+			auto position = frame->position();
+			return Bounds3d(position - p, position + p);
+		}
+
+		virtual double Area()const override {
+			return 8 * (p.x * p.y + p.y * p.z + p.z * p.x);
+		}
+
+		virtual Intersection SamplePosition(
+			const Vector2d& random, double* pdf
+		)const override {
+			*pdf = 1 / Area();
+			std::cerr << "Box SamplePosition Error" << std::endl;
+			return Intersection();
 		}
 	};
 }

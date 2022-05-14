@@ -10,7 +10,7 @@ namespace schwi {
 		Vector3d right;
 		Vector3d up;
 		Vector2i resolution;
-		double depth=40;
+		double depth = 40;
 
 	public:
 		PerspectiveCamera(
@@ -21,15 +21,15 @@ namespace schwi {
 			up(up),
 			resolution(resolution) {
 			double tan_fov = std::tan(ToRadians(fov) / 2);
-			right = Cross(front,up ).Normalize() * tan_fov*Aspect();
-			this->up = Cross(front, right).Normalize() * tan_fov;
+			right = Cross(front, up).Normalize() * tan_fov * Aspect();
+			this->up = Cross(right, front).Normalize() * tan_fov;
 		}
 
 		virtual Ray GenerateRay(const CameraSample& sample)const override {
 			Vector3d direction = front
 				+ right * (sample.SamplePoint.x / resolution.x - .5)
-				+ up * (sample.SamplePoint.y / resolution.y-.5);
-			
+				+ up * (.5 - sample.SamplePoint.y / resolution.y);
+
 			return Ray(position + direction * depth, direction.Normalize());
 		}
 

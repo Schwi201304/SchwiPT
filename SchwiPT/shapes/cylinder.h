@@ -60,5 +60,23 @@ namespace schwi {
 			//std::cout << t << std::endl;
 			return true;
 		}
+
+		virtual Bounds3d WorldBound() const override {
+			auto position = frame->position();
+			auto half = Vector3d(radius, radius, height / 2);
+			return Bounds3d(position - half, position + half);
+		}
+
+		virtual double Area()const override {
+			return 2 * Pi * radius * height;
+		}
+
+		virtual Intersection SamplePosition(
+			const Vector2d& random, double* pdf
+		)const override {
+			*pdf = 1 / Area();
+			std::cerr << "Cylinder SamplePosition Error" << std::endl;
+			return Intersection();
+		}
 	};
 }

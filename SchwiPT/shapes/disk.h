@@ -35,5 +35,30 @@ namespace schwi {
 			}
 			return false;
 		}
+
+		virtual Bounds3d WorldBound() const override {
+			auto position = frame->position();
+			auto offset = frame->binormal() * radius + frame->tangent() * radius;
+			return Bounds3d(position - offset, position + offset);
+		}
+
+		virtual double Area()const override {
+			return radius * radius * Pi;
+		}
+
+		virtual Intersection SamplePosition(
+			const Vector2d& random, double* pdf
+		)const override {
+			Intersection isect;
+
+			Point2d sample_point = SampleDiskConcentric(random);
+			isect.position = frame->position()
+				+ radius * (frame->binormal() * sample_point.x
+					+ frame->tangent() * sample_point.y);
+			isect.normal = Normal3d(frame->normal());
+
+			*pdf = 1 / Area();
+			return std::move(isect);
+		}
 	};
 }

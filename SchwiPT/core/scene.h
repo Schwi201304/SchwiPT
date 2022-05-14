@@ -78,7 +78,7 @@ namespace schwi {
 			MaterialSPtr glass_mat = std::make_shared<Dielectric>(whiteConst, whiteConst, Fresnel::Glass);
 			MaterialList materialList{ red, blue, gray, black,earth, mirror_mat, glass_mat, plastic_mat };
 
-			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(10, 10, 10), light.get());
+			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(light->frame->position(), 1, Color(10, 10, 10), light.get());
 			LightList lightList{ area_light };
 
 
@@ -135,8 +135,8 @@ namespace schwi {
 			MaterialSPtr red = std::make_shared<Matte>(redConst);
 			MaterialList materialList{ headMat ,black,red };
 
-			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(Color(1, 1, 1), light.get());
-			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(Color(10, 10, 10), disk.get());
+			std::shared_ptr<AreaLight> area_light = std::make_shared<AreaLight>(light->frame->position(), 1, Color(1, 1, 1), light.get());
+			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(10, 10, 10), disk.get());
 			LightList lightList{ area_light,disk_light };
 
 			PrimitiveList primitiveList{
@@ -183,14 +183,14 @@ namespace schwi {
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
 			MaterialList materialList{ white,red,green,black };
 
-			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(Color(5, 5, 5), disk.get());
+			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(),1,Color(5, 5, 5), disk.get());
 			LightList lightList{ disk_light };
 
 			PrimitiveList primitiveList{
 				{box.get(),white.get(),nullptr},
-				{cy.get(),red.get(),nullptr},
-				{cover.get(),red.get(),nullptr},
-				//{box2.get(),green.get(),nullptr},
+				//{cy.get(),red.get(),nullptr},
+				//{cover.get(),red.get(),nullptr},
+				{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},
 				{down.get(),white.get(),nullptr},
 				{back.get(),white.get(),nullptr},

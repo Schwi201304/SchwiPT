@@ -105,34 +105,31 @@ namespace schwi {
 			//std::cout << t << std::endl;
 			return true;
 		}
-		/*
+
 		virtual Bounds3d WorldBound()const override {
-			//TODO
 			Bounds3d bound(mesh->p[v[0]], mesh->p[v[1]]);
-			return bound;
+			return Union(bound,mesh->p[v[2]]);
 		}
 
 		virtual double Area()const override {
-			return .1;
+			return Cross(mesh->p[v[1]]-mesh->p[v[0]], mesh->p[v[2]] - mesh->p[v[0]]).Length()/2;
 		}
+		
+		virtual Intersection SamplePosition(
+			const Vector2d& random, double* pdf
+		)const override {
+			double su0 = std::sqrt(random[0]);
+			Point2d b(1 - su0, random[1] * su0);
 
-	private:
-		void GetUVs(Point2d uv[3])const {
-			if (mesh->uv) {
-				uv[0] = mesh->uv[v[0]];
-				uv[1] = mesh->uv[v[1]];
-				uv[2] = mesh->uv[v[2]];
-			}
-			else {
-				uv[0] = Point2d(0, 0);
-				uv[1] = Point2d(1, 0);
-				uv[2] = Point2d(1, 1);
-			}
+			Intersection isect;
+			isect.position = b.x * mesh->p[v[0]] 
+				+ b.y * mesh->p[v[1]] 
+				+ (1 - b.x - b.y) * mesh->p[v[2]];
+			isect.normal = Normal3d(frame->normal());
+
+			*pdf = 1 / Area();
+			return std::move(isect);
 		}
-
-		Point2d Barycentric(double alpha,double beta,double gamma) {
-			
-		}*/
 	};
 
 	std::vector<std::shared_ptr<Shape>> CreateTriangleMaeh(const ModelSPtr& model,const Frame& frame) {
