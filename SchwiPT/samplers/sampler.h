@@ -67,7 +67,6 @@ namespace schwi {
 	}
 
 	inline Vector3d SampleHemisphereCosine(const Vector2d& random) {
-		//TODO: Uniform|Concentric
 		Point2d d = SampleDiskUniform(random);
 		double z = std::sqrt(std::max(0., 1 - d.x * d.x - d.y * d.y));
 		return Vector3d(d.x, d.y, z);

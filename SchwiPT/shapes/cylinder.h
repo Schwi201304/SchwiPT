@@ -20,15 +20,15 @@ namespace schwi {
 			Point3d o = ray.origin();
 			Vector3d d = ray.direction();
 
-			double a = 1 / (d.x * d.x + d.y + d.y);
+			double a = 1/(d.x * d.x + d.y * d.y);
 			double b = (d.x * o.x + d.y * o.y) * a;
-			double c = (o.x * o.x + o.y * o.y - radius * radius) * a;
+			double c = (o.x * o.x + o.y * o.y - radius * radius)*a;
 
 			double discr = b * b - c;
 			if (discr < 0)return false;
 			double sqrt_discr = std::sqrt(discr);
-			double t0 = -b - sqrt_discr;
-			double t1 = -b + sqrt_discr;
+			double t0 =-b - sqrt_discr;
+			double t1 =-b + sqrt_discr;
 			if (t0 > ray.distance() || t1 <= 0)return false;
 
 			double t = t0;
@@ -47,7 +47,6 @@ namespace schwi {
 			}
 			r.set_distance(t);
 			Normal3d normal = Normal3d(p.x, p.y, 0).Normalize();
-			normal = Dot(normal, ray.direction()) > 0 ? -normal : normal;
 
 			double u = (std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
 			double v = std::abs(p.z) * 2 / height;
@@ -57,12 +56,12 @@ namespace schwi {
 				frame->ToWorld(normal),
 				-r.direction(),
 				Point2d(u, v));
-			//std::cout << t << std::endl;
+			//std::cerr << t <<std::endl;
 			return true;
 		}
 
 		virtual Bounds3d WorldBound() const override {
-			auto position = frame->position();
+			const auto& position = frame->position();
 			auto half = Vector3d(radius, radius, height / 2);
 			return Bounds3d(position - half, position + half);
 		}

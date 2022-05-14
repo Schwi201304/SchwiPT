@@ -14,7 +14,7 @@
 ### Shape
 
 - [x] Sphere
-- [ ] Cylinder
+- [x] Cylinder
 - [x] Disk&Rectangle&Box
 - [ ] Triangle Mesh
 

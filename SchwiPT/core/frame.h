@@ -48,11 +48,11 @@ namespace schwi {
 		}
 
 		Ray ToLocal(const Ray& ray)const {
-			return Ray(ToLocal(ray.origin()), ToLocal(ray.direction()), ray.distance());
+			return Ray(ToLocal(ray.origin()), ToLocal(ray.direction()).Normalize(), ray.distance());
 		}
 
 		Ray ToWorld(const Ray& ray)const {
-			return Ray(ToWorld(ray.origin()), ToWorld(ray.direction()), ray.distance());
+			return Ray(ToWorld(ray.origin()), ToWorld(ray.direction()).Normalize(), ray.distance());
 		}
 
 		const Vector3d& binormal()const { return s; }

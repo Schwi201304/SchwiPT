@@ -128,7 +128,7 @@ namespace schwi {
 			isect.normal = Normal3d(frame->normal());
 
 			*pdf = 1 / Area();
-			return std::move(isect);
+			return isect;
 		}
 	};
 

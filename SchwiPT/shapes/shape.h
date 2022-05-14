@@ -46,7 +46,7 @@ namespace schwi {
 					*out_pdf_p = 0;
 			}
 
-			return std::move(light_isect);
+			return light_isect;
 		}
 
 		virtual double PdfDirection(

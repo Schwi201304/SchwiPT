@@ -9,13 +9,19 @@
 namespace schwi {
 	struct Primitive {
 		const Shape* shape;
-		const Material* material;
+		const Material* out;
 		const AreaLight* areaLight;
+		//const Material* in=nullptr;
 
 		bool Intersect(Ray& ray, Intersection* isect)const {
 			bool hit = shape->Intersect(ray, isect);
 			if (hit) {
-				isect->bsdfPtr = material->Scattering(*isect);
+				isect->bsdfPtr = out->Scattering(*isect);
+				//isect->bsdfPtr = Dot(isect->wo,isect->normal)>0?
+				//	out->Scattering(*isect):
+				//	in?
+				//	in->Scattering(*isect):
+				//	out->Scattering(*isect);
 				isect->emission = areaLight ?
 					areaLight->Le(*isect, isect->wo) :
 					Color();

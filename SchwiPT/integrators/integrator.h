@@ -32,8 +32,9 @@ namespace schwi {
 						auto cameraSample = sampler->GetCameraSample(Point2d(x, y));
 						auto ray = camera.GenerateRay(cameraSample);
 
-						L = L + Li(ray, scene, *sampler) / sampler->GetSPP();
+						L = L + Li(ray, scene, *sampler);
 					} while (sampler->NextSample());
+					L = L / sampler->GetSPP();
 					img.setColor(x, y, ToByte(L));
 				}
 				finished++;

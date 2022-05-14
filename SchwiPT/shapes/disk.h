@@ -37,7 +37,7 @@ namespace schwi {
 		}
 
 		virtual Bounds3d WorldBound() const override {
-			auto position = frame->position();
+			const auto& position = frame->position();
 			auto offset = frame->binormal() * radius + frame->tangent() * radius;
 			return Bounds3d(position - offset, position + offset);
 		}
@@ -58,7 +58,7 @@ namespace schwi {
 			isect.normal = Normal3d(frame->normal());
 
 			*pdf = 1 / Area();
-			return std::move(isect);
+			return isect;
 		}
 	};
 }

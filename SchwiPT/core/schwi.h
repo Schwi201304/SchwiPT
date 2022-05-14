@@ -9,7 +9,6 @@
 #include<initializer_list>
 #include<typeinfo>
 #include<omp.h>
-#include<format>
 #include <functional>
 
 #include<AssetManager.h>

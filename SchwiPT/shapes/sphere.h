@@ -72,7 +72,7 @@ namespace schwi {
 
 			*pdf = 1 / Area();
 
-			return std::move(isect);
+			return isect;
 		}
 
 		Intersection SampleDirection(
@@ -92,7 +92,7 @@ namespace schwi {
 				if (std::isinf(*pdf))
 					*pdf = 0.;
 
-				return std::move(light_isect);
+				return light_isect;
 			}
 
 			double dist = Distance(isect.position, center);
@@ -129,7 +129,7 @@ namespace schwi {
 
 			*pdf = 1 / (2 * Pi * (1 - cos_theta_max));
 
-			return std::move(light_isect);
+			return light_isect;
 		}
 
 		double PdfDirection(
