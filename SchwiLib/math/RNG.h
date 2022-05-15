@@ -7,7 +7,8 @@
 namespace schwi {
 	class RNG {
 	public:
-		RNG(int seed=1234):rngEngine(seed){}
+		RNG(int seed=std::chrono::system_clock::now().time_since_epoch().count())
+			:rngEngine(seed){}
 
 		double UniformDouble() {
 			return doubleDist(rngEngine);

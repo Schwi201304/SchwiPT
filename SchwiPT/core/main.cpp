@@ -43,6 +43,5 @@ int main() {
 #if defined(_WIN32) || defined(_WIN64)
 	system("mspaint out.png");
 #endif
-
 	return 0;
 }

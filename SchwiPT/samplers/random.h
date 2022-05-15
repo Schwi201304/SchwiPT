@@ -4,7 +4,7 @@
 #include<cameras/camera.h>
 
 namespace schwi {
-	class RandomSampler :public Sampler{
+	class RandomSampler :public Sampler {
 	public:
 		using Sampler::Sampler;
 
@@ -21,7 +21,28 @@ namespace schwi {
 		}
 
 		CameraSample GetCameraSample(Point2d p)override {
-			return { p + rng.UniformVector2d() };
+			return { p + GetVector2d() };
+		}
+	};
+
+	class CRandomSampler :public Sampler {
+	public:
+		using Sampler::Sampler;
+
+		std::unique_ptr<Sampler> Clone()override {
+			return std::make_unique<CRandomSampler>(SamplePerPixel);
+		}
+
+		double GetDouble()override {
+			return std::rand() / (RAND_MAX + 1.);
+		}
+
+		Vector2d GetVector2d()override {
+			return Vector2d(GetDouble(), GetDouble());
+		}
+
+		CameraSample GetCameraSample(Point2d p)override {
+			return { p + GetVector2d() };
 		}
 	};
 }

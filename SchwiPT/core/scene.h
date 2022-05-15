@@ -183,14 +183,15 @@ namespace schwi {
 			MaterialSPtr red = std::make_shared<Matte>(redConst);
 			MaterialSPtr green = std::make_shared<Matte>(greenConst);
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
-			MaterialList materialList{ white,red,green,black };
+			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst);
+			MaterialList materialList{ white,red,green,black,mirror };
 
 			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(5, 5, 5), disk.get());
 			LightList lightList{ disk_light };
 
 			PrimitiveList primitiveList{
 				{box.get(),white.get(),nullptr},
-				{cy.get(),white.get(),nullptr},
+				{cy.get(),mirror.get(),nullptr},
 				{cover.get(),white.get(),nullptr},
 				//{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},

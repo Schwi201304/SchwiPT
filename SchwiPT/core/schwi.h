@@ -3,13 +3,15 @@
 // Global Include Files
 #include<algorithm>
 #include<iostream>
+#include<fstream>
 #include<memory>
 #include<string>
 #include<vector>
 #include<initializer_list>
 #include<typeinfo>
 #include<omp.h>
-#include <functional>
+#include<functional>
+#include<chrono>
 
 #include<AssetManager.h>
 #include<math/math.h>
@@ -25,6 +27,7 @@
 #pragma warning(disable : 4996)
 
 namespace schwi {
+
 	// Global Manager
 	static AssetManager<SchwiImage> imageManager;
 	static AssetManager<Model> modelManager;
@@ -44,7 +47,6 @@ namespace schwi {
 	struct CameraSample;
 	class Shape;
 	class Sampler;
-	class RandomSampler;
 	class BSDF;
 	struct BSDFSample;
 	class Material;
