@@ -28,8 +28,6 @@ namespace schwi {
 				return bs.f;
 			}
 
-
-			//TODO
 			auto uv = isect.uv;
 			//return { uv[0],uv[1],0 };
 			//return { (ray.distance()-100.) / 200.,.0,.0 };

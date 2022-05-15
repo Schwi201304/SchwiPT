@@ -12,6 +12,14 @@
 #include <functional>
 
 #include<AssetManager.h>
+#include<math/math.h>
+#include<math/matrix.h>
+#include<math/vector2.h>
+#include<math/vector3.h>
+#include<math/point2.h>
+#include<math/point3.h>
+#include<math/normal3.h>
+#include<math/RNG.h>
 
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4996)
@@ -35,20 +43,12 @@ namespace schwi {
 	class PerspectiveCamera;
 	struct CameraSample;
 	class Shape;
-	class Sphere;
 	class Sampler;
 	class RandomSampler;
 	class BSDF;
 	struct BSDFSample;
-	class Lambertion;
-	class Specular;
-	class Fresnel;
 	class Material;
-	class Matte;
-	class Mirror;
-	class Dielectric;
 	class Light;
-	class AreaLight;
 	class SchwiImage;
 	class SchwiColor;
 	template <typename T> class Texture;

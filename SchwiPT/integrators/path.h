@@ -17,7 +17,7 @@ namespace schwi {
 			if (!scene.Intersect(ray, &isect)) {
 				return Color();
 			}
-			if (depth > maxDepth) {
+			if (depth >= maxDepth) {
 				return isect.Le();
 			}
 			
@@ -38,7 +38,7 @@ namespace schwi {
 
 			Ray wi(isect.position, bs.wi);
 			return isect.Le() +
-				bs.f * Li(wi, scene, sampler, depth) * std::abs(Dot(bs.wi, isect.normal)) / bs.pdf;
+				bs.f * Li(wi, scene, sampler, depth) * abs(Dot(bs.wi, isect.normal)) / bs.pdf;
 		}
 
 		Color Li(Ray ray, Scene& scene, Sampler& sampler)override {

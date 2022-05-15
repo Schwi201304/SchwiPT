@@ -187,6 +187,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="integrators\debug.h" />
+    <ClInclude Include="samplers\sampling.h" />
     <ClInclude Include="SchwiLib\image\image.h" />
     <ClInclude Include="bxdf\fresnel.h" />
     <ClInclude Include="bxdf\lambertion.h" />

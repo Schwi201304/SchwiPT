@@ -78,6 +78,21 @@ namespace schwi {
 		virtual double PdfLi(const Intersection& isect, const Vector3d& world_wi)const = 0;
 	};
 
+	class PointLight :public Light {
+	private:
+		Color intensity;
+
+	public:
+		PointLight(const Point3d& world_position,int samples_num,Color intensity):
+			Light(world_position,samples_num),
+			intensity(intensity){}
+
+		virtual bool IsDelta() const override { return true; }
+		virtual bool IsFinite() const override { return true; }
+
+		virtual Color Power() const override { return 4 * Pi * intensity; }
+	};
+
 	class AreaLight :public Light {
 	private:
 		Color radiance;

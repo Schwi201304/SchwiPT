@@ -30,7 +30,7 @@ namespace schwi {
 				+ right * (sample.SamplePoint.x / resolution.x - .5)
 				+ up * (.5 - sample.SamplePoint.y / resolution.y);
 
-			return Ray(position + direction * depth, direction.Normalize());
+			return Ray(position/* + direction * depth */ , direction.Normalize());
 		}
 
 	private:

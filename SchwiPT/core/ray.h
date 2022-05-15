@@ -1,13 +1,12 @@
 #pragma once
 
 #include<core/schwi.h>
-#include<math/point3.h>
 
 namespace schwi {
 	class Ray {
 	private:
 		Point3d o;
-		Vector3d d;
+		Vector3d d;//unit vector
 		mutable double t;
 
 	public:

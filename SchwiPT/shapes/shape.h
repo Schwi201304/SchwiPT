@@ -4,6 +4,7 @@
 #include<core/intersection.h>
 #include<core/bounds.h>
 #include<samplers/sampler.h>
+#include<samplers/sampling.h>
 #include<core/frame.h>
 
 namespace schwi {

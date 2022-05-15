@@ -119,12 +119,12 @@ namespace schwi {
 
 	template <typename T>
 	inline T MinComponent(const Vector3<T>& v) {
-		return std::min(v.x, std::min(v.y, v.z));
+		return min({ v.x,v.y, v.z });
 	}
 
 	template <typename T>
 	inline T MaxComponent(const Vector3<T>& v) {
-		return std::max(v.x, std::max(v.y, v.z));
+		return max({ v.x,v.y, v.z });
 	}
 
 	template <typename T>
@@ -182,8 +182,8 @@ namespace schwi {
 		const Vector3d& x, const Vector3d& y, const Vector3d& z)
 	{
 		return
-			sin_theta * std::cos(phi) * x +
-			sin_theta * std::sin(phi) * y +
+			sin_theta * cos(phi) * x +
+			sin_theta * sin(phi) * y +
 			cos_theta * z;
 	}
 }

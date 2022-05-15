@@ -1,16 +1,15 @@
 #pragma once
 
 #include<core/schwi.h>
-#include<math/normal3.h>
 #include<core/ray.h>
 
 namespace schwi {
 	class Frame {
 	private:
 		Point3d origin{ 0,0,0 };
-		Vector3d s{ 1,0,0 };
-		Vector3d t{ 0,1,0 };
-		Vector3d n{ 0,0,1 };
+		Vector3d s{ 1,0,0 };//x
+		Vector3d t{ 0,1,0 };//y
+		Vector3d n{ 0,0,1 };//z
 	public:
 		Frame() = default;
 		Frame(const Vector3d& s, const Vector3d& t, const Vector3d& n, const Point3d& origin = Point3d(0, 0, 0))
@@ -38,7 +37,7 @@ namespace schwi {
 			return Point3d(s * local.x + t * local.y + n * local.z) + Vector3d(origin);
 		}
 
-		//TODO: 法线，切线待定
+		//TODO 法线，切线待定
 		Normal3d ToLocal(const Normal3d& world)const {
 			return Normal3d(Dot(s, world), Dot(t, world), Dot(n, world));
 		}

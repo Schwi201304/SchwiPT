@@ -2,8 +2,6 @@
 
 #include<core/schwi.h>
 #include<core/color.h>
-#include<math/point3.h>
-#include<math/normal3.h>
 #include<core/ray.h>
 
 namespace schwi {

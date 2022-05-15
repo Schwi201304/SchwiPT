@@ -41,27 +41,27 @@ namespace schwi {
 
 		BsdfUPtr Scattering(const Intersection& isect)const override {
 			Color Kr = texture->Evaluate(isect);
-			return std::make_unique<Specular>(Frame(isect.normal), Kr);
+			return std::make_unique<SpecularReflection>(Frame(isect.normal), Kr);
 		}
 	};
-
-	class Dielectric :public Material {
+	
+	class Glass :public Material {
 	private:
 		TextureSPtr TexKr;
 		TextureSPtr TexKt;
 		double eta;
 
 	public:
-		Dielectric(const TextureSPtr& TexKr, const TextureSPtr& TexKt, double eta) :
+		Glass(const TextureSPtr& TexKr, const TextureSPtr& TexKt, double eta) :
 			TexKr(TexKr), TexKt(TexKt), eta(eta) {}
 
 		BsdfUPtr Scattering(const Intersection& isect)const override {
 			Color Kr = TexKr->Evaluate(isect);
 			Color Kt = TexKt->Evaluate(isect);
-			return std::make_unique<Fresnel>(Frame(isect.normal), Kr, Kt, 1, eta);
+			return std::make_unique<FresnelSpecular>(Frame(isect.normal), Kr, Kt, 1, eta);
 		}
 	};
-
+	
 	class Plastic :public Material {
 	private:
 		TextureSPtr TexKd;
@@ -75,7 +75,7 @@ namespace schwi {
 		}
 
 		BsdfUPtr Scattering(const Intersection& isect)const override {
-			Color Kd = TexKd->Evaluate(isect );
+			Color Kd = TexKd->Evaluate(isect);
 			Color Ks = TexKd->Evaluate(isect);
 
 			double diffuse = Kd.Luminance();
@@ -87,7 +87,7 @@ namespace schwi {
 
 			double random = rng.UniformDouble();
 			if (random < specularProbility) {
-				return std::make_unique<Phong>(Frame(isect.normal), Ks / specularProbility, exp);
+				return std::make_unique<PhongSpecularReflection>(Frame(isect.normal), Ks / specularProbility, exp);
 			}
 			else {
 				return std::make_unique<Lambertion>(Frame(isect.normal), Kd / diffuseProbility);

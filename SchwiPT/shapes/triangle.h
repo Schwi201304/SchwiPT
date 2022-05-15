@@ -118,8 +118,7 @@ namespace schwi {
 		virtual Intersection SamplePosition(
 			const Vector2d& random, double* pdf
 		)const override {
-			double su0 = std::sqrt(random[0]);
-			Point2d b(1 - su0, random[1] * su0);
+			Point2d b=SampleTriangleUniform(random);
 
 			Intersection isect;
 			isect.position = b.x * mesh->p[v[0]] 

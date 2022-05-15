@@ -1,27 +1,41 @@
 #pragma once
 
 #include<core/schwi.h>
-#include<math/vector2.h>
-#include<math/vector3.h>
 #include<core/color.h>
 #include<core/frame.h>
 #include<samplers/sampler.h>
+#include<samplers/sampling.h>
 
 namespace schwi {
+
+	enum class BSDFEnum {
+		NONE = 0,
+		REFLECTION = 1 << 0,
+		TRANSMISSION = 1 << 1,
+		SCATTERING = REFLECTION | TRANSMISSION,
+		DIFFUSE = 1 << 2,
+		GLOSSY = 1 << 3,
+		SPECULAR = 1 << 4,
+		ALL = REFLECTION | TRANSMISSION | DIFFUSE | GLOSSY | SPECULAR
+	};
+
+	BSDFEnum operator|(BSDFEnum a, BSDFEnum b) {
+		return BSDFEnum((int)a | (int)b);
+	}
+
+	BSDFEnum operator&(BSDFEnum a, BSDFEnum b) {
+		return BSDFEnum((int)a & (int)b);
+	}
+
+	inline bool IsDeltaBSDF(BSDFEnum type) {
+		return ((int)type & (int)BSDFEnum::SPECULAR) > 0;
+	}
 
 	struct BSDFSample {
 		Color f{};
 		Vector3d wi{};
 		double pdf{};
-	};
-
-	enum class BSDFEnum {
-		BSDF_REFLECTION = 1 << 0,
-		BSDF_TRANSMISSION = 1 << 1,
-		BSDF_DIFFUSE = 1 << 2,
-		BSDF_GLOSSY = 1 << 3,
-		BSDF_SPECULAR = 1 << 4,
-		BSDF_ALL = BSDF_REFLECTION | BSDF_TRANSMISSION | BSDF_DIFFUSE | BSDF_GLOSSY | BSDF_SPECULAR
+		BSDFEnum type;
 	};
 
 	class BSDF {
@@ -29,6 +43,8 @@ namespace schwi {
 		virtual ~BSDF() = default;
 		BSDF(Frame shadingFrame)
 			:shadingFrame(shadingFrame) {}
+
+		virtual bool IsDelta()const = 0;
 
 		Color f(const Vector3d& world_wo, const Vector3d& world_wi)const {
 			return _f(ToLocal(world_wo), ToLocal(world_wi));
@@ -112,7 +128,26 @@ namespace schwi {
 		return w.z * wp.z > 0;
 	}
 
-	inline Vector3d reflect(const Vector3d& wo, const Normal3d& normal) {
+	inline bool SameHemisphere(const Vector3d& w, const Normal3d& wp) {
+		return w.z * wp.z > 0;
+	}
+
+	inline Vector3d Reflect(const Vector3d& wo, const Normal3d& normal) {
 		return -wo + 2 * Dot(wo, normal) * normal;
+	}
+
+	inline bool Refract(const Vector3d& wo, const Normal3d& wo_normal, double eta, Vector3d* out_wt)
+	{
+		double cos_theta_i = Dot(wo_normal, wo);
+		double sin_theta_i_sq = std::max(0., 1. - cos_theta_i * cos_theta_i);
+		double sin_theta_t_sq = eta * eta * sin_theta_i_sq;
+
+		if (sin_theta_t_sq >= 1)
+			return false;
+
+		double cos_theta_t = std::sqrt(1 - sin_theta_t_sq);
+		*out_wt = eta * -wo + (eta * cos_theta_i - cos_theta_t) * Vector3d(wo_normal);
+
+		return true;
 	}
 }

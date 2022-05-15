@@ -11,6 +11,8 @@ namespace schwi {
 		Lambertion(const Frame& shadingFrame, const Color& R):
 			BSDF(shadingFrame), R(R) {}
 
+		virtual bool IsDelta()const override { return false; }
+
 		Color _f(const Vector3d& wo, const Vector3d& wi)const override {
 			return R * InvPi;
 		}
@@ -30,6 +32,7 @@ namespace schwi {
 
 			sample.pdf = _Pdf(wo, sample.wi);
 			sample.f = _f(wo, sample.wi);
+			sample.type = BSDFEnum::REFLECTION | BSDFEnum::DIFFUSE;
 
 			return sample;
 		}

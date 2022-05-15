@@ -39,6 +39,8 @@ namespace schwi {
 		}
 
 	public:
+		/*
+		* 结构调整，原场景无法使用
 		static Scene CreateSmallPTScene() {
 			ShapeSPtr left = std::make_shared<Sphere>(Point3d(-1e5 - 40, 0, 0), 1e5, new Frame());
 			ShapeSPtr right = std::make_shared<Sphere>(Point3d(1e5 + 40, 0, 0), 1e5, new Frame());
@@ -153,7 +155,7 @@ namespace schwi {
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
 		}
-
+		*/
 		static Scene CreatCornellBox() {
 			double x, y, z;
 			x = y = z = 35;
