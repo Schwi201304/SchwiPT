@@ -5,12 +5,12 @@
 namespace schwi {
 	class Sphere :public Shape {
 	private:
-		Point3d center;
+		Point3d center{ 0,0,0 };
 		double radius, radius_sq;
 
 	public:
-		Sphere(Point3d c, double r, const Frame* frame)
-			:center(c), radius(r), radius_sq(r* r), Shape(frame) {}
+		Sphere(double r, const Frame* frame)
+			:radius(r), radius_sq(r* r), Shape(frame) {}
 
 		virtual bool Intersect(
 			const Ray& r, Intersection* out_isect

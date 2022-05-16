@@ -4,9 +4,10 @@
 
 ## TODO
 
-1. 更多的形状，圆柱和网格
-2. 实现Frame的缩放，法线有待实现
-3. 在已有AABB上开发BVH加速
+1. 实现三角网格
+2. 在已有AABB上开发BVH加速
+3. 加入日志
+4. 实现Frame的缩放，法线有待实现
 4. UI界面，考虑自由生成场景而非编码
 
 ## Development Plan
@@ -26,11 +27,14 @@
 
 ### Reflection Models
 - [x] Lambertion&Specular&Fresnel
+- [ ] Sub-Surface Scattering
 
 ### Materials
 
 - [x] Matte&Mirror&Glass
 - [x] Plastic
+- [ ] Skin
+- [ ] Stockings
 - [ ] Mix
 
 ### Texture
@@ -53,14 +57,6 @@
 
 - [ ] BVH
 - [ ] KD-Tree
-
-### Basic Math Lib
-
-- [x] Vector
-- [x] Matrix
-- [x] Bound
-- [ ] Quaternions
-- [ ] Transform(现有Frame，功能不足)
 
 ## References
 

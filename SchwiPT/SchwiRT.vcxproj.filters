@@ -35,6 +35,8 @@
     <ClInclude Include="shapes\rectangle.h" />
     <ClInclude Include="shapes\cylinder.h" />
     <ClInclude Include="samplers\sampling.h" />
+    <ClInclude Include="bxdf\bssrdf.h" />
+    <ClInclude Include="bxdf\medium.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp" />

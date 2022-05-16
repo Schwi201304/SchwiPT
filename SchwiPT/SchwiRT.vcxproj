@@ -186,6 +186,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bxdf\bssrdf.h" />
+    <ClInclude Include="bxdf\medium.h" />
     <ClInclude Include="integrators\debug.h" />
     <ClInclude Include="samplers\sampling.h" />
     <ClInclude Include="SchwiLib\image\image.h" />

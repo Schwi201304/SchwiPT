@@ -51,7 +51,7 @@ namespace schwi {
 
 	SchwiColor SchwiImage::getColor(const int x, const int y) const {
 		if (pixels.empty() || x < 0 || y < 0 || x >= w || y >= h)
-			return SchwiColor(0,255,255);
+			return SchwiColor(0,0,0);
 		int flag = y * w * comp + x * comp;
 		//std::cout << pixels[flag]<<std::endl;
 		return SchwiColor(pixels.data() + flag, comp);

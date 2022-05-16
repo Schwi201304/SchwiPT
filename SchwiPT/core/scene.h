@@ -168,9 +168,10 @@ namespace schwi {
 			ShapeSPtr back = std::make_shared<Rectangle>(Vector2d(x, z), new Frame{ {1,0,0},{0,1,0},{0,0,1},{0,0,-y} });
 			ShapeSPtr box = std::make_shared<Box>(Vector3d(10, 10, 10), new Frame{ {4,0,-1},{0,1,0},{1,0,4},{x - 20,-y + 10,z - 20} });
 			ShapeSPtr box2 = std::make_shared<Box>(Vector3d(10, 10, 20), new Frame{ {5,0,1},{0,1,0},{-1,0,5},{-x + 25,-y + 20,-z + 30} });
-			ShapeSPtr cy = std::make_shared<Cylinder>(10, 20, new Frame{ {0,0,1},{1,0,0},{0,1,0},{-x +25,-y + 10,-z + 30} });
-			ShapeSPtr cover = std::make_shared<Disk>(10, new Frame{ {0,0,1},{1,0,0},{0,1,0},{-x + 25,-y + 20,-z + 30} });
-			ShapeList shapeList{ disk,up,down,left,right,back,box,box2,cy,cover};
+			ShapeSPtr cy = std::make_shared<Cylinder>(10, 40, new Frame{ {0,0,1},{1,0,0},{0,1,0},{-x + 25,-y + 20,-z + 30} });
+			ShapeSPtr cover = std::make_shared<Disk>(10, new Frame{ {0,0,1},{1,0,0},{0,1,0},{-x + 25,-y + 40,-z + 30} });
+			ShapeSPtr sphere = std::make_shared<Sphere>(10, new Frame{ {0,0,1},{1,0,0},{0,1,0},{x - 20,-y + 30,z - 20} });
+			ShapeList shapeList{ disk,up,down,left,right,back,box,box2,cy,cover,sphere };
 
 
 			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
@@ -184,7 +185,8 @@ namespace schwi {
 			MaterialSPtr green = std::make_shared<Matte>(greenConst);
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
 			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst);
-			MaterialList materialList{ white,red,green,black,mirror };
+			MaterialSPtr glass = std::make_shared<Glass>(whiteConst, whiteConst, FresnelSpecular::Glass);
+			MaterialList materialList{ white,red,green,black,mirror,glass };
 
 			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(5, 5, 5), disk.get());
 			LightList lightList{ disk_light };
@@ -193,6 +195,7 @@ namespace schwi {
 				{box.get(),white.get(),nullptr},
 				{cy.get(),mirror.get(),nullptr},
 				{cover.get(),white.get(),nullptr},
+				{sphere.get(),glass.get(),nullptr},
 				//{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},
 				{down.get(),white.get(),nullptr},
