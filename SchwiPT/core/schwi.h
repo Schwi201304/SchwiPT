@@ -37,7 +37,7 @@ namespace schwi {
 	class Color;
 	class Ray;
 	class Scene;
-	class Intersection;
+	class SurfaceIntersection;
 	struct Primitive;
 	class Frame;
 	class Integrator;

@@ -11,7 +11,7 @@ namespace schwi {
 	public:
 		ConstantTexture(const T& value):value(value){}
 
-		virtual T Evaluate(const Intersection& isect)const override {
+		virtual T Evaluate(const SurfaceIntersection& isect)const override {
 			return value;
 		}
 	};

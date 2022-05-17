@@ -26,7 +26,7 @@ namespace schwi {
 			textureList(textureList) {}
 
 	public:
-		bool Intersect(Ray& ray, Intersection* isect)const {
+		bool Intersect(Ray& ray, SurfaceIntersection* isect)const {
 			bool hit = false;
 
 			for (const auto& primitive : primitiveList) {

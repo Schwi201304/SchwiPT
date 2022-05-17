@@ -12,8 +12,8 @@
 using namespace schwi;
 using namespace std;
 
-constexpr int width = 200;
-constexpr int height = 200;
+constexpr int width = 400;
+constexpr int height = 400;
 
 constexpr int spp = 100;
 constexpr int maxDepth = 10;

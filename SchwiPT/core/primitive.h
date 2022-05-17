@@ -13,7 +13,7 @@ namespace schwi {
 		const AreaLight* areaLight;
 		//const Material* in=nullptr;
 
-		bool Intersect(Ray& ray, Intersection* isect)const {
+		bool Intersect(Ray& ray, SurfaceIntersection* isect)const {
 			bool hit = shape->Intersect(ray, isect);
 			if (hit) {
 				isect->bsdfPtr = out->Scattering(*isect);

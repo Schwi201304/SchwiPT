@@ -13,7 +13,7 @@ namespace schwi {
 			:radius(r), radius_sq(r* r), Shape(frame) {}
 
 		virtual bool Intersect(
-			const Ray& r, Intersection* out_isect
+			const Ray& r, SurfaceIntersection* out_isect
 		)const override {
 			Ray ray = frame->ToLocal(r);
 
@@ -40,11 +40,11 @@ namespace schwi {
 				double u = (std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
 				double v = acos(normal.z) * InvPi;
 
-				*out_isect = Intersection(
+				*out_isect = SurfaceIntersection(
 					frame->ToWorld(hit_point),
 					frame->ToWorld(normal),
 					-r.direction(),
-					Point2d(u, v));
+					Point2d(u, v),this);
 			}
 
 			return hit;
@@ -60,13 +60,13 @@ namespace schwi {
 		}
 
 	public:
-		Intersection SamplePosition(
+		SurfaceIntersection SamplePosition(
 			const Vector2d& random, double* pdf
 		)const override {
 			Vector3d direction = SampleSphereUniform(random);
 			Point3d position = center + radius * direction;
 
-			Intersection isect;
+			SurfaceIntersection isect;
 			isect.position = position;
 			isect.normal = Normal3d(direction.Normalize());
 
@@ -75,11 +75,11 @@ namespace schwi {
 			return isect;
 		}
 
-		Intersection SampleDirection(
-			const Intersection& isect, const Vector2d& random, double* pdf
+		SurfaceIntersection SampleDirection(
+			const SurfaceIntersection& isect, const Vector2d& random, double* pdf
 		)const override {
 			if (DistanceSquared(isect.position, center) <= radius_sq) {
-				Intersection light_isect = SamplePosition(random, pdf);
+				SurfaceIntersection light_isect = SamplePosition(random, pdf);
 				Vector3d wi = light_isect.position - isect.position;
 
 				if (wi.LengthSquared() == 0)
@@ -123,7 +123,7 @@ namespace schwi {
 			Normal3d world_normal = Normal3d(spherical_to_direction(sin_alpha, cos_alpha, phi, -frame.binormal(), -frame.tangent(), -frame.normal()));
 			Point3d world_position = center + radius * Vector3d(world_normal.x, world_normal.y, world_normal.z);
 
-			Intersection light_isect;
+			SurfaceIntersection light_isect;
 			light_isect.position = world_position;
 			light_isect.normal = world_normal;
 
@@ -133,7 +133,7 @@ namespace schwi {
 		}
 
 		double PdfDirection(
-			const Intersection& isect, const Vector3d& world_wi
+			const SurfaceIntersection& isect, const Vector3d& world_wi
 		)const override {
 			if (DistanceSquared(isect.position, center) <= radius_sq)
 				return Shape::PdfDirection(isect, world_wi);

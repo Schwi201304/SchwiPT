@@ -3,4 +3,7 @@
 #include<core/schwi.h>
 
 namespace schwi {
+	class BSSRDF {
+
+	};
 }

@@ -14,7 +14,7 @@ namespace schwi {
 	public:
 		virtual ~Material() = default;
 
-		virtual BsdfUPtr Scattering(const Intersection& isect)const = 0;
+		virtual BsdfUPtr Scattering(const SurfaceIntersection& isect)const = 0;
 	};
 
 	class Matte :public Material {
@@ -25,7 +25,7 @@ namespace schwi {
 		Matte(const TextureSPtr& texture) :
 			texture(texture) {}
 
-		BsdfUPtr Scattering(const Intersection& isect)const override {
+		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
 			Color Kd = texture->Evaluate(isect);
 			return std::make_unique<Lambertion>(Frame(isect.normal), Kd);
 		}
@@ -39,7 +39,7 @@ namespace schwi {
 		Mirror(const TextureSPtr& texture) :
 			texture(texture) {}
 
-		BsdfUPtr Scattering(const Intersection& isect)const override {
+		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
 			Color Kr = texture->Evaluate(isect);
 			return std::make_unique<SpecularReflection>(Frame(isect.normal), Kr);
 		}
@@ -55,7 +55,7 @@ namespace schwi {
 		Glass(const TextureSPtr& TexKr, const TextureSPtr& TexKt, double eta) :
 			TexKr(TexKr), TexKt(TexKt), eta(eta) {}
 
-		BsdfUPtr Scattering(const Intersection& isect)const override {
+		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
 			Color Kr = TexKr->Evaluate(isect);
 			Color Kt = TexKt->Evaluate(isect);
 			return std::make_unique<FresnelSpecular>(Frame(isect.normal), Kr, Kt, 1, eta);
@@ -74,7 +74,7 @@ namespace schwi {
 			TexKd(TexKd), TexKs(TexKs), exp(shininess) {
 		}
 
-		BsdfUPtr Scattering(const Intersection& isect)const override {
+		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
 			Color Kd = TexKd->Evaluate(isect);
 			Color Ks = TexKd->Evaluate(isect);
 

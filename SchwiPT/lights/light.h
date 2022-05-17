@@ -44,7 +44,7 @@ namespace schwi {
 		Color Li;
 
 		LightLiSample() = default;
-		LightLiSample(const Intersection& isect, const Vector3d& wi,
+		LightLiSample(const SurfaceIntersection& isect, const Vector3d& wi,
 			double pdf, const Color& Li) :
 			position(isect.position), wi(wi), pdf(pdf), Li(Li) {}
 	};
@@ -74,8 +74,8 @@ namespace schwi {
 		virtual void PdfLe(const Ray& ray, const Normal3d& light_normal,
 			double* pdf_position, double* pdf_direction)const = 0;
 
-		virtual LightLiSample SampleLi(const Intersection& isect, const Vector2d& random)const = 0;
-		virtual double PdfLi(const Intersection& isect, const Vector3d& world_wi)const = 0;
+		virtual LightLiSample SampleLi(const SurfaceIntersection& isect, const Vector2d& random)const = 0;
+		virtual double PdfLi(const SurfaceIntersection& isect, const Vector3d& world_wi)const = 0;
 	};
 
 	class PointLight :public Light {
@@ -83,9 +83,9 @@ namespace schwi {
 		Color intensity;
 
 	public:
-		PointLight(const Point3d& world_position,int samples_num,Color intensity):
-			Light(world_position,samples_num),
-			intensity(intensity){}
+		PointLight(const Point3d& world_position, int samples_num, Color intensity) :
+			Light(world_position, samples_num),
+			intensity(intensity) {}
 
 		virtual bool IsDelta() const override { return true; }
 		virtual bool IsFinite() const override { return true; }
@@ -110,7 +110,7 @@ namespace schwi {
 		virtual bool IsFinite()const override { return true; }
 		virtual Color Power()const override { return power; }
 
-		Color Le(const Intersection& light_isect, const Vector3d& wo)const {
+		Color Le(const SurfaceIntersection& light_isect, const Vector3d& wo)const {
 			return (Dot(light_isect.normal, wo) > 0) ?
 				radiance :
 				Color();
@@ -121,7 +121,7 @@ namespace schwi {
 			Ray* ray, Normal3d* light_normal,
 			double* pdf_position, double* pdf_direction
 		)const override {
-			Intersection light_isect = shape->SamplePosition(random1, pdf_position);
+			SurfaceIntersection light_isect = shape->SamplePosition(random1, pdf_position);
 			*light_normal = light_isect.normal;
 
 			Vector3d w = SampleHemisphereCosine(random2);
@@ -138,16 +138,16 @@ namespace schwi {
 			const Ray& ray, const Normal3d& light_normal,
 			double* pdf_position, double* pdf_direction
 		)const override {
-			Intersection isect(ray.origin(), light_normal, Vector3d());
+			SurfaceIntersection isect(ray.origin(), light_normal, Vector3d(), { 0,0 }, nullptr);
 			*pdf_position = shape->PdfPosition(isect);
 			*pdf_direction = PdfHemisphereCosine(Dot(light_normal, ray.direction()));
 		}
 
 		virtual LightLiSample SampleLi(
-			const Intersection& isect, const Vector2d& random
+			const SurfaceIntersection& isect, const Vector2d& random
 		) const override {
 			LightLiSample sample;
-			Intersection light_isect = shape->SampleDirection(isect, random, &sample.pdf);
+			SurfaceIntersection light_isect = shape->SampleDirection(isect, random, &sample.pdf);
 			sample.position = light_isect.position;
 
 			if (sample.pdf == 0 || (light_isect.position - isect.position).LengthSquared() == 0) {
@@ -162,7 +162,7 @@ namespace schwi {
 		}
 
 		virtual double PdfLi(
-			const Intersection& isect, const Vector3d& world_wi
+			const SurfaceIntersection& isect, const Vector3d& world_wi
 		)const override {
 			return shape->PdfDirection(isect, world_wi);
 		}

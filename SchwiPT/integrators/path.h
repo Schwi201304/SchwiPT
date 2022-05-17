@@ -13,7 +13,7 @@ namespace schwi {
 			maxDepth(maxDepth) {}
 
 		Color Li(Ray ray, Scene& scene, Sampler& sampler, int depth) {
-			Intersection isect;
+			SurfaceIntersection isect;
 			if (!scene.Intersect(ray, &isect)) {
 				return Color();
 			}

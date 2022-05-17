@@ -15,7 +15,7 @@ namespace schwi {
 			wh(wh), Shape(frame) {}
 
 		virtual bool Intersect(
-			const Ray& r, Intersection* out_isect
+			const Ray& r, SurfaceIntersection* out_isect
 		)const override {
 			Ray ray = frame->ToLocal(r);
 			Normal3d normal{ 0,0,1 };
@@ -25,14 +25,14 @@ namespace schwi {
 			double t = Dot(normal, op) / Dot(normal, ray.direction());
 
 			if ((t > epsilon) && (t < ray.distance())) {
-				Point3d hit_point = ray(t);
-				if (Abs(Vector2d(vec2<double>(hit_point))) < wh) {
+				Point3d p = ray(t);
+				if (Abs(Vector2d(vec2<double>(p))) < wh) {
 					r.set_distance(t);
-					*out_isect = Intersection(
-						frame->ToWorld(hit_point),
+					*out_isect = SurfaceIntersection(
+						frame->ToWorld(p),
 						Normal3d(frame->normal()),
 						-r.direction(),
-						Point2d(.5, .5));
+						Point2d(p.x/wh.x+.5,p.y/wh.y+.5),this);
 					return true;
 				}
 			}
@@ -49,10 +49,10 @@ namespace schwi {
 			return 4 * wh.x * wh.y;
 		}
 
-		virtual Intersection SamplePosition(
+		virtual SurfaceIntersection SamplePosition(
 			const Vector2d& random, double* pdf
 		)const override {
-			Intersection isect;
+			SurfaceIntersection isect;
 			isect.position = frame->ToWorld(Point3d(wh.x - 2 * wh.x * random[1], wh.y - 2 * wh.y * random[0],0));
 			isect.normal = Normal3d(frame->normal());
 
@@ -78,7 +78,7 @@ namespace schwi {
 		}
 
 		virtual bool Intersect(
-			const Ray& r, Intersection* out_isect
+			const Ray& r, SurfaceIntersection* out_isect
 		)const override {
 			Ray ray = frame->ToLocal(r);
 
@@ -105,12 +105,12 @@ namespace schwi {
 			return 8 * (p.x * p.y + p.y * p.z + p.z * p.x);
 		}
 
-		virtual Intersection SamplePosition(
+		virtual SurfaceIntersection SamplePosition(
 			const Vector2d& random, double* pdf
 		)const override {
 			*pdf = 1 / Area();
 			std::cerr << "Box SamplePosition Error" << std::endl;
-			return Intersection();
+			return SurfaceIntersection();
 		}
 	};
 }

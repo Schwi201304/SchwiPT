@@ -13,7 +13,7 @@ namespace schwi {
 			radius(radius), height(height), Shape(frame) {}
 		//TODO Ïà½»´æÔÚbug
 		virtual bool Intersect(
-			const Ray& r, Intersection* out_isect
+			const Ray& r, SurfaceIntersection* out_isect
 		)const override {
 			Ray ray = frame->ToLocal(r);
 
@@ -51,11 +51,11 @@ namespace schwi {
 			double u = (std::atan2(normal.y, normal.x) + Pi) * Inv2Pi;
 			double v = std::abs(p.z) * 2 / height;
 
-			*out_isect = Intersection(
+			*out_isect = SurfaceIntersection(
 				frame->ToWorld(p),
 				frame->ToWorld(normal),
 				-r.direction(),
-				Point2d(u, v));
+				Point2d(u, v),this);
 			//std::cerr << t <<std::endl;
 			return true;
 		}
@@ -70,12 +70,12 @@ namespace schwi {
 			return 2 * Pi * radius * height;
 		}
 
-		virtual Intersection SamplePosition(
+		virtual SurfaceIntersection SamplePosition(
 			const Vector2d& random, double* pdf
 		)const override {
 			*pdf = 1 / Area();
 			std::cerr << "Cylinder SamplePosition Error" << std::endl;
-			return Intersection();
+			return SurfaceIntersection();
 		}
 	};
 }

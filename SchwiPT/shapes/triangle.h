@@ -61,7 +61,7 @@ namespace schwi {
 			faceIndex = mesh->faceIndices.size() ? mesh->faceIndices[triNum] : 0;
 		}
 
-		virtual bool Intersect(const Ray& r, Intersection* out_isect)const override{
+		virtual bool Intersect(const Ray& r, SurfaceIntersection* out_isect)const override{
 			Ray ray = frame->ToLocal(r);
 			
 			const Point3d& A = mesh->p[v[0]];
@@ -96,12 +96,11 @@ namespace schwi {
 			if (alpha < 0 || alpha>1)return false;
 			//std::cout << alpha << std::endl;
 			Point2d uv= mesh->uv[UV[0]] * alpha + mesh->uv[UV[1]] * beta + mesh->uv[UV[2]] * gamma;
-			*out_isect = Intersection(
+			*out_isect = SurfaceIntersection(
 				frame->ToWorld(hit_point),
 				frame->ToWorld(normal),
 				-r.direction(),
-				uv);
-			out_isect->depth = t;
+				uv,this);
 			//std::cout << t << std::endl;
 			return true;
 		}
@@ -115,12 +114,12 @@ namespace schwi {
 			return Cross(mesh->p[v[1]]-mesh->p[v[0]], mesh->p[v[2]] - mesh->p[v[0]]).Length()/2;
 		}
 		
-		virtual Intersection SamplePosition(
+		virtual SurfaceIntersection SamplePosition(
 			const Vector2d& random, double* pdf
 		)const override {
 			Point2d b=SampleTriangleUniform(random);
 
-			Intersection isect;
+			SurfaceIntersection isect;
 			isect.position = b.x * mesh->p[v[0]] 
 				+ b.y * mesh->p[v[1]] 
 				+ (1 - b.x - b.y) * mesh->p[v[2]];
