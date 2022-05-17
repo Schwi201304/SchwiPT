@@ -37,6 +37,9 @@
     <ClInclude Include="samplers\sampling.h" />
     <ClInclude Include="bxdf\bssrdf.h" />
     <ClInclude Include="bxdf\medium.h" />
+    <ClInclude Include="fliter\fliter.h" />
+    <ClInclude Include="fliter\gaussian.h" />
+    <ClInclude Include="core\film.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp" />

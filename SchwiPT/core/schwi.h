@@ -34,6 +34,7 @@ namespace schwi {
 
 	// Global Forward Declarations
 	template <typename T> class Bounds3;
+	template <typename T> class Bounds2;
 	class Color;
 	class Ray;
 	class Scene;
@@ -57,6 +58,7 @@ namespace schwi {
 
 	// Using
 	using Bounds3d = Bounds3<double>;
+	using Bounds2i = Bounds2<int>;
 
 	using BsdfUPtr = std::unique_ptr<BSDF>;
 

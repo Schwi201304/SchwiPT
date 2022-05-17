@@ -8,6 +8,9 @@ namespace schwi {
 	public:
 		Point2<T> pMin, pMax;
 
+		Bounds2(const Point2<T>& p) : pMin(p), pMax(p) { }
+		Bounds2(const Point2<T>& p1, const Point2<T>& p2) :
+			pMin(Min(p1, p2)), pMax(Max(p1, p2)) {}
 	};
 
 	template<typename T>
