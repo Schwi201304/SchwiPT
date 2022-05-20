@@ -5,6 +5,8 @@
 #endif
 
 #include"math.h"
+#include<utility>
+
 using std::isnan;
 using std::sqrt;
 
@@ -37,6 +39,10 @@ namespace schwi {
 			if (i == 0)return x;
 			if (i == 1)return y;
 			return z;
+		}
+
+		std::tuple<T, T, T> ToTuple() {
+			return { x,y,z };
 		}
 	};
 
@@ -79,6 +85,9 @@ namespace schwi {
 			return i == 0 ? x : y;
 		}
 
+		std::pair<T, T> ToPair() {
+			return { x,y };
+		}
 	};
 
 	template<typename T>

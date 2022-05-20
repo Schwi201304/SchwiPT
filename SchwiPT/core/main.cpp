@@ -8,6 +8,8 @@
 #include<integrators/integrator.h>
 #include<integrators/path.h>
 #include<integrators/debug.h>
+#include<core/film.h>
+#include<filter/gaussian.h>
 
 using namespace schwi;
 using namespace std;
@@ -19,9 +21,7 @@ constexpr int spp = 100;
 constexpr int maxDepth = 10;
 
 int main() {
-
-
-	SchwiImage img(width, height);
+	Film film(Point2i(width, height), make_unique<GaussianFilter>(Vector2d(1, 1), .8), "out.png");
 
 	unique_ptr<Sampler> originalSampler = make_unique<RandomSampler>(spp);
 
@@ -36,9 +36,11 @@ int main() {
 
 	unique_ptr<Integrator> integrator = make_unique<PathIntegrator>(maxDepth);
 	//unique_ptr<Integrator> integrator = make_unique<DebugIntegrator>(1);
-	integrator->Render(scene, *camera, *originalSampler, img);
+	integrator->Render(scene, *camera, *originalSampler, film);
 
-	img.write_file("out.png", false);
+	Film film_filter=film.Filter();
+	//film.WriteImage();
+	film_filter.WriteImage();
 
 #if defined(_WIN32) || defined(_WIN64)
 	system("mspaint out.png");

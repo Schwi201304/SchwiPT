@@ -1,6 +1,6 @@
 #pragma once
 
-#include<fliter/fliter.h>
+#include<filter/filter.h>
 
 namespace schwi {
 	class GaussianFilter :public Filter {
@@ -21,6 +21,10 @@ namespace schwi {
 
 		double Evaluate(const Point2d& p)const {
 			return Gaussian(p.x, expX) * Gaussian(p.y, expY);
+		}
+
+		std::unique_ptr<Filter> Clone()const override{
+			return std::make_unique<GaussianFilter>(radius, alpha);
 		}
 	};
 }

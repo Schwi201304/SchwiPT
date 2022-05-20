@@ -61,8 +61,21 @@ namespace schwi {
 		bool load_file(const std::string& filename, bool flip = true);
 		void write_file(const std::string& filename, bool flip = true)const;
 		void setColor(const int x, const int y, const SchwiColor& color);
+		SchwiColor getColor(const int flag)const;
 		SchwiColor getColor(const int x, const int y) const;
 		SchwiColor getColor(const double u, const double v)const;
 		void resize(const int width, const int height);
+
+		SchwiColor operator[](const int flag)const {
+			return getColor(flag);
+		}
+
+		SchwiColor operator()(const int x, const int y)const {
+			return getColor(x, y);
+		}
+
+		SchwiColor operator()(const double x, const double y)const {
+			return getColor(x, y);
+		}
 	};
 }

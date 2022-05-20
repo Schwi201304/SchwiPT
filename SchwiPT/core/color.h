@@ -9,7 +9,7 @@ namespace schwi {
 		double r, g, b;
 
 	public:
-		Color() = default;
+		Color() { r = g = b = .0; };
 		Color(double r, double g, double b)
 			:r(r), g(g), b(b) {}
 
@@ -29,17 +29,21 @@ namespace schwi {
 			return Color(r * c.r, g * c.g, b * c.b);
 		}
 
+		void Clear() {
+			r = g = b = 0;
+		}
+
 		bool IsBlack() const {
 			return r <= 0 && g <= 0 && b <= 0;
 		}
 
-		double Luminance() const{
+		double Luminance() const {
 			return 0.212671 * r + 0.715160 * g + 0.072169 * b;
 		}
 	};
 
-	inline std::ostream& operator<<(std::ostream& os,  const Color& c) {
-		os << '[' << c.r << ',' << c.g << ',' << c.b << ']';
+	inline std::ostream& operator<<(std::ostream& os, const Color& c) {
+		os << "Color: [" << c.r << ',' << c.g << ',' << c.b << ']';
 		return os;
 	}
 

@@ -49,26 +49,31 @@ namespace schwi {
 		}
 	}
 
-	SchwiColor SchwiImage::getColor(const int x, const int y) const {
-		if (pixels.empty() || x < 0 || y < 0 || x >= w || y >= h)
-			return SchwiColor(0,0,0);
-		int flag = y * w * comp + x * comp;
-		//std::cout << pixels[flag]<<std::endl;
+	SchwiColor SchwiImage::getColor(const int flag)const {
+		if (pixels.empty() || flag<0 || flag>w * h)
+			return {};
 		return SchwiColor(pixels.data() + flag, comp);
 	}
 
-	SchwiColor SchwiImage::getColor(const double u, const double v) const{
+	SchwiColor SchwiImage::getColor(const int x, const int y) const {
+		if (pixels.empty() || x < 0 || y < 0 || x >= w || y >= h)
+			return SchwiColor(0, 0, 0);
+		int flag = y * w * comp + x * comp;
+		return SchwiColor(pixels.data() + flag, comp);
+	}
+
+	SchwiColor SchwiImage::getColor(const double u, const double v) const {
 		int x = u * (w - 1.);
 		int y = v * (h - 1.);
 		return getColor(x, y);
 	}
 
 	void SchwiImage::resize(const int width, const int height) {
-		BYTE* data=new BYTE[width * height]();
+		BYTE* data = new BYTE[width * height]();
 
-		stbir_resize(pixels.data(), w, h, 0, 
-			data, width, height, 0, 
-			STBIR_TYPE_UINT8,comp , STBIR_ALPHA_CHANNEL_NONE, 0,
+		stbir_resize(pixels.data(), w, h, 0,
+			data, width, height, 0,
+			STBIR_TYPE_UINT8, comp, STBIR_ALPHA_CHANNEL_NONE, 0,
 			STBIR_EDGE_CLAMP, STBIR_EDGE_CLAMP,
 			STBIR_FILTER_BOX, STBIR_FILTER_BOX,
 			STBIR_COLORSPACE_SRGB, nullptr

@@ -6,6 +6,7 @@
 #include<core/color.h>
 #include<samplers/sampler.h>
 #include<cameras/camera.h>
+#include<core/film.h>
 
 namespace schwi {
 	class Integrator {
@@ -13,8 +14,8 @@ namespace schwi {
 		~Integrator() = default;
 		Integrator() {}
 
-		void Render(Scene& scene, Camera& camera, Sampler& originalSampler, SchwiImage& img) {
-			auto [width, height] = img.resolution();
+		void Render(Scene& scene, Camera& camera, Sampler& originalSampler, Film& film) {
+			auto [width, height] = film.resolution;
 
 			printf("SPP:%d,Resolution:%d*%d\n", originalSampler.GetSPP(), width, height);
 
@@ -35,11 +36,11 @@ namespace schwi {
 						L = L + Li(ray, scene, *sampler);
 					} while (sampler->NextSample());
 					L = L / sampler->GetSPP();
-					img.setColor(x, y, ToByte(L));
+					film.GetPixel(x, y)= L;
 				}
 				finished++;
 			}
-			fprintf(stderr, "\rRendering 100.00%%");
+			fprintf(stderr, "\rRendering 100.00%%\n");
 		}
 
 		virtual Color Li(Ray ray, Scene& scene, Sampler& sampler) = 0;
