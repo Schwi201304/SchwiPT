@@ -49,6 +49,7 @@ namespace schwi {
 	class Shape;
 	class Sampler;
 	class BSDF;
+	class Fresnel;
 	struct BSDFSample;
 	class Material;
 	class Light;

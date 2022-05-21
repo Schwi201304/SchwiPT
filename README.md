@@ -58,6 +58,10 @@
 - [ ] BVH
 - [ ] KD-Tree
 
+### Filter
+
+- [x] Gaussian
+
 ## References
 
 1. [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)

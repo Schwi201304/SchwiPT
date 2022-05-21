@@ -8,7 +8,7 @@
 
 namespace schwi {
 
-	enum class BSDFEnum {
+	enum class BxDFType {
 		NONE = 0,
 		REFLECTION = 1 << 0,
 		TRANSMISSION = 1 << 1,
@@ -19,23 +19,45 @@ namespace schwi {
 		ALL = REFLECTION | TRANSMISSION | DIFFUSE | GLOSSY | SPECULAR
 	};
 
-	BSDFEnum operator|(BSDFEnum a, BSDFEnum b) {
-		return BSDFEnum((int)a | (int)b);
+	BxDFType operator|(BxDFType a, BxDFType b) {
+		return BxDFType((int)a | (int)b);
 	}
 
-	BSDFEnum operator&(BSDFEnum a, BSDFEnum b) {
-		return BSDFEnum((int)a & (int)b);
+	BxDFType operator&(BxDFType a, BxDFType b) {
+		return BxDFType((int)a & (int)b);
 	}
 
-	inline bool IsDeltaBSDF(BSDFEnum type) {
-		return ((int)type & (int)BSDFEnum::SPECULAR) > 0;
+	inline bool IsDeltaBSDF(BxDFType type) {
+		return ((int)type & (int)BxDFType::SPECULAR) > 0;
 	}
 
 	struct BSDFSample {
 		Color f{};
 		Vector3d wi{};
 		double pdf{};
-		BSDFEnum type;
+		BxDFType type;
+	};
+
+	class BxDF {
+	public:
+		const BxDFType type;
+
+		virtual ~BxDF() {}
+		BxDF(BxDFType type) :type(type) {}
+
+		bool MatchFlag(BxDFType t) const {
+			return (type & t) == type;
+		}
+
+		virtual Color f(const Vector3d& wo, const Vector3d& wi)const = 0;
+		virtual Color Sample_f(const Vector3d& wo, Vector3d* wi,
+			const Point2d& sample, double* pdf,
+			BxDFType* sampledType = nullptr) const;
+		virtual Color rho(const Vector3d& wo, int nSamples,
+			const Point2d* samples) const;
+		virtual Color rho(int nSamples, const Point2d* samples1,
+			const Point2d* samples2) const;
+		virtual double Pdf(const Vector3d& wo, const Vector3d& wi) const;
 	};
 
 	class BSDF {
@@ -76,6 +98,9 @@ namespace schwi {
 
 	private:
 		Frame shadingFrame;
+		int nBxDFs = 0;
+		static constexpr int MaxBxDFs = 4;
+		BxDF* bxdfs[MaxBxDFs];
 	};
 
 	inline double CosTheta(const Vector3d& w) {
@@ -136,17 +161,17 @@ namespace schwi {
 		return -wo + 2 * Dot(wo, normal) * normal;
 	}
 
-	inline bool Refract(const Vector3d& wo, const Normal3d& wo_normal, double eta, Vector3d* out_wt)
+	inline bool Refract(const Vector3d& wi, const Normal3d& normal, double eta, Vector3d* wt)
 	{
-		double cos_theta_i = Dot(wo_normal, wo);
-		double sin_theta_i_sq = std::max(0., 1. - cos_theta_i * cos_theta_i);
-		double sin_theta_t_sq = eta * eta * sin_theta_i_sq;
+		double cosThetaI = Dot(normal, wi);
+		double sin2ThetaI = std::max(0., 1. - cosThetaI * cosThetaI);
+		double sin2ThetaT = eta * eta * sin2ThetaI;
 
-		if (sin_theta_t_sq >= 1)
+		if (sin2ThetaT >= 1)
 			return false;
 
-		double cos_theta_t = std::sqrt(1 - sin_theta_t_sq);
-		*out_wt = eta * -wo + (eta * cos_theta_i - cos_theta_t) * Vector3d(wo_normal);
+		double cosThetaT = std::sqrt(1 - sin2ThetaT);
+		*wt = eta * -wi + (eta * cosThetaI - cosThetaT) * Vector3d(normal);
 
 		return true;
 	}

@@ -1,11 +1,12 @@
 #pragma once
 
-#include<bxdf/bsdf.h>
+#include<bxdf/bxdf.h>
 
 namespace schwi {
 	class SpecularReflection :public BSDF {
 	private:
 		Color R;
+		const Fresnel* fresnel;
 
 	public:
 		SpecularReflection(const Frame& shadingFrame, const Color& R):
@@ -27,7 +28,7 @@ namespace schwi {
 			sample.wi = Vector3d(-wo.x, -wo.y, wo.z);
 			sample.pdf = 1;
 			sample.f = R / AbsCosTheta(sample.wi);
-			sample.type = BSDFEnum::REFLECTION | BSDFEnum::SPECULAR;
+			sample.type = BxDFType::REFLECTION | BxDFType::SPECULAR;
 
 			return sample;
 		}
@@ -57,7 +58,7 @@ namespace schwi {
 			sample.wi = Vector3d(-wo.x, -wo.y, wo.z);
 			sample.pdf = 1;
 			sample.f = T / AbsCosTheta(sample.wi);
-			sample.type = BSDFEnum::TRANSMISSION | BSDFEnum::SPECULAR;
+			sample.type = BxDFType::TRANSMISSION | BxDFType::SPECULAR;
 
 			return sample;
 		}

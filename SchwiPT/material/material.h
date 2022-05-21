@@ -3,7 +3,7 @@
 #include<core/schwi.h>
 #include<core/intersection.h>
 #include<textures/texture.h>
-#include<bxdf/bsdf.h>
+#include<bxdf/bxdf.h>
 #include<bxdf/lambertion.h>
 #include<bxdf/specular.h>
 #include<bxdf/fresnel.h>

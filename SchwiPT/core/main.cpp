@@ -21,7 +21,7 @@ constexpr int spp = 100;
 constexpr int maxDepth = 10;
 
 int main() {
-	Film film(Point2i(width, height), make_unique<GaussianFilter>(Vector2d(1, 1), .8), "out.png");
+	Film film(Point2i(width, height), make_unique<GaussianFilter>(Vector2d(1, 1), 1), "out.png");
 
 	unique_ptr<Sampler> originalSampler = make_unique<RandomSampler>(spp);
 
@@ -38,9 +38,9 @@ int main() {
 	//unique_ptr<Integrator> integrator = make_unique<DebugIntegrator>(1);
 	integrator->Render(scene, *camera, *originalSampler, film);
 
-	Film film_filter=film.Filter();
-	//film.WriteImage();
-	film_filter.WriteImage();
+	film.WriteImage();
+	//Film film_filter = film.Filter();
+	//film_filter.WriteImage();
 
 #if defined(_WIN32) || defined(_WIN64)
 	system("mspaint out.png");

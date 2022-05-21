@@ -1,6 +1,6 @@
 #pragma once
 
-#include<bxdf/bsdf.h>
+#include<bxdf/bxdf.h>
 
 namespace schwi {
 	class PhongSpecularReflection :public BSDF {
@@ -40,7 +40,7 @@ namespace schwi {
 
 			sample.f = _f(wo, sample.wi);
 			sample.pdf = _Pdf(wo, sample.wi);
-			sample.type = BSDFEnum::REFLECTION | BSDFEnum::GLOSSY;
+			sample.type = BxDFType::REFLECTION | BxDFType::GLOSSY;
 
 			return sample;
 		}

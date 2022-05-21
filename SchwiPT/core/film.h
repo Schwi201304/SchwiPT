@@ -9,23 +9,23 @@ namespace schwi {
 	private:
 		std::unique_ptr<Color[]> pixels;
 		static constexpr int filterTableWidth = 16;
+		double filterTable[filterTableWidth * filterTableWidth];
 
 	public:
-		double filterTable[filterTableWidth * filterTableWidth];
 		Point2i resolution;
 		std::unique_ptr<Filter> filter;
 		const std::string filename;
 
 		Film(const Point2i& resolution, std::unique_ptr<Filter> filter, const std::string& filename) :
-			resolution(resolution), filter(std::move(filter)), filename(filename) {
+			resolution(resolution), filter(filter->Clone()), filename(filename) {
 			pixels = std::unique_ptr <Color[]>(new Color[resolution.x * resolution.y]);
 			int offset = 0;
 			for (int y = 0; y < filterTableWidth; y++) {
 				for (int x = 0; x < filterTableWidth; x++, offset++) {
 					Point2d p;
-					p.x = (x + 0.5) * this->filter->radius.x / filterTableWidth;
-					p.y = (y + 0.5) * this->filter->radius.y / filterTableWidth;
-					filterTable[offset] = this->filter->Evaluate(p);
+					p.x = (x + 0.5) * filter->radius.x / filterTableWidth;
+					p.y = (y + 0.5) * filter->radius.y / filterTableWidth;
+					filterTable[offset] = filter->Evaluate(p);
 				}
 			}
 		};
@@ -64,15 +64,19 @@ namespace schwi {
 			fprintf(stderr, "Gaussian Filter");
 			Film ret(resolution, filter->Clone(), filename);
 			auto [w, h] = resolution;
+
+			double weight = 0;
+			for (int r = -filterTableWidth + 1; r < filterTableWidth; r++)
+				for (int c = -filterTableWidth + 1; c < filterTableWidth; c++)
+					weight += filterTable[abs(r) * filterTableWidth + abs(c)];
+
 			for (int hh = 0; hh < h; hh++) {
 				for (int ww = 0; ww < w; ww++) {
 					Color sum{};
-					double weight = 0;
 					for (int r = -filterTableWidth + 1; r < filterTableWidth; r++) {
-						for (int c = -filterTableWidth; c < filterTableWidth; c++) {
+						for (int c = -filterTableWidth + 1; c < filterTableWidth; c++) {
 							int offset = abs(r) * filterTableWidth + abs(c);
 							sum = sum + GetPixel(ww + c, hh + r) * filterTable[offset];
-							weight += filterTable[offset];
 						}
 					}
 					ret.GetPixel(ww, hh) = sum / weight;

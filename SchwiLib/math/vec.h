@@ -40,10 +40,6 @@ namespace schwi {
 			if (i == 1)return y;
 			return z;
 		}
-
-		std::tuple<T, T, T> ToTuple() {
-			return { x,y,z };
-		}
 	};
 
 	template<typename T>
@@ -83,10 +79,6 @@ namespace schwi {
 		T operator[](int i)const {
 			assert(i == 0 || i == 1);
 			return i == 0 ? x : y;
-		}
-
-		std::pair<T, T> ToPair() {
-			return { x,y };
 		}
 	};
 

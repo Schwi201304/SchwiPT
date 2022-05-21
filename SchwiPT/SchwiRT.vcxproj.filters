@@ -7,7 +7,7 @@
     <ClInclude Include="bxdf\specular.h" />
     <ClInclude Include="cameras\camera.h" />
     <ClInclude Include="cameras\perspective.h" />
-    <ClInclude Include="bxdf\bsdf.h" />
+    <ClInclude Include="bxdf\bxdf.h" />
     <ClInclude Include="core\color.h" />
     <ClInclude Include="core\frame.h" />
     <ClInclude Include="core\intersection.h" />

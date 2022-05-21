@@ -1,6 +1,6 @@
 #pragma once
 
-#include<bxdf/bsdf.h>
+#include<bxdf/bxdf.h>
 
 namespace schwi {
 	class Lambertion :public BSDF {
@@ -32,7 +32,7 @@ namespace schwi {
 
 			sample.pdf = _Pdf(wo, sample.wi);
 			sample.f = _f(wo, sample.wi);
-			sample.type = BSDFEnum::REFLECTION | BSDFEnum::DIFFUSE;
+			sample.type = BxDFType::REFLECTION | BxDFType::DIFFUSE;
 
 			return sample;
 		}

@@ -1,9 +1,15 @@
 #pragma once
 
-#include<bxdf/bsdf.h>
+#include<bxdf/bxdf.h>
 
 namespace schwi {
-	double FresnelDielectric(
+	class Fresnel {
+	public:
+		virtual ~Fresnel() {}
+		virtual double Evaluate(double cosI) const = 0;
+	};
+
+	double FrDielectric(
 		double cos_theta_i,
 		double eta_i, double eta_t)
 	{
@@ -16,13 +22,13 @@ namespace schwi {
 			cos_theta_i = abs(cos_theta_i);
 		}
 
-		double sin_theta_i = sqrt(max((double)0, 1 - cos_theta_i * cos_theta_i));
+		double sin_theta_i = sqrt(max(.0, 1 - cos_theta_i * cos_theta_i));
 		double sin_theta_t = eta_i / eta_t * sin_theta_i;
 
 		if (sin_theta_t >= 1)
 			return 1;
 
-		double cos_theta_t = sqrt(max(0., 1. - sin_theta_t * sin_theta_t));
+		double cos_theta_t = sqrt(max(.0, 1. - sin_theta_t * sin_theta_t));
 
 
 		double r_para = ((eta_t * cos_theta_i) - (eta_i * cos_theta_t)) /
@@ -30,6 +36,31 @@ namespace schwi {
 		double r_perp = ((eta_i * cos_theta_i) - (eta_t * cos_theta_t)) /
 			((eta_i * cos_theta_i) + (eta_t * cos_theta_t));
 		return (r_para * r_para + r_perp * r_perp) / 2;
+	}
+
+	double FrConductor(double cosThetaI, const double& etai,
+		const double& etat, const double& k) {
+		cosThetaI = Clamp(cosThetaI, -1, 1);
+		double eta = etat / etai;
+		double etak = k / etai;
+
+		double cosThetaI2 = cosThetaI * cosThetaI;
+		double sinThetaI2 = 1. - cosThetaI2;
+		double eta2 = eta * eta;
+		double etak2 = etak * etak;
+
+		double t0 = eta2 - etak2 - sinThetaI2;
+		double a2plusb2 = sqrt(t0 * t0 + 4 * eta2 * etak2);
+		double t1 = a2plusb2 + cosThetaI2;
+		double a = sqrt(0.5 * (a2plusb2 + t0));
+		double t2 = (double)2 * cosThetaI * a;
+		double Rs = (t1 - t2) / (t1 + t2);
+
+		double t3 = cosThetaI2 * a2plusb2 + sinThetaI2 * sinThetaI2;
+		double t4 = t2 * sinThetaI2;
+		double Rp = Rs * (t3 - t4) / (t3 + t4);
+
+		return 0.5 * (Rp + Rs);
 	}
 
 	double FresnelDielectricSchlick(
@@ -61,7 +92,32 @@ namespace schwi {
 		return Lerp(R0, 1., pow(1 - cos_theta_i, 5.));
 	}
 
-	//TODO ¸ÄÐ´·ÆÄù¶û
+
+	class FresnelConductor : public Fresnel {
+	public:
+		FresnelConductor(const double& etaI, const double& etaT,
+			const double& k)
+			: etaI(etaI), etaT(etaT), k(k) {}
+		double Evaluate(double cosThetaI) const {
+			return FrConductor(std::abs(cosThetaI), etaI, etaT, k);
+		}
+
+	private:
+		double etaI, etaT, k;
+	};
+
+	class FresnelDielectric : public Fresnel {
+	public:
+		FresnelDielectric(double etaI, double etaT) :
+			etaI(etaI), etaT(etaT) {}
+		double Evaluate(double cosThetaI) const {
+			return FrDielectric(cosThetaI, etaI, etaT);
+		}
+
+	private:
+		double etaI, etaT;
+	};
+
 	class FresnelSpecular :public BSDF {
 	private:
 		Color R;
@@ -87,14 +143,14 @@ namespace schwi {
 		BSDFSample _Sample_f(const Vector3d& wo, const Vector2d& random)const override {
 			BSDFSample sample;
 
-			double Re = FresnelDielectric(CosTheta(wo), etaI, etaT);
+			double Re = FrDielectric(CosTheta(wo), etaI, etaT);
 			double Tr = 1 - Re;
 
 			if (random[0] < Re) {
 				sample.wi = Vector3d(-wo.x, -wo.y, wo.z);
 				sample.pdf = Re;
 				sample.f = (R * Re) / AbsCosTheta(sample.wi);
-				sample.type = BSDFEnum::REFLECTION | BSDFEnum::SPECULAR;
+				sample.type = BxDFType::REFLECTION | BxDFType::SPECULAR;
 			}
 			else {
 				Normal3d normal(0, 0, 1);
@@ -107,7 +163,7 @@ namespace schwi {
 				{
 					sample.pdf = Tr;
 					sample.f = (T * Tr) / AbsCosTheta(sample.wi);
-					sample.type = BSDFEnum::TRANSMISSION | BSDFEnum::SPECULAR;
+					sample.type = BxDFType::TRANSMISSION | BxDFType::SPECULAR;
 				}
 				else
 				{
