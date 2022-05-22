@@ -57,12 +57,12 @@ namespace schwi {
 	class SurfaceIntersection :public Intersection {
 	public:
 		Point2d uv{};
+		const Shape* shape;
+		const Primitive* primitive;
 
 	private:
 		Color emission{};
 		BsdfUPtr bsdfPtr{};
-		const Shape* shape;
-		const Primitive* primitive;
 		friend Primitive;
 
 	public:
@@ -70,7 +70,6 @@ namespace schwi {
 		SurfaceIntersection(Point3d p, Normal3d n, Vector3d wo, Point2d uv, const Shape* shape)
 			:Intersection(p, n, wo), uv(uv), shape(shape) {}
 
-		const Shape* GetShape()const { return shape; }
 		const BSDF* bsdf() const { return bsdfPtr.get(); }
 		Color Le()const { return emission; }
 

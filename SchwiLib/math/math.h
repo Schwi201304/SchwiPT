@@ -19,6 +19,7 @@ namespace schwi {
 
 	constexpr double Infinity = std::numeric_limits<double>::infinity();
 	constexpr double MaxDouble = std::numeric_limits<double>::max();
+	constexpr double Epsilon = std::numeric_limits<double>::epsilon();
 	constexpr double MachineEpsilon = std::numeric_limits<double>::epsilon() * 0.5;
 
 	template <typename T> class vec2;

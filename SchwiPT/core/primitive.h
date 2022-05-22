@@ -22,6 +22,8 @@ namespace schwi {
 				//	in?
 				//	in->Scattering(*isect):
 				//	out->Scattering(*isect);
+				isect->shape = this->shape;
+				isect->primitive = this;
 				isect->emission = areaLight ?
 					areaLight->Le(*isect, isect->wo) :
 					Color();

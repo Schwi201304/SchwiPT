@@ -50,9 +50,7 @@ namespace schwi {
 		}
 
 		virtual Color f(const Vector3d& wo, const Vector3d& wi)const = 0;
-		virtual Color Sample_f(const Vector3d& wo, Vector3d* wi,
-			const Point2d& sample, double* pdf,
-			BxDFType* sampledType = nullptr) const;
+		virtual Color Sample_f(const Vector3d& w, const Point2d& sample) const;
 		virtual Color rho(const Vector3d& wo, int nSamples,
 			const Point2d* samples) const;
 		virtual Color rho(int nSamples, const Point2d* samples1,

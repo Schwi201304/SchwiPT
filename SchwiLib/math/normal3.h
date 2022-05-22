@@ -44,6 +44,16 @@ namespace schwi {
 	}
 
 	template<typename T>
+	inline double AbsDot(const Vector3<T>& v, const Normal3<T>& n) {
+		return std::abs(Dot(v, n));
+	}
+
+	template<typename T>
+	inline double AbsDot(const Normal3<T>& n, const Vector3<T>& v) {
+		return std::abs(Dot(v, n));
+	}
+
+	template<typename T>
 	inline Normal3<double> Cross(const Normal3<T>& u, const Normal3<T>& v) {
 		return Normal3<double>(u.y * v.z - u.z * v.y,
 			u.z * v.x - u.x * v.z,

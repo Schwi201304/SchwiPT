@@ -29,6 +29,13 @@ namespace schwi {
 			return Color(r * c.r, g * c.g, b * c.b);
 		}
 
+		Color operator+=(const Color& c) {
+			r += c.r;
+			g += c.g;
+			b += c.b;
+			return *this;
+		}
+
 		void Clear() {
 			r = g = b = 0;
 		}

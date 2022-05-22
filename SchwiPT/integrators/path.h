@@ -17,6 +17,10 @@ namespace schwi {
 			if (!scene.Intersect(ray, &isect)) {
 				return Color();
 			}
+
+			if (isect.primitive->areaLight)
+				return isect.Le();
+
 			if (depth >= maxDepth) {
 				return isect.Le();
 			}
@@ -37,6 +41,7 @@ namespace schwi {
 			}
 
 			Ray wi(isect.position, bs.wi);
+			return EstimateDirectLightPosition(isect, *scene.lightList[0], sampler.GetVector2d(), &scene, sampler, true);
 			return isect.Le() +
 				bs.f * Li(wi, scene, sampler, depth) * abs(Dot(bs.wi, isect.normal)) / bs.pdf;
 		}

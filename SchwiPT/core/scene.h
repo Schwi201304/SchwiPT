@@ -38,6 +38,31 @@ namespace schwi {
 			return hit;
 		}
 
+		bool Occluded(const Point3d& position, const Vector3d& direction, double distance) {
+			Ray ray(position + direction * MachineEpsilon, direction, distance - Epsilon);
+			return Intersect(ray, new SurfaceIntersection());
+		}
+
+		bool Occluded(const SurfaceIntersection& isect1, const Point3d& isect2) {
+			Ray ray = isect1.GenerateRay(isect2);
+			ray.set_distance(Distance(isect1.position, isect2) - 2 * Epsilon);
+			return Intersect(ray, new SurfaceIntersection());
+		}
+
+		bool Occluded(const SurfaceIntersection& isect1, const SurfaceIntersection& isect2) {
+			Ray ray = isect1.GenerateRay(isect2);
+			ray.set_distance(Distance(isect1.position, isect2.position) - 2 * Epsilon);
+			return Intersect(ray, new SurfaceIntersection());
+		}
+
+		Bounds3d WorldBound()const {
+			Bounds3d bound;
+			for (const auto& primitive : primitiveList) {
+				bound = Union(bound, primitive.shape->WorldBound());
+			}
+			return bound;
+		}
+
 	public:
 		/*
 		* 结构调整，原场景无法使用
@@ -193,9 +218,9 @@ namespace schwi {
 
 			PrimitiveList primitiveList{
 				{box.get(),white.get(),nullptr},
-				{cy.get(),mirror.get(),nullptr},
+				{cy.get(),white.get(),nullptr},
 				{cover.get(),white.get(),nullptr},
-				{sphere.get(),glass.get(),nullptr},
+				{sphere.get(),white.get(),nullptr},
 				//{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},
 				{down.get(),white.get(),nullptr},
