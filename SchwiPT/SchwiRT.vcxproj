@@ -192,6 +192,7 @@
     <ClInclude Include="filter\filter.h" />
     <ClInclude Include="filter\gaussian.h" />
     <ClInclude Include="integrators\debug.h" />
+    <ClInclude Include="integrators\directlight.h" />
     <ClInclude Include="samplers\sampling.h" />
     <ClInclude Include="SchwiLib\image\image.h" />
     <ClInclude Include="bxdf\fresnel.h" />

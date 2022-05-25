@@ -7,8 +7,23 @@
 #include<samplers/sampler.h>
 #include<cameras/camera.h>
 #include<core/film.h>
+#include<core/scene.h>
 
 namespace schwi {
+	enum class DirectSampleEnum {
+		SampleSingleLight = 1<<0,
+		SampleAllLight = 1 << 1,
+
+		Bsdf = 1 << 2,
+		Light = 1 << 3,
+
+		BsdfMis = 1 << 4,
+		LightMis = 1 << 5,
+		BothMis = BsdfMis | LightMis,
+
+		Default = SampleAllLight | BothMis
+	};
+
 	class Integrator {
 	public:
 		~Integrator() = default;
@@ -36,7 +51,7 @@ namespace schwi {
 						L = L + Li(ray, scene, *sampler);
 					} while (sampler->NextSample());
 					L = L / sampler->GetSPP();
-					film.GetPixel(x, y)= L;
+					film.GetPixel(x, y) = L;
 				}
 				finished++;
 			}
@@ -46,62 +61,180 @@ namespace schwi {
 		virtual Color Li(Ray ray, Scene& scene, Sampler& sampler) = 0;
 
 	protected:
-		Color EstimateDirectLightDirection(const SurfaceIntersection& isect, const Light& light,
-			const Vector2d& random, Scene* scene, Sampler& sampler, bool skip_specular) {
-			Color Ld{};
+	};
 
-			if (light.IsDelta())
-				return Ld;
-			if (skip_specular && isect.bsdf()->IsDelta())
-				return Ld;
+	Color EstimateDirectLightDirection(const SurfaceIntersection& isect, const Light& light,
+		Scene* scene, Sampler& sampler, bool skip_specular) {
+		Color Ld{};
 
-			BSDFSample bs = isect.bsdf()->Sample_f(isect.wo, sampler.GetVector2d());
-			if (bs.f.IsBlack() || bs.pdf == 0)
-				return Ld;
+		if (light.IsDelta())
+			return Ld;
+		if (skip_specular && isect.bsdf()->IsDelta())
+			return Ld;
 
+		BSDFSample bs = isect.bsdf()->Sample_f(isect.wo, sampler.GetVector2d());
+		if (bs.f.IsBlack() || bs.pdf == 0)
+			return Ld;
+
+		Ray ray = isect.GenerateRay(bs.wi);
+		SurfaceIntersection light_isect;
+		bool is_hit = scene->Intersect(ray, &light_isect);
+
+		Color Li;
+		if (is_hit) {
+			if (light_isect.primitive->areaLight == &light)
+				Li = light_isect.Le();
+		}
+		else {
+			Li = light.Le(ray);
+		}
+
+		if (!Li.IsBlack()) {
+			double cosTheta = AbsDot(bs.wi, isect.normal);
+			Ld = bs.f * Li * cosTheta / bs.pdf;
+		}
+
+		return Ld;
+	}
+
+	Color EstimateDirectLightPosition(const SurfaceIntersection& isect, const Light& light,
+		Scene* scene, Sampler& sampler, bool skip_specular) {
+		Color Ld{};
+
+		if (skip_specular && isect.bsdf()->IsDelta())
+			return Ld;
+
+		LightLiSample ls = light.SampleLi(isect, sampler.GetVector2d());
+		if (ls.Li.IsBlack() || ls.pdf == 0)
+			return Ld;
+
+		if (scene->Occluded(isect, ls.position))
+			return Ld;
+
+		Color f = isect.bsdf()->f(isect.wo, ls.wi);
+		if (!f.IsBlack()) {
+			double cosTheta = AbsDot(ls.wi, isect.normal);
+			Color dL = f * ls.Li * cosTheta / ls.pdf;
+			Ld += dL;
+		}
+
+		return Ld;
+	}
+
+	Color EstimateDirectLightDirectionMis(const SurfaceIntersection& isect, const Light& light,
+		Scene* scene, Sampler& sampler, bool skip_specular) {
+		Color Ld{};
+
+		bool is_specular = isect.bsdf()->IsDelta();
+		if (is_specular && skip_specular)
+			return Ld;
+
+		if (light.IsDelta())
+			return Ld;
+
+		BSDFSample bs = isect.bsdf()->Sample_f(isect.wo, sampler.GetVector2d());
+		bs.f *= AbsDot(bs.wi, isect.normal);
+
+		if (!bs.f.IsBlack() && bs.pdf > 0) {
 			Ray ray = isect.GenerateRay(bs.wi);
 			SurfaceIntersection light_isect;
 			bool is_hit = scene->Intersect(ray, &light_isect);
 
 			Color Li;
 			if (is_hit) {
-				if (light_isect.primitive->areaLight == &light)
+				if (light_isect.primitive->areaLight == &light) {
 					Li = light_isect.Le();
+				}
 			}
 			else {
 				Li = light.Le(ray);
 			}
 
 			if (!Li.IsBlack()) {
-				double cosTheta = AbsDot(bs.wi, isect.normal);
-				Ld = bs.f * Li * cosTheta / bs.pdf;
-			}
+				if (is_specular) {
+					Ld += bs.f * Li / bs.pdf;
+				}
+				else {
+					double light_pdf = light.PdfLi(isect, bs.wi);
+					if (light_pdf > 0) {
+						double weight = PowerHeuristic(1, bs.pdf, 1, light_pdf);
 
+						Ld += bs.f * Li * weight / bs.pdf;
+					}
+				}
+			}
+		}
+		return Ld;
+	}
+
+	Color EstimateDirectLightPositionMis(const SurfaceIntersection& isect, const Light& light,
+		Scene* scene, Sampler& sampler, bool skip_specular) {
+		Color Ld{};
+
+		bool is_specular = isect.bsdf()->IsDelta();
+		if (is_specular && skip_specular)
 			return Ld;
+
+		LightLiSample ls = light.SampleLi(isect, sampler.GetVector2d());
+		if (!ls.Li.IsBlack() && ls.pdf > 0) {
+			if (!scene->Occluded(isect, ls.position)) {
+				Color f = isect.bsdf()->f(isect.wo, ls.wi) * AbsDot(ls.wi, isect.normal);
+				if (!f.IsBlack()) {
+					if (light.IsDelta()) {
+						Ld += f * ls.Li / ls.pdf;
+					}
+					else {
+						double bsdf_pdf = isect.bsdf()->Pdf(isect.wo, ls.wi);
+						double weight = PowerHeuristic(1, ls.pdf, 1, bsdf_pdf);
+
+						Ld += f * ls.Li * weight / ls.pdf;
+					}
+				}
+
+			}
+		}
+		return Ld;
+	}
+
+	Color EstimateDirectLightBothMis(const SurfaceIntersection& isect, const Light& light,
+		Scene* scene, Sampler& sampler, bool skip_specular) {
+
+		Color Lb = EstimateDirectLightDirectionMis(isect, light, scene, sampler, skip_specular);
+		Color Ll = EstimateDirectLightPositionMis(isect, light, scene, sampler, skip_specular);
+
+		return Lb + Ll;
+	}
+
+	Color SampleAllLight(
+		const SurfaceIntersection& isect, Scene* scene,
+		Sampler& sampler, bool skip_specular, DirectSampleEnum sample_enum) {
+		Color Ld{};
+
+		std::function<decltype(EstimateDirectLightBothMis)> estimate_direct_light;
+		switch (sample_enum) {
+		case DirectSampleEnum::Bsdf:
+			estimate_direct_light = EstimateDirectLightDirection;
+			break;
+		case DirectSampleEnum::Light:
+			estimate_direct_light = EstimateDirectLightPosition;
+			break;
+		case DirectSampleEnum::BsdfMis:
+			estimate_direct_light = EstimateDirectLightDirectionMis;
+			break;
+		case DirectSampleEnum::LightMis:
+			estimate_direct_light = EstimateDirectLightPositionMis;
+			break;
+		case DirectSampleEnum::BothMis:
+			estimate_direct_light = EstimateDirectLightBothMis; 
+			break;
+		default:
+			break;
 		}
 
-		Color EstimateDirectLightPosition(const SurfaceIntersection& isect, const Light& light,
-			const Vector2d& random, Scene* scene, Sampler& sampler, bool skip_specular) {
-			Color Ld{};
-
-			if (skip_specular && isect.bsdf()->IsDelta())
-				return Ld;
-
-			LightLiSample ls = light.SampleLi(isect, random);
-			if (ls.Li.IsBlack() || ls.pdf == 0)
-				return Ld;
-
-			if (scene->Occluded(isect, ls.position))
-				return Ld;
-
-			Color f = isect.bsdf()->f(isect.wo, ls.wi);
-			if (!f.IsBlack()) {
-				double cosTheta = AbsDot(ls.wi, isect.normal);
-				Color dL = f * ls.Li * cosTheta / ls.pdf;
-				Ld += dL;
-			}
-
-			return Ld;
+		for (const auto& light : scene->lightList) {
+			Ld += estimate_direct_light(isect, *light, scene, sampler, skip_specular);
 		}
-	};
+
+		return Ld;
+	}
 }

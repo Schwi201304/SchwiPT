@@ -17,6 +17,13 @@ namespace schwi {
 			return Color(r * d, g * d, b * d);
 		}
 
+		Color operator*=(double d){
+			r *= d;
+			g *= d;
+			b *= d;
+			return *this;
+		}
+
 		Color operator+(double d) const {
 			return Color(r + d, g + d, b + d);
 		}

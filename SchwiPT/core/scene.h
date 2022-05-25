@@ -15,15 +15,24 @@
 namespace schwi {
 	class Scene {
 	public:
+		ShapeList shapeList;
+		MaterialList materialList;
+		LightList lightList;
+		PrimitiveList primitiveList;
+		TextureList textureList;
+		EnvironmentLight* environmentLight;
+
+	public:
 		Scene() = default;
 		Scene(ShapeList shapeList, MaterialList materialList,
 			LightList lightList, PrimitiveList primitiveList,
-			TextureList textureList) :
+			TextureList textureList, EnvironmentLight* environmentLight = nullptr) :
 			shapeList(shapeList),
 			materialList(materialList),
 			lightList(lightList),
 			primitiveList(primitiveList),
-			textureList(textureList) {}
+			textureList(textureList),
+			environmentLight(environmentLight) {}
 
 	public:
 		bool Intersect(Ray& ray, SurfaceIntersection* isect)const {
@@ -126,7 +135,7 @@ namespace schwi {
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
 		}
-
+		*/
 		static Scene CreatHeadScene() {
 			ImageSPtr texImg = imageManager.Add("diffuse.png");
 			ImageSPtr earthImg = imageManager.Add("earthmap.png");
@@ -134,9 +143,9 @@ namespace schwi {
 
 			auto shapeList = CreateTriangleMaeh(head, Frame({ 0,0,-1 }, { 0,1,0 }, { 1,0,0 }));
 
-			ShapeSPtr light = std::make_shared<Sphere>(Point3d(0, 1e3 + 60, 0), 1e3, new Frame());
-			ShapeSPtr sp = std::make_shared<Sphere>(Point3d(0, 0, 30), 10, new Frame());
-			ShapeSPtr earth = std::make_shared<Sphere>(Point3d(0, -1e3 - 60, 0), 1e3, new Frame());
+			ShapeSPtr light = std::make_shared<Sphere>(1e3, new Frame({ 0, 0, -1 }, { 0,1,0 }, { 1,0,0 }, { 0, 1e3 + 60, 0 }));
+			ShapeSPtr sp = std::make_shared<Sphere>(10, new Frame({ 0,0,-1 }, { 0,1,0 }, { 1,0,0 }, { 0, 0, 30 }));
+			ShapeSPtr earth = std::make_shared<Sphere>(1e3, new Frame({ 0,0,-1 }, { 0,1,0 }, { 1,0,0 }, { 0, -1e3 - 60, 0 }));
 			ShapeSPtr disk = std::make_shared<Disk>(40, new Frame{ {1,0,0},{0,0,1},{0,-1,0},{0,50,0} });
 			ShapeSPtr rect = std::make_shared<Rectangle>(50, 50, new Frame{ {1,0,0},{0,0,1},{0,-1,0},{0,-20,0} });
 			//ShapeSPtr box = std::make_shared<Box>(Vector3d(5, 20, 20), new Frame{ {1,Sqrt2,1},{-1,Sqrt2,-1},{-1,0,1},{0,0,0} });
@@ -170,17 +179,17 @@ namespace schwi {
 				//{ light.get(),red.get(),area_light.get()},
 				//{sp.get(),headMat.get(),nullptr},
 				//{rect.get(),red.get(),nullptr},
-				{box.get(),red.get(),nullptr},
+				//{box.get(),red.get(),nullptr},
 				{disk.get(),red.get(),disk_light.get()},
 				{earth.get(),earthMat.get(),nullptr}
 			};
-			//for (int i = 0; i < head->nfaces(); i++) {
-			//	primitiveList.push_back({ shapeList[i].get(),headMat.get(),nullptr });
-			//}
+			for (int i = 0; i < head->nfaces(); i++) {
+				primitiveList.push_back({ shapeList[i].get(),headMat.get(),nullptr });
+			}
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
 		}
-		*/
+
 		static Scene CreatCornellBox() {
 			double x, y, z;
 			x = y = z = 35;
@@ -233,11 +242,56 @@ namespace schwi {
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
 		}
 
-	public:
-		ShapeList shapeList;
-		MaterialList materialList;
-		LightList lightList;
-		PrimitiveList primitiveList;
-		TextureList textureList;
+		static Scene LightSample() {
+			double x = 40, y = 12;
+			ShapeSPtr rect1 = std::make_shared<Rectangle>(Vector2d(x, y), new Frame{ {1,0,0},{0,1,-4},{0,4,1},{0,-20,30 } });
+			ShapeSPtr rect2 = std::make_shared<Rectangle>(Vector2d(x, y), new Frame{ {1,0,0},{0,1,-3},{0,3,1},{0,-12,0 } });
+			ShapeSPtr rect3 = std::make_shared<Rectangle>(Vector2d(x, y), new Frame{ {1,0,0},{0,1,-2},{0,2,1},{0,-2,-30 } });
+			ShapeSPtr rect4 = std::make_shared<Rectangle>(Vector2d(x, y), new Frame{ {1,0,0},{0,1,-1},{0,1,1},{0,15,-60 } });
+			ShapeSPtr sp1 = std::make_shared<Sphere>(8, new Frame{ {0,0,1},{1,0,0},{0,1,0},{25,15,5} });
+			ShapeSPtr sp2 = std::make_shared<Sphere>(6, new Frame{ {0,0,1},{1,0,0},{0,1,0},{5,15,5} });
+			ShapeSPtr sp3 = std::make_shared<Sphere>(4, new Frame{ {0,0,1},{1,0,0},{0,1,0},{-12,15,5} });
+			ShapeSPtr sp4 = std::make_shared<Sphere>(2, new Frame{ {0,0,1},{1,0,0},{0,1,0},{-30,15,5} });
+			ShapeList shapeList{ rect1,rect2,rect3,rect4,sp1,sp2,sp3,sp4 };
+
+
+			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
+			TextureSPtr grayConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .75, .75));
+			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(1., 0., 0.));
+			TextureSPtr greenConst = std::make_shared<ConstantTexture<Color>>(Color(0., 1., 0.));
+			TextureSPtr blueConst = std::make_shared<ConstantTexture<Color>>(Color(0., 0., 1.));
+			TextureSPtr yellowConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 0.));
+			TextureSPtr blackConst = std::make_shared<ConstantTexture<Color>>(Color(.0, .0, .0));
+			TextureList textureList{ whiteConst,grayConst ,redConst ,greenConst,blueConst,yellowConst,blackConst };
+
+			MaterialSPtr white = std::make_shared<Matte>(whiteConst);
+			MaterialSPtr gray = std::make_shared<Matte>(grayConst);
+			MaterialSPtr red = std::make_shared<Matte>(redConst);
+			MaterialSPtr green = std::make_shared<Matte>(greenConst);
+			MaterialSPtr blue = std::make_shared<Matte>(blueConst);
+			MaterialSPtr yellow = std::make_shared<Matte>(yellowConst);
+			MaterialSPtr black = std::make_shared<Matte>(blackConst);
+			MaterialSPtr plastic = std::make_shared<Plastic>(whiteConst, yellowConst, 10);
+			MaterialList materialList{ white,gray,red,green,blue,yellow,black ,plastic };
+
+			std::shared_ptr<AreaLight> sp1_light = std::make_shared<AreaLight>(sp1->frame->position(), 1, Color(0., 0., 1.), sp1.get());
+			std::shared_ptr<AreaLight> sp2_light = std::make_shared<AreaLight>(sp2->frame->position(), 1, Color(1., 1., 0.), sp2.get());
+			std::shared_ptr<AreaLight> sp3_light = std::make_shared<AreaLight>(sp3->frame->position(), 1, Color(0., 1., 0.), sp3.get());
+			std::shared_ptr<AreaLight> sp4_light = std::make_shared<AreaLight>(sp4->frame->position(), 1, Color(1., 0., 0.), sp4.get());
+			LightList lightList{ sp1_light,sp2_light,sp3_light,sp4_light };
+
+			PrimitiveList primitiveList{
+				{rect1.get(),plastic.get(),nullptr },
+				{rect2.get(),plastic.get(),nullptr },
+				{rect3.get(),plastic.get(),nullptr },
+				{rect4.get(),plastic.get(),nullptr },
+				{sp1.get(),white.get(),sp1_light.get()},
+				{sp2.get(),white.get(),sp2_light.get()},
+				{sp3.get(),white.get(),sp3_light.get()},
+				{sp4.get(),white.get(),sp4_light.get()}
+			};
+
+			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
+		}
 	};
 }

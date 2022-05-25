@@ -8,6 +8,7 @@
 #include<integrators/integrator.h>
 #include<integrators/path.h>
 #include<integrators/debug.h>
+#include<integrators/directlight.h>
 #include<core/film.h>
 #include<filter/gaussian.h>
 
@@ -32,10 +33,14 @@ int main() {
 		53,
 		Vector2i(width, height));
 
+	//Scene scene = Scene::CreatHeadScene();
 	auto scene = Scene::CreatCornellBox();
+	//Scene scene = Scene::LightSample();
 
-	unique_ptr<Integrator> integrator = make_unique<PathIntegrator>(maxDepth);
+	//unique_ptr<Integrator> integrator = make_unique<SimplePathTracingRecursion>(maxDepth, DirectSampleEnum::BothMis);
+	unique_ptr<Integrator> integrator = make_unique<PathTracingRecursion>(maxDepth,DirectSampleEnum::BothMis,LightingEnum::AllLighting);
 	//unique_ptr<Integrator> integrator = make_unique<DebugIntegrator>(1);
+	//unique_ptr<Integrator> integrator = make_unique<DirectLightIntegrator>(DirectSampleEnum::Bsdf);
 	integrator->Render(scene, *camera, *originalSampler, film);
 
 	film.WriteImage();

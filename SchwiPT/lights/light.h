@@ -167,4 +167,8 @@ namespace schwi {
 			return shape->PdfDirection(isect, world_wi);
 		}
 	};
+
+	class EnvironmentLight :public Light {
+		//TODO:
+	};
 }

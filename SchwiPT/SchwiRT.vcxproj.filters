@@ -40,6 +40,7 @@
     <ClInclude Include="filter\filter.h" />
     <ClInclude Include="filter\gaussian.h" />
     <ClInclude Include="core\film.h" />
+    <ClInclude Include="integrators\directlight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp" />
