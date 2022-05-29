@@ -29,7 +29,7 @@ namespace schwi {
 		~Integrator() = default;
 		Integrator() {}
 
-		void Render(Scene& scene, Camera& camera, Sampler& originalSampler, Film& film) {
+		virtual void Render(Scene& scene, Camera& camera, Sampler& originalSampler, Film& film) {
 			auto [width, height] = film.resolution;
 
 			printf("SPP:%d,Resolution:%d*%d\n", originalSampler.GetSPP(), width, height);

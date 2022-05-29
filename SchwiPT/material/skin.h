@@ -2,6 +2,7 @@
 
 #include<material/material.h>
 
+//TODO: SSS
 namespace schwi {
 	class PreIntegraterdSkin :public Material {
 	private:
@@ -12,8 +13,10 @@ namespace schwi {
 			LUT(lut){}
 
 		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
-			Color Ks = LUT->Evaluate(isect);
-			return std::make_unique<PhongSpecularReflection>(Frame(isect.normal), Ks, 1);
+			Color Kd = LUT->Evaluate(isect);
+			return std::make_unique<Lambertion>(Frame(isect.normal), Kd);
 		}
+
+		bool IsDelay() override{ return true; }
 	};
 }

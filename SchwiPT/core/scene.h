@@ -2,6 +2,7 @@
 
 #include<core/schwi.h>
 #include<material/material.h>
+#include<material/skin.h>
 #include<core/primitive.h>
 #include<shapes/shape.h>
 #include<shapes/sphere.h>
@@ -54,14 +55,14 @@ namespace schwi {
 
 		bool Occluded(SurfaceIntersection& isect1, const Point3d& isect2) {
 			Ray ray = isect1.GenerateRay(isect2);
-			isect1.NoL = Dot(isect1.normal, isect2 - isect1.position);
+			isect1.NoL = Dot(isect1.normal, (isect2 - isect1.position).Normalize());
 			ray.set_distance(Distance(isect1.position, isect2) - 2 * 0.1);
 			return Intersect(ray, new SurfaceIntersection());
 		}
 
 		bool Occluded(SurfaceIntersection& isect1, const SurfaceIntersection& isect2) {
 			Ray ray = isect1.GenerateRay(isect2);
-			isect1.NoL = Dot(isect1.normal, isect2.position - isect1.position);
+			isect1.NoL = Dot(isect1.normal, (isect2.position - isect1.position).Normalize());
 			ray.set_distance(Distance(isect1.position, isect2.position) - 2 * Epsilon);
 			return Intersect(ray, new SurfaceIntersection());
 		}
@@ -235,7 +236,7 @@ namespace schwi {
 
 			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(5, 5, 5), disk.get());
 			std::shared_ptr<Light> point_light = std::make_shared<PointLight>(disk->frame->position(), 1, Color(5, 5, 5));
-			LightList lightList{ disk_light};
+			LightList lightList{ disk_light };
 
 			PrimitiveList primitiveList{
 				{box.get(),white.get(),nullptr},
@@ -301,6 +302,36 @@ namespace schwi {
 				{sp2.get(),white.get(),sp2_light.get()},
 				{sp3.get(),white.get(),sp3_light.get()},
 				{sp4.get(),white.get(),sp4_light.get()}
+			};
+
+			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
+		}
+
+		static Scene SkinTestScene() {
+			ImageSPtr SkinLUT = imageManager.Add("SkinLUT.png");
+
+			ShapeSPtr disk = std::make_shared<Disk>(30, new Frame{ {1,1,0},{0,0,1},{1,-1,0},{-60,60,0} });
+			ShapeSPtr sphere = std::make_shared<Sphere>(30, new Frame({ 1,0,0 }, { 0,1,0 }, { 0,0,1 }, { 0,0,0 }));
+			ShapeList shapeList{ disk,sphere};
+
+			std::shared_ptr<TextureFilter> bilinear = std::make_shared<BilinearFilter>();
+			TextureSPtr skinTex =
+				std::make_shared<ImageTexture<Color, Color>>(
+					std::make_unique<SkinMapping2D>(true,.5),
+					bilinear, SkinLUT);
+			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
+			TextureList textureList{ whiteConst };
+
+			MaterialSPtr white = std::make_shared<Matte>(whiteConst);
+			MaterialSPtr skin = std::make_shared<PreIntegraterdSkin>(skinTex);
+			MaterialList materialList{ white,skin };
+
+			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(25, 25, 25), disk.get());
+			LightList lightList{ disk_light };
+
+			PrimitiveList primitiveList{
+				{sphere.get(),skin.get(),nullptr},
+				{disk.get(),white.get(),disk_light.get()}
 			};
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };

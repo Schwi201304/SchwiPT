@@ -59,7 +59,8 @@ namespace schwi {
 		Point2d uv{};
 		const Shape* shape;
 		const Primitive* primitive{};
-		double NoL{};//Dot(worldNormal,lightDir)
+		double NoL{};// Dot(worldNormal,lightDir)
+		double curvature{};// 1/Radius
 
 	private:
 		Color emission{};
@@ -71,7 +72,7 @@ namespace schwi {
 		SurfaceIntersection(Point3d p, Normal3d n, Vector3d wo, Point2d uv, const Shape* shape)
 			:Intersection(p, n, wo), uv(uv), shape(shape) {}
 
-		const BSDF* bsdf() const { 
+		const BSDF* bsdf() const {
 			return bsdfPtr.get(); 
 		}
 		Color Le()const { return emission; }

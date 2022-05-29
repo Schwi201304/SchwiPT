@@ -29,6 +29,20 @@ namespace schwi {
 		}
 	};
 
+	class SkinMapping2D :public TextureMapping2D {
+	private:
+		bool enforce;
+		double v;
+	public:
+		SkinMapping2D(bool enforce = false, double v = 1.) :
+			enforce(enforce), v(v) {}
+
+		virtual Point2d Map(const SurfaceIntersection& isect)const override {
+			return Point2d(isect.NoL*.5+.5 ,
+				enforce ? v : isect.curvature);
+		}
+	};
+
 	class TextureFilter {
 	public:
 		virtual ~TextureFilter() {}
@@ -63,10 +77,10 @@ namespace schwi {
 			double tx = u - x_min;
 			double ty = v - y_min;
 
-			Color lt = ToColor(img->getColor(x_min,y_max));
-			Color lb = ToColor(img->getColor(x_min,y_min));
-			Color rt = ToColor(img->getColor(x_max,y_max));
-			Color rb = ToColor(img->getColor(x_max,y_min));
+			Color lt = ToColor(img->getColor(x_min, y_max));
+			Color lb = ToColor(img->getColor(x_min, y_min));
+			Color rt = ToColor(img->getColor(x_max, y_max));
+			Color rb = ToColor(img->getColor(x_max, y_min));
 
 			return Lerp(ty,
 				Lerp(tx, lb, rb),
