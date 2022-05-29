@@ -31,8 +31,21 @@ namespace schwi {
 		};
 
 		Film(const std::string& filename, std::unique_ptr<Filter> filter) :
-			filter(std::move(filter)), filename(filename) {
+			filter(filter->Clone()), filename(filename) {
 			ReadImage();
+		}
+
+		Film(const Film& film) {
+			auto [w, h] = film.resolution;
+			resolution = film.resolution;
+			this->pixels= std::unique_ptr <Color[]>(new Color[w * h]);
+			this->filter = film.filter->Clone();
+			for (int i = 0; i < w * h; i++) {
+				this->pixels[i] = film.pixels[i];
+			}
+			for (int i = 0; i < filterTableWidth * filterTableWidth; i++) {
+				this->filterTable[i] = film.filterTable[i];
+			}
 		}
 
 		Color& GetPixel(const Point2i& p) {
@@ -61,7 +74,7 @@ namespace schwi {
 		}
 
 		Film Filter() {
-			fprintf(stderr, "Gaussian Filter");
+			fprintf(stderr, "Gaussian Filter\n");
 			Film ret(resolution, filter->Clone(), filename);
 			auto [w, h] = resolution;
 
@@ -94,8 +107,8 @@ namespace schwi {
 
 		Film operator*(const Film& film) {
 			if (resolution != film.resolution) {
-				std::cerr << "Error:Film Resolution" << std::endl;
-				return Film(resolution,filter->Clone(),filename);
+				std::cerr << "Error:Film Resolution operator* Film" << std::endl;
+				return Film(resolution, filter->Clone(), filename);
 			}
 
 			Film ret(resolution, filter->Clone(), filename);
@@ -104,6 +117,41 @@ namespace schwi {
 				ret.pixels[i] = this->pixels[i] * film.pixels[i];
 			}
 			return ret;
+		}
+
+		Film operator+(const Film& film) {
+			if (resolution != film.resolution) {
+				std::cerr << "Error:Film Resolution operator+Film" << std::endl;
+				return Film(resolution, filter->Clone(), filename);
+			}
+
+			Film ret(resolution, filter->Clone(), filename);
+			auto [w, h] = resolution;
+			for (int i = 0; i < w * h; i++) {
+				ret.pixels[i] = this->pixels[i] + film.pixels[i];
+			}
+			return ret;
+		}
+
+		Film operator*(double d) {
+			Film ret(resolution, filter->Clone(), filename);
+			auto [w, h] = resolution;
+			for (int i = 0; i < w * h; i++) {
+				ret.pixels[i] = this->pixels[i] * d;
+			}
+			return ret;
+		}
+
+		Film operator=(const Film& film) {
+			if (resolution != film.resolution) {
+				std::cerr << "Error:Film Resolution operator=" << std::endl;
+				return *this;
+			}
+			auto [w, h] = resolution;
+			for (int i = 0; i < w * h; i++) {
+				this->pixels[i] = film.pixels[i];
+			}
+			return *this;
 		}
 
 	private:

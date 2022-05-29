@@ -34,18 +34,20 @@ int main() {
 		Vector2i(width, height));
 
 	//Scene scene = Scene::CreatHeadScene();
-	//auto scene = Scene::CreatCornellBox();
+	auto scene = Scene::CreatCornellBox();
 	//Scene scene = Scene::LightSample();
-	Scene scene = Scene::SkinTestScene();
+	//Scene scene = Scene::SkinTestScene();
 
 	//unique_ptr<Integrator> integrator = make_unique<SimplePathTracingRecursion>(maxDepth, DirectSampleEnum::BothMis);
-	//unique_ptr<Integrator> integrator = make_unique<PathTracingRecursion>(maxDepth, DirectSampleEnum::BothMis, LightingEnum::AllLighting);
+	unique_ptr<Integrator> integrator = make_unique<PathTracingRecursion>(maxDepth, DirectSampleEnum::BothMis, LightingEnum::AllLighting);
 	//unique_ptr<Integrator> integrator = make_unique<DebugIntegrator>(1);
 	//unique_ptr<Integrator> integrator = make_unique<DirectLightIntegrator>(DirectSampleEnum::BothMis);
 	//unique_ptr<Integrator> integrator = make_unique<SkinIntegrator>();
-	unique_ptr<Integrator> integrator = make_unique<ScreenSpaceSSSIntegrator>();
+	//unique_ptr<Integrator> integrator = make_unique<ScreenSpaceSSSIntegrator>();
 
 	integrator->Render(scene, *camera, *originalSampler, film);
+
+	ScreenSpaceSSSIntegrator::SSSSS(scene, *camera, *originalSampler, film);
 
 	film.WriteImage();
 	//Film film_filter = film.Filter();

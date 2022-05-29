@@ -222,31 +222,34 @@ namespace schwi {
 			TextureSPtr greenConst = std::make_shared<ConstantTexture<Color>>(Color(0., 1., 0.));
 			TextureSPtr blueConst = std::make_shared<ConstantTexture<Color>>(Color(0., 0., 1.));
 			TextureSPtr blackConst = std::make_shared<ConstantTexture<Color>>(Color(.0, .0, .0));
-			TextureList textureList{ whiteConst ,redConst ,greenConst,blackConst,earthPtr };
+			TextureSPtr skinConst = std::make_shared<ConstantTexture<Color>>(Color(119. / 255., 84. / 255., 77. / 255.));
+			TextureList textureList{ whiteConst ,redConst ,greenConst,blueConst,blackConst,earthPtr ,skinConst};
 
 			MaterialSPtr white = std::make_shared<Matte>(whiteConst);
 			MaterialSPtr red = std::make_shared<Matte>(redConst);
 			MaterialSPtr green = std::make_shared<Matte>(greenConst);
+			MaterialSPtr blue = std::make_shared<Matte>(blueConst);
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
 			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst);
 			MaterialSPtr glass = std::make_shared<Glass>(whiteConst, whiteConst, FresnelSpecular::Glass);
 			MaterialSPtr earthMat = std::make_shared<Matte>(earthPtr);
 			MaterialSPtr plastic = std::make_shared<Plastic>(whiteConst, whiteConst, 1);
-			MaterialList materialList{ white,red,green,black,mirror,glass,earthMat,plastic };
+			MaterialSPtr skin = std::make_shared<PreIntegraterdSkin>(skinConst);
+			MaterialList materialList{ white,red,green,blue,black,mirror,glass,earthMat,plastic,skin };
 
 			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(5, 5, 5), disk.get());
 			std::shared_ptr<Light> point_light = std::make_shared<PointLight>(disk->frame->position(), 1, Color(5, 5, 5));
 			LightList lightList{ disk_light };
 
 			PrimitiveList primitiveList{
-				{box.get(),white.get(),nullptr},
-				{cy.get(),white.get(),nullptr},
-				{cover.get(),white.get(),nullptr},
-				{sphere.get(),white.get(),nullptr},
+				{box.get(),skin.get(),nullptr},
+				{cy.get(),skin.get(),nullptr},
+				{cover.get(),skin.get(),nullptr},
+				{sphere.get(),skin.get(),nullptr},
 				//{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},
 				{down.get(),white.get(),nullptr},
-				{back.get(),white.get(),nullptr},
+				{back.get(),blue.get(),nullptr},
 				{left.get(),green.get(),nullptr},
 				{right.get(),red.get(),nullptr},
 				{disk.get(),white.get(),disk_light.get()}

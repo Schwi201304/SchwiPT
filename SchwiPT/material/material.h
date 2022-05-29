@@ -15,7 +15,7 @@ namespace schwi {
 		virtual ~Material() = default;
 
 		virtual BsdfUPtr Scattering(const SurfaceIntersection& isect)const = 0;
-		virtual bool IsDelay(){ return false; }
+		virtual bool IsDelay()const{ return false; }
 	};
 
 	class Matte :public Material {

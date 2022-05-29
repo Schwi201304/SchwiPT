@@ -17,6 +17,6 @@ namespace schwi {
 			return std::make_unique<Lambertion>(Frame(isect.normal), Kd);
 		}
 
-		bool IsDelay() override{ return true; }
+		bool IsDelay()const override{ return true; }
 	};
 }
