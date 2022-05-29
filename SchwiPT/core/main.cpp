@@ -38,9 +38,9 @@ int main() {
 	//Scene scene = Scene::LightSample();
 
 	//unique_ptr<Integrator> integrator = make_unique<SimplePathTracingRecursion>(maxDepth, DirectSampleEnum::BothMis);
-	unique_ptr<Integrator> integrator = make_unique<PathTracingRecursion>(maxDepth,DirectSampleEnum::BothMis,LightingEnum::AllLighting);
+	unique_ptr<Integrator> integrator = make_unique<PathTracingRecursion>(maxDepth, DirectSampleEnum::BothMis, LightingEnum::AllLighting);
 	//unique_ptr<Integrator> integrator = make_unique<DebugIntegrator>(1);
-	//unique_ptr<Integrator> integrator = make_unique<DirectLightIntegrator>(DirectSampleEnum::Bsdf);
+	//unique_ptr<Integrator> integrator = make_unique<DirectLightIntegrator>(DirectSampleEnum::BothMis);
 	integrator->Render(scene, *camera, *originalSampler, film);
 
 	film.WriteImage();

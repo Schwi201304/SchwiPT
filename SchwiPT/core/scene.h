@@ -47,19 +47,21 @@ namespace schwi {
 			return hit;
 		}
 
-		bool Occluded(const Point3d& position, const Vector3d& direction, double distance) {
+		bool Occluded(Point3d& position, const Vector3d& direction, double distance) {
 			Ray ray(position + direction * MachineEpsilon, direction, distance - Epsilon);
 			return Intersect(ray, new SurfaceIntersection());
 		}
 
-		bool Occluded(const SurfaceIntersection& isect1, const Point3d& isect2) {
+		bool Occluded(SurfaceIntersection& isect1, const Point3d& isect2) {
 			Ray ray = isect1.GenerateRay(isect2);
-			ray.set_distance(Distance(isect1.position, isect2) - 2 * Epsilon);
+			isect1.NoL = Dot(isect1.normal, isect2 - isect1.position);
+			ray.set_distance(Distance(isect1.position, isect2) - 2 * 0.1);
 			return Intersect(ray, new SurfaceIntersection());
 		}
 
-		bool Occluded(const SurfaceIntersection& isect1, const SurfaceIntersection& isect2) {
+		bool Occluded(SurfaceIntersection& isect1, const SurfaceIntersection& isect2) {
 			Ray ray = isect1.GenerateRay(isect2);
+			isect1.NoL = Dot(isect1.normal, isect2.position - isect1.position);
 			ray.set_distance(Distance(isect1.position, isect2.position) - 2 * Epsilon);
 			return Intersect(ray, new SurfaceIntersection());
 		}
@@ -193,6 +195,7 @@ namespace schwi {
 		static Scene CreatCornellBox() {
 			double x, y, z;
 			x = y = z = 35;
+			ImageSPtr earthImg = imageManager.Add("earthmap.png");
 
 			ShapeSPtr disk = std::make_shared<Disk>(15, new Frame{ {1,0,0},{0,0,1},{0,-1,0},{0,y - .1,0} });
 			ShapeSPtr up = std::make_shared<Rectangle>(Vector2d(x, y), new Frame{ {1,0,0},{0,0,1},{0,-1,0},{0,z,0 } });
@@ -207,12 +210,18 @@ namespace schwi {
 			ShapeSPtr sphere = std::make_shared<Sphere>(10, new Frame{ {0,0,1},{1,0,0},{0,1,0},{x - 20,-y + 30,z - 20} });
 			ShapeList shapeList{ disk,up,down,left,right,back,box,box2,cy,cover,sphere };
 
+			std::shared_ptr<TextureFilter> bilinear = std::make_shared<BilinearFilter>();
+			TextureSPtr earthPtr =
+				std::make_shared<ImageTexture<Color, Color>>(
+					std::make_unique<UVMapping2D>(),
+					bilinear, earthImg);
 
 			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
 			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(1., 0., 0.));
 			TextureSPtr greenConst = std::make_shared<ConstantTexture<Color>>(Color(0., 1., 0.));
+			TextureSPtr blueConst = std::make_shared<ConstantTexture<Color>>(Color(0., 0., 1.));
 			TextureSPtr blackConst = std::make_shared<ConstantTexture<Color>>(Color(.0, .0, .0));
-			TextureList textureList{ whiteConst ,redConst ,greenConst,blackConst };
+			TextureList textureList{ whiteConst ,redConst ,greenConst,blackConst,earthPtr };
 
 			MaterialSPtr white = std::make_shared<Matte>(whiteConst);
 			MaterialSPtr red = std::make_shared<Matte>(redConst);
@@ -220,10 +229,13 @@ namespace schwi {
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
 			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst);
 			MaterialSPtr glass = std::make_shared<Glass>(whiteConst, whiteConst, FresnelSpecular::Glass);
-			MaterialList materialList{ white,red,green,black,mirror,glass };
+			MaterialSPtr earthMat = std::make_shared<Matte>(earthPtr);
+			MaterialSPtr plastic = std::make_shared<Plastic>(whiteConst, whiteConst, 1);
+			MaterialList materialList{ white,red,green,black,mirror,glass,earthMat,plastic };
 
 			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(5, 5, 5), disk.get());
-			LightList lightList{ disk_light };
+			std::shared_ptr<Light> point_light = std::make_shared<PointLight>(disk->frame->position(), 1, Color(5, 5, 5));
+			LightList lightList{ disk_light};
 
 			PrimitiveList primitiveList{
 				{box.get(),white.get(),nullptr},
@@ -254,7 +266,6 @@ namespace schwi {
 			ShapeSPtr sp4 = std::make_shared<Sphere>(2, new Frame{ {0,0,1},{1,0,0},{0,1,0},{-30,15,5} });
 			ShapeList shapeList{ rect1,rect2,rect3,rect4,sp1,sp2,sp3,sp4 };
 
-
 			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
 			TextureSPtr grayConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .75, .75));
 			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(1., 0., 0.));
@@ -271,20 +282,21 @@ namespace schwi {
 			MaterialSPtr blue = std::make_shared<Matte>(blueConst);
 			MaterialSPtr yellow = std::make_shared<Matte>(yellowConst);
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
-			MaterialSPtr plastic = std::make_shared<Plastic>(whiteConst, yellowConst, 10);
-			MaterialList materialList{ white,gray,red,green,blue,yellow,black ,plastic };
+			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst);
+			MaterialSPtr plastic = std::make_shared<Plastic>(whiteConst, yellowConst, 1);
+			MaterialList materialList{ white,gray,red,green,blue,yellow,black ,plastic,mirror };
 
-			std::shared_ptr<AreaLight> sp1_light = std::make_shared<AreaLight>(sp1->frame->position(), 1, Color(0., 0., 1.), sp1.get());
-			std::shared_ptr<AreaLight> sp2_light = std::make_shared<AreaLight>(sp2->frame->position(), 1, Color(1., 1., 0.), sp2.get());
-			std::shared_ptr<AreaLight> sp3_light = std::make_shared<AreaLight>(sp3->frame->position(), 1, Color(0., 1., 0.), sp3.get());
-			std::shared_ptr<AreaLight> sp4_light = std::make_shared<AreaLight>(sp4->frame->position(), 1, Color(1., 0., 0.), sp4.get());
+			std::shared_ptr<AreaLight> sp1_light = std::make_shared<AreaLight>(sp1->frame->position(), 1, Color(0., 0., 5.), sp1.get());
+			std::shared_ptr<AreaLight> sp2_light = std::make_shared<AreaLight>(sp2->frame->position(), 1, Color(5., 5., 0.), sp2.get());
+			std::shared_ptr<AreaLight> sp3_light = std::make_shared<AreaLight>(sp3->frame->position(), 1, Color(0., 5., 0.), sp3.get());
+			std::shared_ptr<AreaLight> sp4_light = std::make_shared<AreaLight>(sp4->frame->position(), 1, Color(5., 0., 0.), sp4.get());
 			LightList lightList{ sp1_light,sp2_light,sp3_light,sp4_light };
 
 			PrimitiveList primitiveList{
-				{rect1.get(),plastic.get(),nullptr },
-				{rect2.get(),plastic.get(),nullptr },
-				{rect3.get(),plastic.get(),nullptr },
-				{rect4.get(),plastic.get(),nullptr },
+				{rect1.get(),red.get(),nullptr },
+				{rect2.get(),red.get(),nullptr },
+				{rect3.get(),red.get(),nullptr },
+				{rect4.get(),red.get(),nullptr },
 				{sp1.get(),white.get(),sp1_light.get()},
 				{sp2.get(),white.get(),sp2_light.get()},
 				{sp3.get(),white.get(),sp3_light.get()},

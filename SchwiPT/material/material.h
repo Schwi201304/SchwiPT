@@ -44,7 +44,7 @@ namespace schwi {
 			return std::make_unique<SpecularReflection>(Frame(isect.normal), Kr);
 		}
 	};
-	
+
 	class Glass :public Material {
 	private:
 		TextureSPtr TexKr;
@@ -61,7 +61,22 @@ namespace schwi {
 			return std::make_unique<FresnelSpecular>(Frame(isect.normal), Kr, Kt, 1, eta);
 		}
 	};
-	
+
+	class Phong :public Material {
+	private:
+		TextureSPtr TexKs;
+		double exp;
+
+	public:
+		Phong(const TextureSPtr& TexKs,double shininess):
+			TexKs(TexKs),exp(shininess){}
+
+		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
+			Color Ks = TexKs->Evaluate(isect);
+			return std::make_unique<PhongSpecularReflection>(Frame(isect.normal), Ks, exp);
+		}
+	};
+
 	class Plastic :public Material {
 	private:
 		TextureSPtr TexKd;

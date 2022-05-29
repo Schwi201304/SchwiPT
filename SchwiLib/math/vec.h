@@ -83,6 +83,16 @@ namespace schwi {
 	};
 
 	template<typename T>
+	inline bool operator==(const vec2<T>& v1, const vec2<T>& v2) {
+		return v1.x == v2.x && v1.y == v2.y;
+	}
+
+	template<typename T>
+	inline bool operator!=(const vec2<T>& v1, const vec2<T>& v2) {
+		return v1.x != v2.x || v1.y != v2.y;
+	}
+
+	template<typename T>
 	inline std::ostream& operator<<(std::ostream& out, const vec2<T>& v) {
 		return out << "[" << v.x << ',' << v.y << "]";
 	}

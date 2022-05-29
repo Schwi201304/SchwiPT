@@ -17,12 +17,12 @@ namespace schwi {
 			bool hit = shape->Intersect(ray, isect);
 			if (hit) {
 				isect->bsdfPtr = out->Scattering(*isect);
+				//isect->shape = this->shape;
 				//isect->bsdfPtr = Dot(isect->wo,isect->normal)>0?
 				//	out->Scattering(*isect):
 				//	in?
 				//	in->Scattering(*isect):
 				//	out->Scattering(*isect);
-				isect->shape = this->shape;
 				isect->primitive = this;
 				isect->emission = areaLight ?
 					areaLight->Le(*isect, isect->wo) :

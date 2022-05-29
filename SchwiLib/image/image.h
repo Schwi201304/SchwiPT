@@ -58,8 +58,8 @@ namespace schwi {
 			std::cerr << "SchwiImage: [" << filename << "]: # w# " << width() << " h# " << height() << " comp# " << channels() << std::endl;
 		}
 
-		bool load_file(const std::string& filename, bool flip = true);
-		void write_file(const std::string& filename, bool flip = true)const;
+		bool load_file(const std::string& filename, bool flip = false);
+		void write_file(const std::string& filename, bool flip = false)const;
 		void setColor(const int x, const int y, const SchwiColor& color);
 		SchwiColor getColor(const int flag)const;
 		SchwiColor getColor(const int x, const int y) const;

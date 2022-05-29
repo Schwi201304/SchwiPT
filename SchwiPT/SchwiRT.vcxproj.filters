@@ -41,6 +41,7 @@
     <ClInclude Include="filter\gaussian.h" />
     <ClInclude Include="core\film.h" />
     <ClInclude Include="integrators\directlight.h" />
+    <ClInclude Include="material\skin.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp" />

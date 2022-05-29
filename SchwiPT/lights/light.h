@@ -89,8 +89,48 @@ namespace schwi {
 
 		virtual bool IsDelta() const override { return true; }
 		virtual bool IsFinite() const override { return true; }
-
 		virtual Color Power() const override { return 4 * Pi * intensity; }
+
+	public:
+		Color SampleLe(
+			const Vector2d& random1, const Vector2d& random2,
+			Ray* ray, Normal3d* light_normal,
+			double* pdf_position, double* pdf_direction) const override
+		{
+			*ray = Ray(world_position, SampleSphereUniform(random1));
+			*light_normal = Normal3d(ray->direction());
+
+			*pdf_position = 1;
+			*pdf_direction = PdfSphereUniform();
+
+			return intensity;
+		}
+
+		void PdfLe(
+			const Ray& ray, const Normal3d& light_normal,
+			double* pdf_position, double* pdf_direction) const override
+		{
+			*pdf_position = 0;
+			*pdf_direction = PdfSphereUniform();
+		}
+
+	public:
+		LightLiSample SampleLi(const SurfaceIntersection& isect, const Vector2d& random) const override
+		{
+			LightLiSample sample;
+			sample.position = world_position;
+			sample.wi = (world_position - isect.position).Normalize();
+			sample.pdf = 1;
+			sample.Li = intensity / DistanceSquared(world_position, isect.position);
+
+			return sample;
+		}
+
+		double PdfLi(
+			const SurfaceIntersection& isect, const Vector3d& world_wi) const override
+		{
+			return 0;
+		}
 	};
 
 	class AreaLight :public Light {
@@ -110,6 +150,7 @@ namespace schwi {
 		virtual bool IsFinite()const override { return true; }
 		virtual Color Power()const override { return power; }
 
+	public:
 		Color Le(const SurfaceIntersection& light_isect, const Vector3d& wo)const {
 			return (Dot(light_isect.normal, wo) > 0) ?
 				radiance :
@@ -143,6 +184,7 @@ namespace schwi {
 			*pdf_direction = PdfHemisphereCosine(Dot(light_normal, ray.direction()));
 		}
 
+	public:
 		virtual LightLiSample SampleLi(
 			const SurfaceIntersection& isect, const Vector2d& random
 		) const override {
@@ -170,5 +212,12 @@ namespace schwi {
 
 	class EnvironmentLight :public Light {
 		//TODO:
+	private:
+		Color radiance;
+
+		Point3d world_center;
+		double world_radius;
+		double area;
+		Color power;
 	};
 }

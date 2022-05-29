@@ -126,7 +126,7 @@ namespace schwi {
 
 		Color DirectLighting(
 			Ray ray, Scene& scene, Sampler& sampler, int depth, bool is_last_specular,
-			const SurfaceIntersection& isect) {
+			SurfaceIntersection& isect) {
 			Color Ld{};
 
 			if (!isect.bsdf()->IsDelta()) {

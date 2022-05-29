@@ -92,6 +92,20 @@ namespace schwi {
 					GetPixel(i, j).Clear();
 		}
 
+		Film operator*(const Film& film) {
+			if (resolution != film.resolution) {
+				std::cerr << "Error:Film Resolution" << std::endl;
+				return Film(resolution,filter->Clone(),filename);
+			}
+
+			Film ret(resolution, filter->Clone(), filename);
+			auto [w, h] = resolution;
+			for (int i = 0; i < w * h; i++) {
+				ret.pixels[i] = this->pixels[i] * film.pixels[i];
+			}
+			return ret;
+		}
+
 	private:
 		void ReadImage() {
 			SchwiImage img(filename);

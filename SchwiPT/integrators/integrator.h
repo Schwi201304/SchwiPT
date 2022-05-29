@@ -63,7 +63,7 @@ namespace schwi {
 	protected:
 	};
 
-	Color EstimateDirectLightDirection(const SurfaceIntersection& isect, const Light& light,
+	Color EstimateDirectLightDirection(SurfaceIntersection& isect, const Light& light,
 		Scene* scene, Sampler& sampler, bool skip_specular) {
 		Color Ld{};
 
@@ -97,7 +97,7 @@ namespace schwi {
 		return Ld;
 	}
 
-	Color EstimateDirectLightPosition(const SurfaceIntersection& isect, const Light& light,
+	Color EstimateDirectLightPosition(SurfaceIntersection& isect, const Light& light,
 		Scene* scene, Sampler& sampler, bool skip_specular) {
 		Color Ld{};
 
@@ -121,7 +121,7 @@ namespace schwi {
 		return Ld;
 	}
 
-	Color EstimateDirectLightDirectionMis(const SurfaceIntersection& isect, const Light& light,
+	Color EstimateDirectLightDirectionMis(SurfaceIntersection& isect, const Light& light,
 		Scene* scene, Sampler& sampler, bool skip_specular) {
 		Color Ld{};
 
@@ -167,7 +167,7 @@ namespace schwi {
 		return Ld;
 	}
 
-	Color EstimateDirectLightPositionMis(const SurfaceIntersection& isect, const Light& light,
+	Color EstimateDirectLightPositionMis(SurfaceIntersection& isect, const Light& light,
 		Scene* scene, Sampler& sampler, bool skip_specular) {
 		Color Ld{};
 
@@ -196,7 +196,7 @@ namespace schwi {
 		return Ld;
 	}
 
-	Color EstimateDirectLightBothMis(const SurfaceIntersection& isect, const Light& light,
+	Color EstimateDirectLightBothMis(SurfaceIntersection& isect, const Light& light,
 		Scene* scene, Sampler& sampler, bool skip_specular) {
 
 		Color Lb = EstimateDirectLightDirectionMis(isect, light, scene, sampler, skip_specular);
@@ -206,7 +206,7 @@ namespace schwi {
 	}
 
 	Color SampleAllLight(
-		const SurfaceIntersection& isect, Scene* scene,
+		SurfaceIntersection& isect, Scene* scene,
 		Sampler& sampler, bool skip_specular, DirectSampleEnum sample_enum) {
 		Color Ld{};
 

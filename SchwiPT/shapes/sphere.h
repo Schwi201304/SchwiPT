@@ -44,7 +44,7 @@ namespace schwi {
 					frame->ToWorld(hit_point),
 					frame->ToWorld(normal),
 					-r.direction(),
-					Point2d(u, v),this);
+					Point2d(u, v), this);
 			}
 
 			return hit;
