@@ -218,12 +218,13 @@ namespace schwi {
 					bilinear, earthImg);
 
 			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
+			TextureSPtr grayConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .75, .75));
 			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(1., 0., 0.));
 			TextureSPtr greenConst = std::make_shared<ConstantTexture<Color>>(Color(0., 1., 0.));
 			TextureSPtr blueConst = std::make_shared<ConstantTexture<Color>>(Color(0., 0., 1.));
 			TextureSPtr blackConst = std::make_shared<ConstantTexture<Color>>(Color(.0, .0, .0));
 			TextureSPtr skinConst = std::make_shared<ConstantTexture<Color>>(Color(119. / 255., 84. / 255., 77. / 255.));
-			TextureList textureList{ whiteConst ,redConst ,greenConst,blueConst,blackConst,earthPtr ,skinConst};
+			TextureList textureList{ whiteConst ,grayConst,redConst ,greenConst,blueConst,blackConst,earthPtr ,skinConst };
 
 			MaterialSPtr white = std::make_shared<Matte>(whiteConst);
 			MaterialSPtr red = std::make_shared<Matte>(redConst);
@@ -235,21 +236,22 @@ namespace schwi {
 			MaterialSPtr earthMat = std::make_shared<Matte>(earthPtr);
 			MaterialSPtr plastic = std::make_shared<Plastic>(whiteConst, whiteConst, 1);
 			MaterialSPtr skin = std::make_shared<PreIntegraterdSkin>(skinConst);
-			MaterialList materialList{ white,red,green,blue,black,mirror,glass,earthMat,plastic,skin };
+			MaterialSPtr stock = std::make_shared<Stockings>(blackConst, whiteConst, 50);
+			MaterialList materialList{ white,red,green,blue,black,mirror,glass,earthMat,plastic,skin,stock };
 
 			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(5, 5, 5), disk.get());
 			std::shared_ptr<Light> point_light = std::make_shared<PointLight>(disk->frame->position(), 1, Color(5, 5, 5));
 			LightList lightList{ disk_light };
 
 			PrimitiveList primitiveList{
-				{box.get(),skin.get(),nullptr},
+				{box.get(),white.get(),nullptr},
 				{cy.get(),skin.get(),nullptr},
-				{cover.get(),skin.get(),nullptr},
+				{cover.get(),white.get(),nullptr},
 				{sphere.get(),skin.get(),nullptr},
 				//{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},
 				{down.get(),white.get(),nullptr},
-				{back.get(),blue.get(),nullptr},
+				{back.get(),white.get(),nullptr},
 				{left.get(),green.get(),nullptr},
 				{right.get(),red.get(),nullptr},
 				{disk.get(),white.get(),disk_light.get()}
@@ -315,12 +317,12 @@ namespace schwi {
 
 			ShapeSPtr disk = std::make_shared<Disk>(30, new Frame{ {1,1,0},{0,0,1},{1,-1,0},{-60,60,0} });
 			ShapeSPtr sphere = std::make_shared<Sphere>(30, new Frame({ 1,0,0 }, { 0,1,0 }, { 0,0,1 }, { 0,0,0 }));
-			ShapeList shapeList{ disk,sphere};
+			ShapeList shapeList{ disk,sphere };
 
 			std::shared_ptr<TextureFilter> bilinear = std::make_shared<BilinearFilter>();
 			TextureSPtr skinTex =
 				std::make_shared<ImageTexture<Color, Color>>(
-					std::make_unique<SkinMapping2D>(true,.5),
+					std::make_unique<SkinMapping2D>(true, .0625),
 					bilinear, SkinLUT);
 			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
 			TextureList textureList{ whiteConst };
@@ -329,7 +331,7 @@ namespace schwi {
 			MaterialSPtr skin = std::make_shared<PreIntegraterdSkin>(skinTex);
 			MaterialList materialList{ white,skin };
 
-			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(25, 25, 25), disk.get());
+			std::shared_ptr<AreaLight> disk_light = std::make_shared<AreaLight>(disk->frame->position(), 1, Color(30, 30, 30), disk.get());
 			LightList lightList{ disk_light };
 
 			PrimitiveList primitiveList{

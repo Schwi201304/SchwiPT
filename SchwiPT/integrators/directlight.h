@@ -68,7 +68,7 @@ namespace schwi {
 			if (ls.Li.IsBlack() || ls.pdf == 0)
 				return Ld;
 
-			isect.NoL= Dot(isect.normal, (ls.position - isect.position).Normalize());
+			isect.NoL = Dot(isect.normal, (ls.position - isect.position).Normalize());
 
 			BsdfUPtr bsdf = isect.primitive->material->Scattering(isect);
 			//std::cout << isect.NoL << std::endl;
@@ -85,17 +85,17 @@ namespace schwi {
 
 	class ScreenSpaceSSSIntegrator :public Integrator {
 	public:
-		ScreenSpaceSSSIntegrator(){}
+		ScreenSpaceSSSIntegrator() {}
 
-		void Render(Scene& scene, Camera& camera, Sampler& originSampler, Film& film) override{
-			Film origin=ParentRender(scene, camera, originSampler,film.resolution);
-			Film mask= GetMask(scene, camera, film.resolution);
+		void Render(Scene& scene, Camera& camera, Sampler& originSampler, Film& film) override {
+			Film origin = ParentRender(scene, camera, originSampler, film.resolution);
+			Film mask = GetMask(scene, camera, film.resolution);
 			film = origin;
 			for (int i = 0; i < 4; i++) {
 				int r = 1 << i;
 				Film g(film.resolution, std::make_unique<GaussianFilter>(Vector2d(r, r), 1), "g.png");
 				g = film;
-				film =film+ g.Filter() * mask*(.5/r);
+				film = film + g.Filter() * mask * (.5 / r);
 			}
 			//Film g1 = origin.Filter();
 			//std::cout << g1.resolution << origin.resolution;
@@ -103,7 +103,7 @@ namespace schwi {
 			//film = origin+mask*g1;
 		}
 
-		Film ParentRender(Scene& scene, Camera& camera, Sampler& originSampler,Point2i& resolution) {
+		Film ParentRender(Scene& scene, Camera& camera, Sampler& originSampler, Point2i& resolution) {
 			Film film(resolution, std::make_unique<GaussianFilter>(Vector2d(1, 1), 1), "origin.png");
 			auto [width, height] = resolution;
 			printf("Screen Space Blur\n");
@@ -148,12 +148,12 @@ namespace schwi {
 			return Lo;
 		}
 
-		Film GetMask(Scene& scene,Camera& camera, Point2i& resolution) {
+		Film GetMask(Scene& scene, Camera& camera, Point2i& resolution) {
 			auto [width, height] = resolution;
 			Film mask(resolution, std::make_unique<GaussianFilter>(Vector2d(1, 1), 1), "mask.png");
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
-					Ray ray = camera.GenerateRay({Point2d(x + .5,y + .5 )});
+					Ray ray = camera.GenerateRay({ Point2d(x + .5,y + .5) });
 					SurfaceIntersection isect;
 					if (!scene.Intersect(ray, &isect)) {
 						mask.GetPixel(x, y) = Color();
@@ -197,6 +197,8 @@ namespace schwi {
 				g = film;
 				film = film + g.Filter() * mask * (.5 / r);
 			}
+			//film = mask;
+			//film = film.Filter();
 		}
 	};
 }
