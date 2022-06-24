@@ -132,46 +132,45 @@ namespace schwi {
 
 		bool IsDelta()const override { return true; }
 
-		Color _f(const Vector3d& wo, const Vector3d& wi)const override {
+		Color Sample_f(const Vector3d& world_wo, Vector3d* world_wi, double* pdf, const Vector2d& random)const override {
+			Vector3d local_wo = ToLocal(world_wo);
+			Vector3d local_wi;
+			double Re = FrDielectric(CosTheta(local_wo), etaI, etaT);
+			double Tr = 1 - Re;
+
+			if (random[0] < Re) {
+				local_wi = Vector3d(-local_wo.x, -local_wo.y, local_wo.z);
+				*world_wi = ToWorld(local_wi);
+				*pdf = Re;
+				return (R * Re) / AbsCosTheta(local_wi);
+			}
+			else {
+				Normal3d normal(0, 0, 1);
+				bool into = Dot(normal, local_wo) > 0;
+
+				Normal3d wo_normal = into ? normal : normal * -1;
+				double eta = into ? etaI / etaT : etaT / etaI;
+
+				if (Refract(local_wo, wo_normal, eta, &local_wi))
+				{
+					*pdf = Tr;
+					*world_wi = ToWorld(local_wi);
+					return   (T * Tr) / AbsCosTheta(local_wi);
+				}
+				else
+				{
+					return Color(); // total internal reflection
+				}
+			}
+		}
+
+	private:
+		Color f(const Vector3d& wo, const Vector3d& wi)const override {
 			return Color();
 		}
 
 		double _Pdf(const Vector3d& wo, const Vector3d& wi)const override {
 			return 0;
-		}
-
-		BSDFSample _Sample_f(const Vector3d& wo, const Vector2d& random)const override {
-			BSDFSample sample;
-
-			double Re = FrDielectric(CosTheta(wo), etaI, etaT);
-			double Tr = 1 - Re;
-
-			if (random[0] < Re) {
-				sample.wi = Vector3d(-wo.x, -wo.y, wo.z);
-				sample.pdf = Re;
-				sample.f = (R * Re) / AbsCosTheta(sample.wi);
-				sample.type = BxDFType::REFLECTION | BxDFType::SPECULAR;
-			}
-			else {
-				Normal3d normal(0, 0, 1);
-				bool into = Dot(normal, wo) > 0;
-
-				Normal3d wo_normal = into ? normal : normal * -1;
-				double eta = into ? etaI / etaT : etaT / etaI;
-
-				if (Refract(wo, wo_normal, eta, &sample.wi))
-				{
-					sample.pdf = Tr;
-					sample.f = (T * Tr) / AbsCosTheta(sample.wi);
-					sample.type = BxDFType::TRANSMISSION | BxDFType::SPECULAR;
-				}
-				else
-				{
-					sample.f = Color(); // total internal reflection
-				}
-			}
-
-			return sample;
 		}
 
 	public:

@@ -11,7 +11,7 @@
 
 namespace schwi {
 	enum class DirectSampleEnum {
-		SampleSingleLight = 1<<0,
+		SampleSingleLight = 1 << 0,
 		SampleAllLight = 1 << 1,
 
 		Bsdf = 1 << 2,
@@ -72,11 +72,13 @@ namespace schwi {
 		if (skip_specular && isect.bsdf()->IsDelta())
 			return Ld;
 
-		BSDFSample bs = isect.bsdf()->Sample_f(isect.wo, sampler.GetVector2d());
-		if (bs.f.IsBlack() || bs.pdf == 0)
+		Vector3d wi;
+		double pdf = 0;
+		Color f = isect.bsdf()->Sample_f(isect.wo, &wi, &pdf, sampler.GetVector2d());
+		if (f.IsBlack() || pdf == 0)
 			return Ld;
 
-		Ray ray = isect.GenerateRay(bs.wi);
+		Ray ray = isect.GenerateRay(wi);
 		SurfaceIntersection light_isect;
 		bool is_hit = scene->Intersect(ray, &light_isect);
 
@@ -90,8 +92,8 @@ namespace schwi {
 		}
 
 		if (!Li.IsBlack()) {
-			double cosTheta = AbsDot(bs.wi, isect.normal);
-			Ld = bs.f * Li * cosTheta / bs.pdf;
+			double cosTheta = AbsDot(wi, isect.normal);
+			Ld = f * Li * cosTheta / pdf;
 		}
 
 		return Ld;
@@ -111,7 +113,7 @@ namespace schwi {
 		if (scene->Occluded(isect, ls.position))
 			return Ld;
 
-		Color f = isect.bsdf()->f(isect.wo, ls.wi);
+		Color f = isect.bsdf()->F(isect.wo, ls.wi);
 		if (!f.IsBlack()) {
 			double cosTheta = AbsDot(ls.wi, isect.normal);
 			Color dL = f * ls.Li * cosTheta / ls.pdf;
@@ -132,11 +134,13 @@ namespace schwi {
 		if (light.IsDelta())
 			return Ld;
 
-		BSDFSample bs = isect.bsdf()->Sample_f(isect.wo, sampler.GetVector2d());
-		bs.f *= AbsDot(bs.wi, isect.normal);
+		Vector3d wi;
+		double pdf = 0;
+		Color f = isect.bsdf()->Sample_f(isect.wo, &wi, &pdf, sampler.GetVector2d());
+		f *= AbsDot(wi, isect.normal);
 
-		if (!bs.f.IsBlack() && bs.pdf > 0) {
-			Ray ray = isect.GenerateRay(bs.wi);
+		if (!f.IsBlack() && pdf > 0) {
+			Ray ray = isect.GenerateRay(wi);
 			SurfaceIntersection light_isect;
 			bool is_hit = scene->Intersect(ray, &light_isect);
 
@@ -152,14 +156,14 @@ namespace schwi {
 
 			if (!Li.IsBlack()) {
 				if (is_specular) {
-					Ld += bs.f * Li / bs.pdf;
+					Ld += f * Li / pdf;
 				}
 				else {
-					double light_pdf = light.PdfLi(isect, bs.wi);
+					double light_pdf = light.PdfLi(isect, wi);
 					if (light_pdf > 0) {
-						double weight = PowerHeuristic(1, bs.pdf, 1, light_pdf);
+						double weight = PowerHeuristic(1, pdf, 1, light_pdf);
 
-						Ld += bs.f * Li * weight / bs.pdf;
+						Ld += f * Li * weight / pdf;
 					}
 				}
 			}
@@ -178,7 +182,7 @@ namespace schwi {
 		LightLiSample ls = light.SampleLi(isect, sampler.GetVector2d());
 		if (!ls.Li.IsBlack() && ls.pdf > 0) {
 			if (!scene->Occluded(isect, ls.position)) {
-				Color f = isect.bsdf()->f(isect.wo, ls.wi) * AbsDot(ls.wi, isect.normal);
+				Color f = isect.bsdf()->F(isect.wo, ls.wi) * AbsDot(ls.wi, isect.normal);
 				if (!f.IsBlack()) {
 					if (light.IsDelta()) {
 						Ld += f * ls.Li / ls.pdf;
@@ -225,7 +229,7 @@ namespace schwi {
 			estimate_direct_light = EstimateDirectLightPositionMis;
 			break;
 		case DirectSampleEnum::BothMis:
-			estimate_direct_light = EstimateDirectLightBothMis; 
+			estimate_direct_light = EstimateDirectLightBothMis;
 			break;
 		default:
 			break;

@@ -34,7 +34,7 @@ int main() {
 		Vector2i(width, height));
 
 	//Scene scene = Scene::CreatHeadScene();
-	auto scene = Scene::CreatCornellBox();
+	Scene scene = Scene::CreatCornellBox();
 	//Scene scene = Scene::LightSample();
 	//Scene scene = Scene::SkinTestScene();
 
@@ -47,7 +47,7 @@ int main() {
 
 	integrator->Render(scene, *camera, *originalSampler, film);
 
-	ScreenSpaceSSSIntegrator::SSSSS(scene, *camera, *originalSampler, film);
+	//ScreenSpaceSSSIntegrator::SSSSS(scene, *camera, *originalSampler, film);
 
 	film.WriteImage();
 	//Film film_filter = film.Filter();

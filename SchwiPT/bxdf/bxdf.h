@@ -31,13 +31,6 @@ namespace schwi {
 		return ((int)type & (int)BxDFType::SPECULAR) > 0;
 	}
 
-	struct BSDFSample {
-		Color f{};
-		Vector3d wi{};
-		double pdf{};
-		BxDFType type;
-	};
-
 	class BxDF {
 	public:
 		const BxDFType type;
@@ -66,26 +59,21 @@ namespace schwi {
 
 		virtual bool IsDelta()const = 0;
 
-		Color f(const Vector3d& world_wo, const Vector3d& world_wi)const {
-			return _f(ToLocal(world_wo), ToLocal(world_wi));
+		Color F(const Vector3d& wo, const Vector3d& wi)const {
+			return f(ToLocal(wo), ToLocal(wi));
 		}
 
-		double Pdf(const Vector3d& world_wo, const Vector3d& world_wi)const {
-			return _Pdf(ToLocal(world_wo), ToLocal(world_wi));
+		double Pdf(const Vector3d& wo, const Vector3d& wi)const {
+			return _Pdf(ToLocal(wo), ToLocal(wi));
 		}
 
-		BSDFSample Sample_f(const Vector3d& world_wo, const Vector2d random)const {
-			auto sample = _Sample_f(ToLocal(world_wo), random);
-			sample.wi = ToWorld(sample.wi);
-			return sample;
-		}
+		virtual Color Sample_f(const Vector3d& world_wo, Vector3d* world_wi, double* pdf, const Vector2d& random)const = 0;
 
 	protected:
-		virtual Color _f(const Vector3d& wo, const Vector3d& wi)const = 0;
+		virtual Color f(const Vector3d& wo, const Vector3d& wi)const = 0;
 		virtual double _Pdf(const Vector3d& wo, const Vector3d& wi)const = 0;
-		virtual BSDFSample _Sample_f(const Vector3d& wo, const Vector2d& random)const = 0;
 
-	private:
+	protected:
 		Vector3d ToLocal(const Vector3d& world)const {
 			return shadingFrame.ToLocal(world);
 		}

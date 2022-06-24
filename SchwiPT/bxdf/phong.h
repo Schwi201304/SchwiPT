@@ -14,7 +14,8 @@ namespace schwi {
 
 		virtual bool IsDelta() const override { return false; }
 
-		Color _f(const Vector3d& wo, const Vector3d& wi)const override {
+	private:
+		Color f(const Vector3d& wo, const Vector3d& wi)const override {
 			Vector3d wr = Reflect(wo, Normal3d());
 			double cosAlpha = Dot(wr, wi);
 			Color rho = Ks * (exp + 2.) * Inv2Pi;
@@ -26,23 +27,19 @@ namespace schwi {
 			return PdfHemisphereCosinePhong(wr, wi);
 		}
 
-		BSDFSample _Sample_f(const Vector3d& wo, const Vector2d& random)const override {
-			BSDFSample sample;
-
-			sample.wi = SampleHemisphereCosinePhong(random);
-
+	public:
+		Color Sample_f(const Vector3d& world_wo, Vector3d* world_wi, double* pdf, const Vector2d& random)const override {
+			Vector3d wo = ToLocal(world_wo);
+			Vector3d local_wi = SampleHemisphereCosinePhong(random);
 			Vector3d wr = Reflect(wo, Normal3d(0, 0, 1));
 			Frame frame{ Normal3d(wr) };
-			sample.wi = frame.ToWorld(sample.wi);
+			*world_wi = frame.ToWorld(local_wi);
 
 			if (wo.z < 0)
-				sample.wi.z *= 1;
+				world_wi->z *= -1;
 
-			sample.f = _f(wo, sample.wi);
-			sample.pdf = _Pdf(wo, sample.wi);
-			sample.type = BxDFType::REFLECTION | BxDFType::GLOSSY;
-
-			return sample;
+			*pdf = _Pdf(wo, local_wi);
+			return f(wo, local_wi);
 		}
 
 	private:

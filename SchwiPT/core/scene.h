@@ -245,9 +245,9 @@ namespace schwi {
 
 			PrimitiveList primitiveList{
 				{box.get(),white.get(),nullptr},
-				{cy.get(),skin.get(),nullptr},
+				{cy.get(),mirror.get(),nullptr},
 				{cover.get(),white.get(),nullptr},
-				{sphere.get(),skin.get(),nullptr},
+				{sphere.get(),glass.get(),nullptr},
 				//{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},
 				{down.get(),white.get(),nullptr},
@@ -322,7 +322,7 @@ namespace schwi {
 			std::shared_ptr<TextureFilter> bilinear = std::make_shared<BilinearFilter>();
 			TextureSPtr skinTex =
 				std::make_shared<ImageTexture<Color, Color>>(
-					std::make_unique<SkinMapping2D>(true, .0625),
+					std::make_unique<SkinMapping2D>(true, .25),
 					bilinear, SkinLUT);
 			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
 			TextureList textureList{ whiteConst };

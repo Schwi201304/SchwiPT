@@ -51,24 +51,26 @@ namespace schwi {
 				return isect.Le();
 			}
 
-			BSDFSample bs = isect.bsdf()->Sample_f(isect.wo, sampler.GetVector2d());
-			if (bs.f.IsBlack() || bs.pdf == 0.) {
+			Vector3d wi;
+			double pdf = 0;
+			Color f = isect.bsdf()->Sample_f(isect.wo, &wi, &pdf, sampler.GetVector2d());
+			if (f.IsBlack() || pdf == 0.) {
 				return isect.Le();
 			}
 			//Russian Roulette
 			if (++depth > 5) {
-				double maxComponent = MaxComponent(ToV3d(bs.f));
+				double maxComponent = MaxComponent(ToV3d(f));
 				if (sampler.GetDouble() < maxComponent) {
-					bs.f = bs.f / maxComponent;
+					f = f / maxComponent;
 				}
 				else {
 					return isect.Le();
 				}
 			}
 
-			Ray wi(isect.position, bs.wi);
+			Ray ray_wi(isect.position, wi);
 			return isect.Le() +
-				bs.f * Li(wi, scene, sampler, depth) * abs(Dot(bs.wi, isect.normal)) / bs.pdf;
+				f * Li(ray_wi, scene, sampler, depth) * abs(Dot(wi, isect.normal)) / pdf;
 		}
 	};
 
@@ -138,26 +140,29 @@ namespace schwi {
 		Color IndirectLighting(
 			Ray ray, Scene& scene, Sampler& sampler, int depth, bool is_last_specular,
 			const SurfaceIntersection& isect, LightingEnum lightingEnum) {
-			BSDFSample bs = isect.bsdf()->Sample_f(isect.wo, sampler.GetVector2d());
 
-			if (bs.f.IsBlack() || bs.pdf == 0.) {
+			Vector3d wi;
+			double pdf = 0;
+			Color f = isect.bsdf()->Sample_f(isect.wo, &wi, &pdf, sampler.GetVector2d());
+
+			if (f.IsBlack() || pdf == 0.) {
 				return Color();
 			}
 
 			if (++depth > 5) {
-				double maxComponent = MaxComponent(ToV3d(bs.f));
+				double maxComponent = MaxComponent(ToV3d(f));
 				if (sampler.GetDouble() < maxComponent) {
-					bs.f *= (1 / maxComponent);
+					f *= (1 / maxComponent);
 				}
 				else {
 					return isect.Le();
 				}
 			}
 
-			Ray wi(isect.position, bs.wi);
-			return bs.f
-				* Li(wi, scene, sampler, depth, isect.bsdf()->IsDelta(), lightingEnum)
-				* AbsDot(bs.wi, isect.normal) / bs.pdf;
+			Ray ray_wi(isect.position, wi);
+			return f
+				* Li(ray_wi, scene, sampler, depth, isect.bsdf()->IsDelta(), lightingEnum)
+				* AbsDot(wi, isect.normal) / pdf;
 		}
 	};
 }

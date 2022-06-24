@@ -72,7 +72,7 @@ namespace schwi {
 
 			BsdfUPtr bsdf = isect.primitive->material->Scattering(isect);
 			//std::cout << isect.NoL << std::endl;
-			Color f = bsdf->f(isect.wo, ls.wi);
+			Color f = bsdf->F(isect.wo, ls.wi);
 			if (!f.IsBlack()) {
 				double cosTheta = AbsDot(ls.wi, isect.normal);
 				Color dL = f * ls.Li * cosTheta / ls.pdf;
