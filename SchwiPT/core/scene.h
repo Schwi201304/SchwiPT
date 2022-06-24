@@ -263,7 +263,7 @@ namespace schwi {
 				{disk.get(),white.get(),disk_light.get()}
 			};
 
-			ImageSPtr cubeMap = imageManager.Add("sky.jpg");
+			ImageSPtr cubeMap = imageManager.Add("cubemap.png");
 			CubeMap* skybox = new CubeMap(cubeMap);
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList,skybox };
