@@ -17,7 +17,7 @@ namespace schwi {
 			SurfaceIntersection isect;
 
 			if (!scene.Intersect(ray, &isect))
-				return Color();
+				return scene.SkyBox(ray.direction());
 
 			Vector3d wi;
 			double pdf = 0;

@@ -41,7 +41,7 @@ namespace schwi {
 		Color Li(Ray ray, Scene& scene, Sampler& sampler, int depth) {
 			SurfaceIntersection isect;
 			if (!scene.Intersect(ray, &isect)) {
-				return Color();
+				return scene.SkyBox(ray.direction());
 			}
 
 			if (isect.primitive->areaLight)
@@ -120,7 +120,7 @@ namespace schwi {
 					Le = isect.Le();
 				}
 				else {
-					//TODO »·¾³¹â
+					Le = scene.SkyBox(ray.direction());
 				}
 			}
 			return Le;

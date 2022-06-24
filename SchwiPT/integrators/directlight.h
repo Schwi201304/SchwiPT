@@ -15,7 +15,7 @@ namespace schwi {
 		Color Li(Ray ray, Scene& scene, Sampler& sampler) override {
 			SurfaceIntersection isect;
 			if (!scene.Intersect(ray, &isect)) {
-				return Color();
+				return scene.SkyBox(ray.direction());
 			}
 
 			Color Lo = isect.Le();
@@ -35,7 +35,7 @@ namespace schwi {
 		Color Li(Ray ray, Scene& scene, Sampler& sampler)override {
 			SurfaceIntersection isect;
 			if (!scene.Intersect(ray, &isect)) {
-				return Color();
+				return scene.SkyBox(ray.direction());
 			}
 
 			Color Lo = isect.Le();
@@ -136,7 +136,7 @@ namespace schwi {
 		Color Li(Ray ray, Scene& scene, Sampler& sampler)override {
 			SurfaceIntersection isect;
 			if (!scene.Intersect(ray, &isect)) {
-				return Color();
+				return scene.SkyBox(ray.direction());
 			}
 
 			Color Lo = isect.Le();

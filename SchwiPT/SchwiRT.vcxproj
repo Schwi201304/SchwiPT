@@ -224,6 +224,7 @@
     <ClInclude Include="shapes\sphere.h" />
     <ClInclude Include="shapes\triangle.h" />
     <ClInclude Include="textures\constant.h" />
+    <ClInclude Include="textures\cubemap.h" />
     <ClInclude Include="textures\imagemap.h" />
     <ClInclude Include="textures\mipmap.h" />
     <ClInclude Include="textures\texture.h" />

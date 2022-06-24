@@ -42,6 +42,7 @@
     <ClInclude Include="core\film.h" />
     <ClInclude Include="integrators\directlight.h" />
     <ClInclude Include="material\skin.h" />
+    <ClInclude Include="textures\cubemap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp" />

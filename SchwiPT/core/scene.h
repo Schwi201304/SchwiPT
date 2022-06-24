@@ -12,6 +12,7 @@
 #include<shapes/cylinder.h>
 #include<textures/imagemap.h>
 #include<textures/constant.h>
+#include<textures/cubemap.h>
 
 namespace schwi {
 	class Scene {
@@ -21,19 +22,19 @@ namespace schwi {
 		LightList lightList;
 		PrimitiveList primitiveList;
 		TextureList textureList;
-		EnvironmentLight* environmentLight;
+		CubeMap* skybox;
 
 	public:
 		Scene() = default;
 		Scene(ShapeList shapeList, MaterialList materialList,
 			LightList lightList, PrimitiveList primitiveList,
-			TextureList textureList, EnvironmentLight* environmentLight = nullptr) :
+			TextureList textureList, CubeMap* skybox=nullptr) :
 			shapeList(shapeList),
 			materialList(materialList),
 			lightList(lightList),
 			primitiveList(primitiveList),
 			textureList(textureList),
-			environmentLight(environmentLight) {}
+			skybox(skybox) {}
 
 	public:
 		bool Intersect(Ray& ray, SurfaceIntersection* isect)const {
@@ -73,6 +74,11 @@ namespace schwi {
 				bound = Union(bound, primitive.shape->WorldBound());
 			}
 			return bound;
+		}
+
+		Color SkyBox(const Vector3d& v) {
+			return skybox == nullptr ? Color() :
+				skybox->Evaluate(v);
 		}
 
 	public:
@@ -216,7 +222,7 @@ namespace schwi {
 				std::make_shared<ImageTexture<Color, Color>>(
 					std::make_unique<UVMapping2D>(),
 					bilinear, earthImg);
-
+			
 			TextureSPtr whiteConst = std::make_shared<ConstantTexture<Color>>(Color(1., 1., 1.));
 			TextureSPtr grayConst = std::make_shared<ConstantTexture<Color>>(Color(.75, .75, .75));
 			TextureSPtr redConst = std::make_shared<ConstantTexture<Color>>(Color(1., 0., 0.));
@@ -257,7 +263,10 @@ namespace schwi {
 				{disk.get(),white.get(),disk_light.get()}
 			};
 
-			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList };
+			ImageSPtr cubeMap = imageManager.Add("sky.jpg");
+			CubeMap* skybox = new CubeMap(cubeMap);
+
+			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList,skybox };
 		}
 
 		static Scene LightSample() {
