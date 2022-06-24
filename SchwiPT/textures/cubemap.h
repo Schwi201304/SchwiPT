@@ -5,6 +5,15 @@
 
 namespace schwi {
 	class CubeMap {
+		/**
+		*	 +Y
+		* -X +Z +X -Z
+		*    -Y
+		* 常见CubeMap符合以上格式，基于左手系
+		* 渲染器是右手系
+		* 左右手系互转时应将+X与-X的贴图对调，并将所有贴图x方向取反
+		* 这里暂未实现
+		*/
 	private:
 		std::shared_ptr<SchwiImage> img;
 		std::vector<Vector2d> offset = {
@@ -29,17 +38,17 @@ namespace schwi {
 			switch (xyz)
 			{
 			case 1://+x
-				uv = Map(0, 2, 1, v) + offset[0]; break;
+				uv = Map(v[0], -v[2], v[1]) + offset[0]; break;
 			case 2://+y
-				uv = Map(1, 0, 2, v) + offset[2]; break;
+				uv = Map(v[1], v[0], -v[2]) + offset[2]; break;
 			case 3://+z
-				uv = Map(2, 0, 1, v) + offset[4]; break;
+				uv = Map(v[2], v[0], v[1]) + offset[4]; break;
 			case -1://-x
-				uv = Map(0, 2, 1, v) + offset[1]; break;
+				uv = Map(v[0], v[2], v[1]) + offset[1]; break;
 			case -2://-y
-				uv = Map(1, 0, 2, v) + offset[3]; break;
+				uv = Map(v[1], v[0], v[2]) + offset[3]; break;
 			case -3://-z
-				uv = Map(2, 0, 1, v) + offset[5]; break;
+				uv = Map(v[2], -v[0], v[1]) + offset[5]; break;
 			default:
 				uv = Point2d(0, 0);
 				std::cerr << "Error: CubeMap " << v << std::endl;
@@ -51,9 +60,9 @@ namespace schwi {
 		}
 
 	private:
-		Point2d Map(int z, int x, int y, const Vector3d& v) {
-			double inv = abs(v[z]);
-			return Point2d((v[x] /inv + 1.) / 8., (v[y] / inv + 1.) / 6.);
+		Point2d Map(double z, double x, double y) {
+			double inv = abs(z);
+			return Point2d((x /inv + 1.) / 8., (y / inv + 1.) / 6.);
 		}
 	};
 }

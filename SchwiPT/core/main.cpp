@@ -27,10 +27,10 @@ int main() {
 	unique_ptr<Sampler> originalSampler = make_unique<RandomSampler>(spp);
 
 	unique_ptr<Camera> camera = make_unique<PerspectiveCamera>(
-		Point3d{ 0, 0, 200 },
+		Point3d{ 0, 0, 80 },
 		Vector3d{ 0, 0, -1 },
 		Vector3d{ 0, 1, 0 },
-		53,
+		120,
 		Vector2i(width, height));
 
 	//Scene scene = Scene::CreatHeadScene();

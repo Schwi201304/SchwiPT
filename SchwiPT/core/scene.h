@@ -257,7 +257,7 @@ namespace schwi {
 				//{box2.get(),white.get(),nullptr},
 				{up.get(),white.get(),nullptr},
 				{down.get(),white.get(),nullptr},
-				{back.get(),white.get(),nullptr},
+				{back.get(),mirror.get(),nullptr},
 				{left.get(),green.get(),nullptr},
 				{right.get(),red.get(),nullptr},
 				{disk.get(),white.get(),disk_light.get()}
