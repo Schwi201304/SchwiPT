@@ -237,8 +237,8 @@ namespace schwi {
 			MaterialSPtr green = std::make_shared<Matte>(greenConst);
 			MaterialSPtr blue = std::make_shared<Matte>(blueConst);
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
-			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst);
-			MaterialSPtr glass = std::make_shared<Glass>(whiteConst, whiteConst, FresnelSpecular::Glass);
+			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst,0.5);
+			MaterialSPtr glass = std::make_shared<Glass>(whiteConst, Fresnel::Glass);
 			MaterialSPtr earthMat = std::make_shared<Matte>(earthPtr);
 			MaterialSPtr plastic = std::make_shared<Plastic>(whiteConst, whiteConst, 1);
 			MaterialSPtr skin = std::make_shared<PreIntegraterdSkin>(skinConst);
@@ -263,7 +263,7 @@ namespace schwi {
 				{disk.get(),white.get(),disk_light.get()}
 			};
 
-			ImageSPtr cubeMap = imageManager.Add("cubemap.png");
+			ImageSPtr cubeMap = imageManager.Add("sky1.png");
 			CubeMap* skybox = new CubeMap(cubeMap);
 
 			return Scene{ shapeList, materialList, lightList, primitiveList ,textureList,skybox };
@@ -297,7 +297,7 @@ namespace schwi {
 			MaterialSPtr blue = std::make_shared<Matte>(blueConst);
 			MaterialSPtr yellow = std::make_shared<Matte>(yellowConst);
 			MaterialSPtr black = std::make_shared<Matte>(blackConst);
-			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst);
+			MaterialSPtr mirror = std::make_shared<Mirror>(whiteConst,0.5);
 			MaterialSPtr plastic = std::make_shared<Plastic>(whiteConst, yellowConst, 1);
 			MaterialList materialList{ white,gray,red,green,blue,yellow,black ,plastic,mirror };
 

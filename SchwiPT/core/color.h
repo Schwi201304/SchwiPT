@@ -10,6 +10,8 @@ namespace schwi {
 
 	public:
 		Color() { r = g = b = .0; };
+		explicit Color(double c) :
+			r(c), g(c), b(c) {}
 		Color(double r, double g, double b)
 			:r(r), g(g), b(b) {}
 
@@ -17,7 +19,7 @@ namespace schwi {
 			return Color(r * d, g * d, b * d);
 		}
 
-		Color operator*=(double d){
+		Color operator*=(double d) {
 			r *= d;
 			g *= d;
 			b *= d;

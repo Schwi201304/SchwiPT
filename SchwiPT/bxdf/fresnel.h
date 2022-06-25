@@ -7,6 +7,14 @@ namespace schwi {
 	public:
 		virtual ~Fresnel() {}
 		virtual double Evaluate(double cosI) const = 0;
+
+	public:
+		static constexpr double Vacuum = 1.0;
+		static constexpr double Air = 1.00029;//At sea level
+		static constexpr double Ice = 1.31;
+		static constexpr double Water = 1.333;//20¡æ
+		static constexpr double Glass = 1.5;
+		static constexpr double Diamond = 2.42;
 	};
 
 	double FrDielectric(
@@ -99,7 +107,7 @@ namespace schwi {
 			const double& k)
 			: etaI(etaI), etaT(etaT), k(k) {}
 		double Evaluate(double cosThetaI) const {
-			return FrConductor(std::abs(cosThetaI), etaI, etaT, k);
+			return FrConductor(abs(cosThetaI), etaI, etaT, k);
 		}
 
 	private:
@@ -117,7 +125,7 @@ namespace schwi {
 	private:
 		double etaI, etaT;
 	};
-
+	/*
 	class FresnelSpecular :public BSDF {
 	private:
 		Color R;
@@ -172,13 +180,6 @@ namespace schwi {
 		double _Pdf(const Vector3d& wo, const Vector3d& wi)const override {
 			return 0;
 		}
-
-	public:
-		static constexpr double Vacuum = 1.0;
-		static constexpr double Air = 1.00029;//At sea level
-		static constexpr double Ice = 1.31;
-		static constexpr double Water = 1.333;//20¡æ
-		static constexpr double Glass = 1.5;
-		static constexpr double Diamond = 2.42;
 	};
+	*/
 }

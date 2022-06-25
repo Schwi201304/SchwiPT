@@ -15,7 +15,7 @@ namespace schwi {
 		virtual ~Material() = default;
 
 		virtual BsdfUPtr Scattering(const SurfaceIntersection& isect)const = 0;
-		virtual bool IsDelay()const{ return false; }
+		virtual bool IsDelay()const { return false; }
 	};
 
 	class Matte :public Material {
@@ -35,31 +35,30 @@ namespace schwi {
 	class Mirror :public Material {
 	private:
 		TextureSPtr texture;
+		double eta;
 
 	public:
-		Mirror(const TextureSPtr& texture) :
-			texture(texture) {}
+		Mirror(const TextureSPtr& texture, double eta) :
+			texture(texture), eta(eta) {}
 
 		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
 			Color Kr = texture->Evaluate(isect);
-			return std::make_unique<SpecularReflection>(Frame(isect.normal), Kr);
+			return std::make_unique<SpecularReflection>(Frame(isect.normal), Kr, new FresnelConductor(1, eta, 1));
 		}
 	};
 
 	class Glass :public Material {
 	private:
-		TextureSPtr TexKr;
 		TextureSPtr TexKt;
 		double eta;
 
 	public:
-		Glass(const TextureSPtr& TexKr, const TextureSPtr& TexKt, double eta) :
-			TexKr(TexKr), TexKt(TexKt), eta(eta) {}
+		Glass(const TextureSPtr& TexKt, double eta) :
+			TexKt(TexKt), eta(eta) {}
 
 		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
-			Color Kr = TexKr->Evaluate(isect);
 			Color Kt = TexKt->Evaluate(isect);
-			return std::make_unique<FresnelSpecular>(Frame(isect.normal), Kr, Kt, 1, eta);
+			return std::make_unique<SpecularTransmission>(Frame(isect.normal), Kt, 1, eta);
 		}
 	};
 
@@ -69,8 +68,8 @@ namespace schwi {
 		double exp;
 
 	public:
-		Phong(const TextureSPtr& TexKs,double shininess):
-			TexKs(TexKs),exp(shininess){}
+		Phong(const TextureSPtr& TexKs, double shininess) :
+			TexKs(TexKs), exp(shininess) {}
 
 		BsdfUPtr Scattering(const SurfaceIntersection& isect)const override {
 			Color Ks = TexKs->Evaluate(isect);
